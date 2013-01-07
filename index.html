@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet mobile example</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+
+
+	<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+	<script src="gushim.js"></script>
+
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script>
+		var map = L.map('map').setView([31.773, 35.18], 13);
+
+		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+		}).addTo(map);
+
+
+		function onEachFeature(feature, layer) {
+			layer.bindPopup(feature.properties.Name + " גוש ");
+		}
+
+		map.locate({setView: true, maxZoom: 16});
+		L.geoJson(gushim,
+			{
+				onEachFeature: onEachFeature,
+				style : {
+					"color" : "#333",
+					"weight": 1,
+					"opacity": 0.95
+				}
+			}
+		).addTo(map);
+
+	</script>
+</body>
+</html>

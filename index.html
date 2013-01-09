@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet mobile example</title>
+	<title>תב"ע בסבבה</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" /><![endif]-->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="css/stylesheet.css" rel="stylesheet" media="screen">
 
 	<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 	<script src="data/gushim.js"></script>
@@ -23,8 +25,18 @@
 	</style>
 </head>
 <body>
-	<div id="map"></div>
-
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span10">
+				<div id="map" style="height: 800px;"></div>
+			</div>
+			<div class="span2" style="font-family: Alef;">
+				some text אבג
+			</div>
+		</div>
+	</div>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script>
 		var map = L.map('map').setView([31.773, 35.18], 13);
 
@@ -36,10 +48,14 @@
 
 		function onEachFeature(feature, layer) {
 			layer.bindPopup(feature.properties.Name + " גוש ");
+			layer.on({
+						'mouseover'	: function() { this.setStyle({ opacity: 0 	, color: "red" 	}) },
+						'mouseout'	: function() { this.setStyle({ opacity: 0.95, color: "#333" }) }
+					});
 		}
 
-		samplefilter = function(f) { return f.properties.Name.substring(0,3) == "300" }
-		gushim = gushim.features.filter(samplefilter);
+		// samplefilter = function(f) { return f.properties.Name.substring(0,3) == "300" }
+		// gushim = gushim.features.filter(samplefilter);
 
 		map.locate({setView: true, maxZoom: 16});
 		L.geoJson(gushim,

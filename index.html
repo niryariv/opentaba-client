@@ -46,10 +46,12 @@
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script>
 
-		var API_URL = 'http://enigmatic-peak-9169.herokuapp.com/';
-		var API_URL = 'http://0.0.0.0:5000/'
+		var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1')
+
+		var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://enigmatic-peak-9169.herokuapp.com/';
 
 		var map = L.map('map').setView([31.773, 35.18], 13);
+
 
 		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
 			maxZoom: 18,
@@ -62,15 +64,40 @@
 
 			out += "<table>";
 			for (var i = 0 ; i<plans.length ; i++) {
-				out += "<tr>";
 				p = plans[i];
-				out += "<td><b>" + [p.day, p.month, p.year].join("/") + "</b></td>";
-				out += "<td>" + p.number + "</td><td>" + p.status + "</td>";
-				out += "</tr>";
+
+				out+="<tr class='item' style='vertical-align:top'>" +
+					"	<td><b>" + [p.day, p.month, p.year].join("/") + "</b></td>" +
+					"	<td>" + p.number + "</td><td>" + p.essence + "</td>" +
+					"	<tr style='display:none'>" +
+					"		<td colspan=3>" + p.status
+
+				console.log(p.tasrit_link.length)
+				for (var j = 0 ; j<p.tasrit_link.length ; j++)
+					out += '	<a href="' + p.tasrit_link[j] + '"><i class="icon-folder-open"></i></a>'
+
+				console.log(p.takanon_link.length)
+				for (var j = 0 ; j<p.takanon_link.length ; j++)
+					out += '	<a href="' + p.takanon_link[j] + '"><i class="icon-list"></i></a>'
+						
+				out+="		</td>" +
+					 "	</tr>" +
+					 "</tr>";
 			}
 			out += "</table>";
 
 			$("#info").html(out);
+
+			$("tr.item").hover(
+	  			function () { $(this).css("background","#ddd"); }, 
+	  			function () { $(this).css("background",""); }
+			);
+
+			$("tr.item").click(
+	  			function () { $(this).next().toggle(); }
+			);
+
+
 		}
 
 		function get_gush(gush_id) {

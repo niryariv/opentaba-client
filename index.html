@@ -34,9 +34,12 @@
 				<div id="right-bar" style="font-family: Alef; direction: rtl;">
 					<div id="header" style="text-align: center">
 						<h1>תב"ע פתוחה</h1>
+						<p>ברוך בואך לתב"ע הפתוחה!</p>
 					</div>
 					<div id="info" style="text-align: right">
-						בחר גוש במפה כדי לצפות בתוכניות הבניה
+						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה</p>
+						<p style="margin-top:80%">פרויקט תב"ע פתוחה נועד על מנת לאפשר גישה נוחה לצבור למידע על תוכניות בניה. הפרויקט בנוי בקוד פתוח, גם את ואתה יכולים לתרום, 
+							<a href="https://github.com/niryariv/citymap-server">בצד השרת</a> או <a href="https://github.com/niryariv/citymap-client">הממשק</a>. ליצירת קשר, פנו ל niryariv@gmail.com</p>
 					</div>
 				</div>
 			</div>
@@ -119,7 +122,7 @@
 		// samplefilter = function(f) { return f.properties.Name.substring(0,3) == "300" }
 		// gushim = gushim.features.filter(samplefilter);
 
-		map.locate({setView: true, maxZoom: 16});
+		// map.locate({setView: true, maxZoom: 16});
 		L.geoJson(gushim,
 			{
 				onEachFeature: onEachFeature,

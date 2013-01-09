@@ -27,17 +27,28 @@
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span10">
+			<div class="span9">
 				<div id="map" style="height: 800px;"></div>
 			</div>
-			<div class="span2" style="font-family: Alef;">
-				some text אבג
+			<div class="span3">
+				<div id="right-bar" style="font-family: Alef; direction: rtl;">
+					<div id="header" style="text-align: center">
+						<h1>תב"ע פתוחה</h1>
+					</div>
+					<div id="info" style="text-align: right">
+						בחר גוש במפה כדי לצפות בתוכניות הבניה
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script>
+
+		var API_URL = 'http://enigmatic-peak-9169.herokuapp.com/';
+		var API_URL = 'http://0.0.0.0:5000/'
+
 		var map = L.map('map').setView([31.773, 35.18], 13);
 
 		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
@@ -45,12 +56,36 @@
 			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
 		}).addTo(map);
 
+		
+		function render_plans(plans) {
+			var out = "<h2>גוש " + plans[0].gush_id + " </h2>";
+
+			out += "<table>";
+			for (var i = 0 ; i<plans.length ; i++) {
+				out += "<tr>";
+				p = plans[i];
+				out += "<td><b>" + [p.day, p.month, p.year].join("/") + "</b></td>";
+				out += "<td>" + p.number + "</td><td>" + p.status + "</td>";
+				out += "</tr>";
+			}
+			out += "</table>";
+
+			$("#info").html(out);
+		}
+
+		function get_gush(gush_id) {
+			$.getJSON(
+				API_URL + 'gush/' + gush_id + '/plans',
+				function(d) { render_plans(d); }
+			)
+		}
 
 		function onEachFeature(feature, layer) {
 			layer.bindPopup(feature.properties.Name + " גוש ");
 			layer.on({
 						'mouseover'	: function() { this.setStyle({ opacity: 0 	, color: "red" 	}) },
-						'mouseout'	: function() { this.setStyle({ opacity: 0.95, color: "#333" }) }
+						'mouseout'	: function() { this.setStyle({ opacity: 0.95, color: "#333" }) },
+						'click'		: function() { this.setStyle({ opacity: 0.95, color: "blue" }) ; get_gush(feature.properties.Name) }
 					});
 		}
 

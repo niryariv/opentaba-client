@@ -112,7 +112,7 @@
 			layer.on({
 						'mouseover'	: function() { this.setStyle({ opacity: 0 	, color: "red" 	}) },
 						'mouseout'	: function() { this.setStyle({ opacity: 0.95, color: "#333" }) },
-						'click'		: function() { this.setStyle({ opacity: 0.95, color: "blue" }) ; get_gush(feature.properties.Name) }
+						'click'		: function() { $("#info").html("עוד מעט...") ; get_gush(feature.properties.Name) }
 					});
 		}
 

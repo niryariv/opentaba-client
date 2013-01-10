@@ -139,8 +139,8 @@
 		// samplefilter = function(f) { return f.properties.Name.substring(0,3) == "300" }
 		// gushim = gushim.features.filter(samplefilter);
 
-		// this does nothing, just wakes up the heroku dyno to get it going
-		$.getJSON( API_URL, function(){/* nothing */}	)
+		// this is only to wake up possibly-idling heroku dyno to make sure later requests aren't too slow
+		$.getJSON( API_URL + "wakeup" , function(){/* do nothing */}	)
 
 		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
 			maxZoom: 18,

@@ -82,11 +82,12 @@
 
 				out+='<tr style="vertical-align:top" class="item">' +
 					 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
-					 '	<td>' + p.number  + '</td>'+
+					 '	<td>' + p.status  + '</td>'+
 					 '	<td>' + p.essence + '</td>'+
 					 '</tr>' +
 					 '<tr class="details">' +
-					 '	<td colspan="3">' + p.status
+					 '	<td colspan="2">תוכנית ' + p.number + '</td>' +
+					 '	<td>';
 
 				for (var j=0 ; j<p.tasrit_link.length ; j++)
 					out += '<a href="#" onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + '"><i class="icon-folder-open"></i></a>'

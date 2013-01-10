@@ -65,38 +65,45 @@
 		function render_plans(plans) {
 			var out = "<h2>גוש " + plans[0].gush_id + " </h2>";
 
+			// html brought to you courtsey of 1998
 			out += "<table>";
 			for (var i = 0 ; i<plans.length ; i++) {
 				p = plans[i];
 
-				out+="<tr class='item' style='vertical-align:top'>" +
-					"	<td><b>" + [p.day, p.month, p.year].join("/") + "</b></td>" +
-					"	<td>" + p.number + "</td><td>" + p.essence + "</td>" +
-					"	<tr style='display:none'>" +
-					"		<td colspan=3>" + p.status
+				out+='<tr style="vertical-align:top" class="item">' +
+					 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
+					 '	<td>' + p.number  + '</td>'+
+					 '	<td>' + p.essence + '</td>'+
+					 '</tr>' +
+					 '<tr class="details">' +
+					 '	<td colspan="3">' + p.status
 
-				console.log(p.tasrit_link.length)
-				for (var j = 0 ; j<p.tasrit_link.length ; j++)
-					out += '	<a href="' + p.tasrit_link[j] + '"><i class="icon-folder-open"></i></a>'
+				for (var j=0 ; j<p.tasrit_link.length ; j++)
+					out += '<a href="' + p.tasrit_link[j] + '"><i class="icon-folder-open"></i></a>'
 
-				console.log(p.takanon_link.length)
-				for (var j = 0 ; j<p.takanon_link.length ; j++)
-					out += '	<a href="' + p.takanon_link[j] + '"><i class="icon-list"></i></a>'
+				for (var j=0 ; j<p.takanon_link.length ; j++)
+					out += '<a href="' + p.takanon_link[j] + '"><i class="icon-list"></i></a>'
 						
-				out+="		</td>" +
-					 "	</tr>" +
-					 "</tr>";
+				out+='	</td>'  +
+					 '</tr>' 	+
+					 '<tr style="height: 10px"><td colspan="3">&nbsp;</td></tr>';
 			}
-			out += "</table>";
+			out += '</table>';
 
 			$("#info").html(out);
 
-			$("tr.item").hover(
-	  			function () { $(this).css("background","#ddd"); }, 
-	  			function () { $(this).css("background",""); }
+			$(".item").hover(
+	  			function () { $(this).css("background","#ddd"); $(this).next(".details").css("background","#ddd"); }, // next().show();
+	  			function () { $(this).css("background","")	  ; $(this).next(".details").css("background",""); } // next().hide();
 			);
 
-			$("tr.item").click(
+			$(".details").hover(
+	  			function () { $(this).css("background","#ddd"); $(this).prev(".item").css("background","#ddd"); }, // next().show();
+	  			function () { $(this).css("background","")	  ; $(this).prev(".item").css("background",""); } // next().hide();
+			);
+
+
+			$(".item").click(
 	  			function () { $(this).next().toggle(); }
 			);
 

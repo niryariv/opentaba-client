@@ -73,7 +73,7 @@
 		}
 
 		function render_plans(plans) {
-			var out = "<h2>גוש " + plans[0].gush_id + " </h2>";
+			var out = '<h2 style="color: grey;">גוש ' + plans[0].gush_id + '</h2>';
 
 			// html brought to you courtsey of 1998
 			out += "<table>";
@@ -83,7 +83,7 @@
 				out+='<tr style="vertical-align:top" class="item">' +
 					 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
 					 '	<td>' + p.status  + '</td>'+
-					 '	<td>' + p.essence + '</td>'+
+					 '	<td><b>' + p.essence + '</b></td>'+
 					 '</tr>' +
 					 '<tr class="details">' +
 					 '	<td colspan="2">תוכנית ' + p.number + '</td>' +

@@ -93,7 +93,13 @@
 
 				for (var j=0 ; j<p.takanon_link.length ; j++)
 					out += '<a href="#" onclick="show_data('+ "'" + p.takanon_link[j] + "')" + '"><i class="icon-list"></i></a>'
-						
+		
+				for (var j=0 ; j<p.nispahim_link.length ; j++)
+					out += '<a href="#" onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + '"><i class="icon-folder-close"></i></a>'
+
+				for (var j=0 ; j<p.files_link.length ; j++)
+					out += '<a href="http://mmi.gov.il' + p.files_link[j] + '"><i class="icon-download-alt"></i></a>'
+					
 				out+='	</td>'  +
 					 '</tr>' 	+
 					 '<tr style="height: 10px"><td colspan="3">&nbsp;</td></tr>';

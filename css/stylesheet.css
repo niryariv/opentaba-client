@@ -9,6 +9,11 @@ html, body, #map {
 }
 */
 
+body{
+   background:url(
+    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAG0lEQVQIW2OMq7zlw4ADMIIkF7WrbcEmP+gkAarWGgXyq5CNAAAAAElFTkSuQmCC
+   ) repeat;
+}
 
 @font-face {
     font-family: 'Alef';

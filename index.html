@@ -54,7 +54,8 @@
 	
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/pdfobject.js"></script>
-	
+	<script src="lib/path.js"></script>
+
 	<script src="data/gushim.js"></script>
 
 	<script>
@@ -136,12 +137,14 @@
 			layer.on({
 						'mouseover'	: function() { this.setStyle({ opacity: 0 	, color: "red" 	}) },
 						'mouseout'	: function() { this.setStyle({ opacity: 0.95, color: "#777" }) },
-						'click'		: function() { $("#info").html("עוד מעט...") ; get_gush(feature.properties.Name) }
+						'click'		: function() { 
+							$("#info").html("עוד מעט..."); 
+							location.hash = "#/gush/" + feature.properties.Name;
+							// get_gush(feature.properties.Name);
+						}
 					});
 		}
 
-		// samplefilter = function(f) { return f.properties.Name.substring(0,3) == "300" }
-		// gushim = gushim.features.filter(samplefilter);
 
 		// this is only to wake up possibly-idling heroku dyno to make sure later requests aren't too slow
 		$.getJSON( API_URL + "wakeup" , function(){/* do nothing */}	)
@@ -158,11 +161,18 @@
 				style : {
 					"color" : "#777",
 					"weight": 1,
-					"opacity": 0.95
+					"opacity": 0.9
 				}
 			}
 		).addTo(map);
 
+		// setup a path.js router to allow distinct URLs for each block
+		Path.map("#/gush/:gush_id").to(
+			function() {
+				get_gush(this.params['gush_id']);
+			}
+		);
+		Path.listen();
 	</script>
 </body>
 </html>

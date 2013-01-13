@@ -88,16 +88,20 @@
 					 '	<td>';
 
 				for (var j=0 ; j<p.tasrit_link.length ; j++)
-					out += '<a href="#" onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + '"><i class="icon-folder-open"></i></a>'
+					out += '<a href="#" onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + 
+							'" rel="tooltip" title="תשריט"><i class="icon-folder-open"></i></a>'
 
 				for (var j=0 ; j<p.takanon_link.length ; j++)
-					out += '<a href="#" onclick="show_data('+ "'" + p.takanon_link[j] + "')" + '"><i class="icon-list"></i></a>'
+					out += '<a href="#" onclick="show_data('+ "'" + p.takanon_link[j] + "')" + 
+							'" rel="tooltip" title="תקנון"><i class="icon-list"></i></a>'
 		
 				for (var j=0 ; j<p.nispahim_link.length ; j++)
-					out += '<a href="#" onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + '"><i class="icon-folder-close"></i></a>'
+					out += '<a href="#" onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + 
+							'" rel="tooltip" title="נספחים"><i class="icon-folder-close"></i></a>'
 
 				for (var j=0 ; j<p.files_link.length ; j++)
-					out += '<a href="http://mmi.gov.il' + p.files_link[j] + '"><i class="icon-download-alt"></i></a>'
+					out += '<a href="http://mmi.gov.il' + p.files_link[j] + 
+							'" rel="tooltip" title="קבצים"><i class="icon-download-alt"></i></a>'
 					
 				out+='	</td>'  +
 					 '</tr>' 	+
@@ -165,6 +169,9 @@
 				}
 			}
 		).addTo(map);
+
+		// activate Boostrap tooltips on attachment icons
+		$(function () { $("[rel='tooltip']").tooltip({'placement' : 'bottom'}); });
 
 		// setup a path.js router to allow distinct URLs for each block
 		Path.map("#/gush/:gush_id").to(

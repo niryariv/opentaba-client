@@ -111,6 +111,10 @@
 
 			$("#info").html(out);
 
+			// activate Boostrap tooltips on attachment icons
+			$("[rel='tooltip']").tooltip({'placement' : 'bottom'});
+
+
 			$(".item").hover(
 	  			function () { $(this).css("background","#fff"); $(this).next(".details").css("background","#fff"); }, //#f7f7f9
 	  			function () { $(this).css("background","")	  ; $(this).next(".details").css("background",""); }
@@ -149,9 +153,6 @@
 		}
 
 
-		// this is only to wake up possibly-idling heroku dyno to make sure later requests aren't too slow
-		$.getJSON( API_URL + "wakeup" , function(){/* do nothing */}	)
-
 		var map = L.map('map', { scrollWheelZoom: false }).setView([31.765, 35.17], 13);
 
 		tile_url = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
@@ -170,16 +171,18 @@
 			}
 		).addTo(map);
 
-		// activate Boostrap tooltips on attachment icons
-		$("[rel='tooltip']").tooltip({'placement' : 'bottom'});
 
-		// setup a path.js router to allow distinct URLs for each block
-		Path.map("#/gush/:gush_id").to(
-			function() {
-				get_gush(this.params['gush_id']);
-			}
-		);
-		Path.listen();
+		// jQuery startup funcs
+		$(document).ready(function() {
+			// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
+			$.getJSON( API_URL + "wakeup" , function(){/* do nothing */})
+
+			// setup a path.js router to allow distinct URLs for each block
+			Path.map("#/gush/:gush_id").to(
+				function() { get_gush(this.params['gush_id']); }
+			);
+			Path.listen();
+		});
 	</script>
 </body>
 </html>

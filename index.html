@@ -15,10 +15,10 @@
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
-			<div class="span9">
+			<div class="span8">
 				<div id="map" style="height: 800px;"></div>
 			</div>
-			<div class="span3">
+			<div class="span4">
 				<div id="right-bar" style="font-family: Alef; direction: rtl;">
 					<div id="header" style="text-align: center">
 						<h1>תב"ע פתוחה</h1>
@@ -71,7 +71,7 @@
 		}
 
 		function render_plans(plans) {
-			var out = '<h2 style="color: grey;">גוש ' + plans[0].gush_id + '</h2>';
+			var out = '<h3 style="color: grey;">גוש ' + plans[0].gush_id + '</h3>';
 
 			// html brought to you courtsey of 1998
 			out += "<table>";
@@ -88,15 +88,15 @@
 					 '	<td>';
 
 				for (var j=0 ; j<p.tasrit_link.length ; j++)
-					out += '<a href="#" onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + 
+					out += '<a onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + 
 							'" rel="tooltip" title="תשריט"><i class="icon-folder-open"></i></a>'
 
 				for (var j=0 ; j<p.takanon_link.length ; j++)
-					out += '<a href="#" onclick="show_data('+ "'" + p.takanon_link[j] + "')" + 
+					out += '<a onclick="show_data('+ "'" + p.takanon_link[j] + "')" + 
 							'" rel="tooltip" title="תקנון"><i class="icon-list"></i></a>'
 		
 				for (var j=0 ; j<p.nispahim_link.length ; j++)
-					out += '<a href="#" onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + 
+					out += '<a onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + 
 							'" rel="tooltip" title="נספחים"><i class="icon-folder-close"></i></a>'
 
 				for (var j=0 ; j<p.files_link.length ; j++)
@@ -173,13 +173,16 @@
 
 
 		// jQuery startup funcs
-		$(document).ready(function() {
+		$(document).ready(function(){
 			// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
 			$.getJSON( API_URL + "wakeup" , function(){/* do nothing */})
 
 			// setup a path.js router to allow distinct URLs for each block
 			Path.map("#/gush/:gush_id").to(
-				function() { get_gush(this.params['gush_id']); }
+				function(){ 
+					$("#docModal").modal('hide');
+					get_gush(this.params['gush_id']); 
+				}
 			);
 			Path.listen();
 		});

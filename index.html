@@ -78,7 +78,7 @@
 			for (var i = 0 ; i<plans.length ; i++) {
 				p = plans[i];
 
-				plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + p.number
+				plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
 
 				out+='<tr style="vertical-align:top" class="item">' +
 					 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +

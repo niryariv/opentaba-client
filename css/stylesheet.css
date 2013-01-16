@@ -1,14 +1,3 @@
-
-/*      
-body {
-    padding: 0;
-    margin: 0;
-}
-html, body, #map {
-    height: 100%;
-}
-*/
-
 body{
     background:url('lil_fiber.png') repeat; 
     /* data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAG0lEQVQIW2OMq7zlw4ADMIIkF7WrbcEmP+gkAarWGgXyq5CNAAAAAElFTkSuQmCC */
@@ -25,9 +14,6 @@ body{
     font-style: normal;
 
 }
-
-
-
 
 @font-face {
     font-family: 'Alef';

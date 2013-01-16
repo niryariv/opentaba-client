@@ -78,13 +78,18 @@
 			for (var i = 0 ; i<plans.length ; i++) {
 				p = plans[i];
 
+				plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + p.number
+
 				out+='<tr style="vertical-align:top" class="item">' +
 					 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
 					 '	<td>' + p.status  + '</td>'+
 					 '	<td><b>' + p.essence + '</b></td>'+
 					 '</tr>' +
 					 '<tr class="details">' +
-					 '	<td colspan="2">תוכנית ' + p.number + '</td>' +
+					 '	<td colspan="2">' +
+					 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי"><i class="icon-share"></i></a>'+
+					 '		תוכנית ' + p.number +
+					 '	</td>' +
 					 '	<td>';
 
 				for (var j=0 ; j<p.tasrit_link.length ; j++)
@@ -152,6 +157,21 @@
 					});
 		}
 
+		// jQuery startup funcs
+		$(document).ready(function(){
+
+			// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
+			$.getJSON( API_URL + "wakeup" , function(){/* do nothing */})
+
+			// setup a path.js router to allow distinct URLs for each block
+			Path.map("#/gush/:gush_id").to(
+				function(){ 
+					$("#docModal").modal('hide');
+					get_gush(this.params['gush_id']); 
+				}
+			);
+			Path.listen();
+		});
 
 		var map = L.map('map', { scrollWheelZoom: false }).setView([31.765, 35.17], 13);
 
@@ -171,21 +191,6 @@
 			}
 		).addTo(map);
 
-
-		// jQuery startup funcs
-		$(document).ready(function(){
-			// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
-			$.getJSON( API_URL + "wakeup" , function(){/* do nothing */})
-
-			// setup a path.js router to allow distinct URLs for each block
-			Path.map("#/gush/:gush_id").to(
-				function(){ 
-					$("#docModal").modal('hide');
-					get_gush(this.params['gush_id']); 
-				}
-			);
-			Path.listen();
-		});
 	</script>
 	<script type="text/javascript">
 		var _gaq = _gaq || [];

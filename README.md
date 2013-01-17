@@ -1,2 +1,1 @@
-citymap-client
-==============
+Client code for OpenTaba - details will arrive soon, but the code is pretty simple to understand.

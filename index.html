@@ -78,8 +78,9 @@
 			for (var i = 0 ; i<plans.length ; i++) {
 				p = plans[i];
 
-				plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
-
+				//plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
+				plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number)
+				
 				out+='<tr style="vertical-align:top" class="item">' +
 					 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
 					 '	<td>' + p.status  + '</td>'+
@@ -87,8 +88,8 @@
 					 '</tr>' +
 					 '<tr class="details">' +
 					 '	<td colspan="2">' +
-					 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי"><i class="icon-share"></i></a>'+
-					 '		תוכנית ' + p.number +
+					 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי"><i class="icon-share"></i>'+
+					 '		תוכנית ' + p.number + '</a>' +
 					 '	</td>' +
 					 '	<td>';
 

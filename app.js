@@ -1,6 +1,6 @@
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1')
 
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://enigmatic-peak-9169.herokuapp.com/';
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
 
 function show_data(url){
 	if (url.indexOf('.pdf', url.length - 4) !== -1) { // endsWith('.pdf')?

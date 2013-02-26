@@ -88,6 +88,14 @@ function get_gush(gush_id) {
 	)
 }
 
+// find a rendered gush based on ID
+function find_gush(gush_id){
+	g = gushim.features.filter(
+		function(f){ return (f.properties.Name == gush_id); }
+	)
+	return g[0];
+}
+
 function onEachFeature(feature, layer) {
 	layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({

@@ -1,6 +1,10 @@
+/* // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
-
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
+*//
+
+var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
+
 
 function show_data(url){
 	if (url.indexOf('.pdf', url.length - 4) !== -1) { // endsWith('.pdf')?
@@ -113,9 +117,11 @@ function onEachFeature(feature, layer) {
 // jQuery startup funcs
 $(document).ready(function(){
 
+	/* deprecating for serverless
 	// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
 	$.getJSON( API_URL + "wakeup" , function(){/* do nothing */})
-
+	*/
+	
 	// setup a path.js router to allow distinct URLs for each block
 	Path.map("#/gush/:gush_id").to(
 		function(){ 

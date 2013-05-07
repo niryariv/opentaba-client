@@ -1,4 +1,4 @@
-var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1')
+var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
 
@@ -82,6 +82,7 @@ function render_plans(plans) {
 }
 
 function get_gush(gush_id) {
+	console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
 	$.getJSON(
 		API_URL + 'gush/' + gush_id + '/plans',
 		function(d) { render_plans(d); }

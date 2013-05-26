@@ -108,7 +108,7 @@ function onEachFeature(feature, layer) {
 				'mouseout'	: function() { this.setStyle({ opacity: 0.95, color: "#777" }) },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
-					location.hash = "#/gush/" + feature.properties.Name;
+					location.hash = "!#/gush/" + feature.properties.Name;
 					// get_gush(feature.properties.Name);
 				}
 			});
@@ -125,7 +125,7 @@ $(document).ready(function(){
 	*/
 
 	// setup a path.js router to allow distinct URLs for each block
-	Path.map("#/gush/:gush_id").to(
+	Path.map("!#/gush/:gush_id").to(
 		function(){ 
 			$("#docModal").modal('hide');
 			get_gush(this.params['gush_id']); 

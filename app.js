@@ -1,9 +1,9 @@
-/* // deprecating, replacing with serverless mode
+ // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
-*/
 
-var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
+
+// var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
 
 
 function show_data(url){

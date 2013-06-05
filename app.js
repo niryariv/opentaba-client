@@ -127,7 +127,7 @@ $(document).ready(function(){
 	Path.map("#/gush/:gush_id").to(
 		function(){ 
 			$("#docModal").modal('hide');
-			get_gush(this.params['gush_id']); 
+			get_gush(this.params['gush_id'].split('?')[0]);  // remove '?params' if exists
 		}
 	);
 	Path.listen();

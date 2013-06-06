@@ -5,6 +5,7 @@ var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.h
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
 
+var highlit = [];
 
 function show_data(url){
 	if (url.indexOf('.pdf', url.length - 4) !== -1) { // endsWith('.pdf')?
@@ -78,15 +79,13 @@ function render_plans(plans) {
 			function () { $(this).css("background","")	  ; $(this).prev(".item").css("background",""); }
 	);
 
-
-	// $(".item").click(
-		//		function () { $(this).next().toggle(); }
-	// );
-
 }
 
 function get_gush(gush_id) {
-	console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
+	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
+	clear_all_highlit();
+	highlight_gush(gush_id);
+	
 	$.getJSON(
 		API_URL + 'gush/' + gush_id + '/plans',
 		function(d) { render_plans(d); }
@@ -101,10 +100,22 @@ function find_gush(gush_id){
 	return g[0];
 }
 
-// MARK A GUSH!!!
-function mark_gush(id) {
+function highlight_gush(id) {
 	gush = 'gush_' + id;
-	map._layers[gush].setStyle({opacity: 0 	, color: "red"})
+	map._layers[gush].setStyle({opacity: 0 	, color: "red"});
+	highlit.push(id);
+}
+
+function clear_highlight(id) {
+	gush = 'gush_' + id;
+	map._layers[gush].setStyle({opacity: 0.05 , color: "#777"});
+	highlit.splice(highlit.indexOf(id), 1);
+}
+
+function clear_all_highlit() {
+	while (highlit.length > 0) {
+		clear_highlight(highlit[0]);
+	}
 }
 
 function onEachFeature(feature, layer) {

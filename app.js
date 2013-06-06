@@ -101,6 +101,12 @@ function find_gush(gush_id){
 	return g[0];
 }
 
+// MARK A GUSH!!!
+function mark_gush(id) {
+	gush = 'gush_' + id;
+	map._layers[gush].setStyle({opacity: 0 	, color: "red"})
+}
+
 function onEachFeature(feature, layer) {
 	layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({
@@ -112,6 +118,7 @@ function onEachFeature(feature, layer) {
 					// get_gush(feature.properties.Name);
 				}
 			});
+	layer._leaflet_id = 'gush_' + feature.properties.Name;
 }
 
 // jQuery startup funcs

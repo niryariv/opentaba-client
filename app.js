@@ -87,8 +87,10 @@ function get_gush(gush_id) {
 	highlight_gush(gush_id);
 	
 	$.getJSON(
-		'http://opentaba-server.herokuapp.com/' + 'gush/' + gush_id + '/plans',
-		function(d) { render_plans(d, gush_id); }
+		API_URL + 'gush/' + gush_id + '/plans',		
+		function(d) { 
+			render_plans(d, gush_id); 
+		}
 	)
 }
 
@@ -108,8 +110,9 @@ function get_gush_by_addr(addr) {
            		console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
 
            		// zoom and pan on the polygon
-           		map.fitBounds(map._layers["gush_" + gid].getBounds());
-           		mark_gush(gid);
+           		// highlight_gush(gid);
+           		// map.fitBounds(map._layers["gush_" + gid].getBounds());
+           		// mark_gush(gid);
 
            		// set location and show details
            		location.hash = "#/gush/" + gid;
@@ -120,6 +123,8 @@ function get_gush_by_addr(addr) {
 
 function highlight_gush(id) {
 	gush = 'gush_' + id;
+	console.log("highlight_gush ", gush);
+	map.fitBounds(map._layers[gush].getBounds());
 	map._layers[gush].setStyle({opacity: 0 	, color: "red"});
 	highlit.push(id);
 }

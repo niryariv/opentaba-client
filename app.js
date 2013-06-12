@@ -18,8 +18,8 @@ function show_data(url){
 	$("#docModal").modal().css({ width: '90%', height: '80%', 'margin-left': function () { return -($(this).width() / 2); } });
 }
 
-function render_plans(plans) {
-	var out = '<h3 style="color: grey;">גוש ' + plans[0].gush_id + '</h3>';
+function render_plans(plans, gid) {
+	var out = '<h3 style="color: grey;">גוש ' + gid + '</h3>';
 
 	// html brought to you courtsey of 1998
 	out += "<table>";
@@ -87,8 +87,8 @@ function get_gush(gush_id) {
 	highlight_gush(gush_id);
 	
 	$.getJSON(
-		API_URL + 'gush/' + gush_id + '/plans',
-		function(d) { render_plans(d); }
+		'http://opentaba-server.herokuapp.com/' + 'gush/' + gush_id + '/plans',
+		function(d) { render_plans(d, gush_id); }
 	)
 }
 
@@ -98,6 +98,24 @@ function find_gush(gush_id){
 		function(f){ return (f.properties.Name == gush_id); }
 	)
 	return g[0];
+}
+
+function get_gush_by_addr(addr) {
+   console.log("get_gush_by_addr: " + addr);
+   $.getJSON(API_URL + 'gush/by-addr/' + addr,
+           function (r) {
+           		gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];
+           		console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
+
+           		// zoom and pan on the polygon
+           		map.fitBounds(map._layers["gush_" + gid].getBounds());
+           		mark_gush(gid);
+
+           		// set location and show details
+           		location.hash = "#/gush/" + gid;
+           		get_gush(gid);
+           }
+   );
 }
 
 function highlight_gush(id) {
@@ -126,7 +144,7 @@ function onEachFeature(feature, layer) {
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
 					location.hash = "#/gush/" + feature.properties.Name;
-					// get_gush(feature.properties.Name);
+					get_gush(feature.properties.Name);
 				}
 			});
 	layer._leaflet_id = 'gush_' + feature.properties.Name;
@@ -149,6 +167,15 @@ $(document).ready(function(){
 		}
 	);
 	Path.listen();
+
+	$('#addr-form').submit(
+		function() {
+			var addr = $('#addr-text').val();
+			console.log('Getting gush for address "' + addr + '"');
+			get_gush_by_addr(addr);
+			return false;
+		}
+	);
 });
 
 var map = L.map('map', { scrollWheelZoom: false }).setView([31.765, 35.17], 13);

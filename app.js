@@ -178,11 +178,12 @@ $(document).ready(function(){
 	);
 });
 
-var map = L.map('map', { scrollWheelZoom: false }).setView([31.765, 35.17], 13);
+var map = L.map('map', { scrollWheelZoom: true }).setView([31.765, 35.17], 13);
 
 tile_url = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
 L.tileLayer(tile_url, {
 	maxZoom: 18,
+	minZoom: 12
 }).addTo(map);
 
 L.geoJson(gushim,

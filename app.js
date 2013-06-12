@@ -85,6 +85,7 @@ function get_gush(gush_id) {
 	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
 	clear_all_highlit();
 	highlight_gush(gush_id);
+	location.hash = "#/gush/" + gush_id;
 	
 	$.getJSON(
 		API_URL + 'gush/' + gush_id + '/plans',		
@@ -109,13 +110,6 @@ function get_gush_by_addr(addr) {
            		gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];
            		console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
 
-           		// zoom and pan on the polygon
-           		// highlight_gush(gid);
-           		// map.fitBounds(map._layers["gush_" + gid].getBounds());
-           		// mark_gush(gid);
-
-           		// set location and show details
-           		location.hash = "#/gush/" + gid;
            		get_gush(gid);
            }
    );
@@ -125,7 +119,7 @@ function highlight_gush(id) {
 	gush = 'gush_' + id;
 	console.log("highlight_gush ", gush);
 	map.fitBounds(map._layers[gush].getBounds());
-	map._layers[gush].setStyle({opacity: 0 	, color: "red"});
+	map._layers[gush].setStyle({opacity: 0 	, color: "blue"});
 	highlit.push(id);
 }
 
@@ -144,14 +138,15 @@ function clear_all_highlit() {
 function onEachFeature(feature, layer) {
 	layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({
-				'mouseover'	: function() { this.setStyle({ opacity: 0 	, color: "red" 	}) },
-				'mouseout'	: function() { this.setStyle({ opacity: 0.95, color: "#777" }) },
+				'mouseover'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0 	, color: "red" 	}) } } ,
+				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#777" }) } },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
 					location.hash = "#/gush/" + feature.properties.Name;
 					get_gush(feature.properties.Name);
 				}
 			});
+	layer["gushid"] = feature.properties.Name;
 	layer._leaflet_id = 'gush_' + feature.properties.Name;
 }
 

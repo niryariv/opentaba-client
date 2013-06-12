@@ -136,7 +136,7 @@ function clear_all_highlit() {
 }
 
 function onEachFeature(feature, layer) {
-	layer.bindPopup(feature.properties.Name + " גוש ");
+	// layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({
 				'mouseover'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0 	, color: "red" 	}) } } ,
 				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#777" }) } },

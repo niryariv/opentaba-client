@@ -1,6 +1,7 @@
  // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
+var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
 
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
@@ -105,12 +106,17 @@ function find_gush(gush_id){
 
 function get_gush_by_addr(addr) {
    console.log("get_gush_by_addr: " + addr);
-   $.getJSON(API_URL + 'gush/by-addr/' + addr,
+   $.getJSON(ADDR_DB_API_URL + 'locate/' + addr,
            function (r) {
            		gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];
            		console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
-
-           		get_gush(gid);
+           		if (gid) {
+           			get_gush(gid);
+           			$('#addr-error-p').html('');
+           		}
+           		else {
+           			$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+           		}
            }
    );
 }

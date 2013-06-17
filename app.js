@@ -113,7 +113,7 @@ function get_gush_by_addr(addr) {
            		if (gid) {
            			get_gush(gid);
            			// var marker = L.marker([lat, lng]).bindPopup('<b>' + addr + '</b>').openPopup();
-           			var pp = L.popup().setLatLng([lat, lng]).setContent('<b>' + addr + '</b>').openOn(map);
+           			var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
            			$('#addr-error-p').html('');
            		}
            		else {

@@ -112,6 +112,8 @@ function get_gush_by_addr(addr) {
            		console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
            		if (gid) {
            			get_gush(gid);
+           			// var marker = L.marker([lat, lng]).bindPopup('<b>' + addr + '</b>').openPopup();
+           			var pp = L.popup().setLatLng([lat, lng]).setContent('<b>' + addr + '</b>').openOn(map);
            			$('#addr-error-p').html('');
            		}
            		else {

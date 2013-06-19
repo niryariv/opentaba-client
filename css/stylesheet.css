@@ -39,6 +39,6 @@ body{
 }
 
 #scrobber {
-    vertical-align: top;
+    vertical-align: baseline;
     display: none;
 }

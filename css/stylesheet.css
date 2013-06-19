@@ -37,3 +37,8 @@ body{
     font-style: normal;
 
 }
+
+#scrobber {
+    vertical-align: top;
+    display: none;
+}

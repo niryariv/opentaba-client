@@ -111,9 +111,12 @@ function find_gush(gush_id){
 
 // get a gush by street address
 function get_gush_by_addr(addr) {
-   console.log("get_gush_by_addr: " + addr);
-   $.getJSON(
-   		ADDR_DB_API_URL + 'locate/' + addr,
+	if (!addr.endsWith(" " + DEFAULT_CITY)) {
+		addr = addr + " " + DEFAULT_CITY;
+	}
+	console.log("get_gush_by_addr: " + addr);
+	$.getJSON(
+		ADDR_DB_API_URL + 'locate/' + addr,
 		function (r) {
 			$('#scrobber').hide();
 			gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];

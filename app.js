@@ -80,8 +80,6 @@ function render_plans(plans, gid) {
 			function () { $(this).css("background","")	  ; $(this).prev(".item").css("background",""); }
 	);
 
-	$('#scrobber').hide();
-
 }
 
 function get_gush(gush_id) {
@@ -106,24 +104,32 @@ function find_gush(gush_id){
 	return g[0];
 }
 
+// get a gush by street address
 function get_gush_by_addr(addr) {
    console.log("get_gush_by_addr: " + addr);
-   $.getJSON(ADDR_DB_API_URL + 'locate/' + addr,
-           function (r) {
-           		gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];
-           		console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
-           		if (gid) {
-           			get_gush(gid);
-           			var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
-           			$('#addr-error-p').html('');
-           		}
-           		else {
-           			$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
-           		}
-   })
-   .fail( function() { $('#addr-error-p').html('לא נמצאו נתונים לכתובת "' + addr + '"'); });
-
+   $.getJSON(
+   		ADDR_DB_API_URL + 'locate/' + addr,
+		function (r) {
+			$('#scrobber').hide();
+			gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];
+			console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
+			if (gid) {
+				get_gush(gid);
+				var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
+				$('#addr-error-p').html('');
+			} else {
+				$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+			}
+		}
+	)
+   .fail(
+   		function(){
+   			$('#scrobber').hide(); 
+   			$('#addr-error-p').html('לא נמצאו נתונים לכתובת "' + addr + '"'); 
+   		}
+   	);
 }
+
 
 function highlight_gush(id) {
 	gush = 'gush_' + id;

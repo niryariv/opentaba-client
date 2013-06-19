@@ -2,7 +2,11 @@
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
 var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
-var DEFAULT_CITY = "ירושלים";
+
+var CITY_NAME = "ירושלים";
+
+var MAP_CENTER = [31.765, 35.17];
+var DEFAULT_ZOOM = 13;
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
 
@@ -111,9 +115,10 @@ function find_gush(gush_id){
 
 // get a gush by street address
 function get_gush_by_addr(addr) {
-	if (!addr.endsWith(" " + DEFAULT_CITY)) {
-		addr = addr + " " + DEFAULT_CITY;
+	if (!addr.endsWith(" " + CITY_NAME)) {
+		addr = addr + " " + CITY_NAME;
 	}
+	
 	console.log("get_gush_by_addr: " + addr);
 	$.getJSON(
 		ADDR_DB_API_URL + 'locate/' + addr,
@@ -213,8 +218,6 @@ $(document).ready(function(){
 	);
 });
 
-var MAP_CENTER = [31.765, 35.17];
-var DEFAULT_ZOOM = 13;
 
 var map = L.map('map', { scrollWheelZoom: true }).setView(MAP_CENTER, DEFAULT_ZOOM);
 

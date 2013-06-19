@@ -2,11 +2,16 @@
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
 var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
-
+var DEFAULT_CITY = "ירושלים";
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
 
 var highlit = [];
+
+// Utility endsWith function
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
 
 function show_data(url){
 	if (url.indexOf('.pdf', url.length - 4) !== -1) { // endsWith('.pdf')?
@@ -108,6 +113,11 @@ function find_gush(gush_id){
 
 function get_gush_by_addr(addr) {
    console.log("get_gush_by_addr: " + addr);
+
+   if (!addr.endsWith(" " + DEFAULT_CITY)) {
+   	 addr = addr + " " + DEFAULT_CITY;
+   }
+
    $.getJSON(ADDR_DB_API_URL + 'locate/' + addr,
            function (r) {
            		gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];

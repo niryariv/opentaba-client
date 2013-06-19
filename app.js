@@ -112,15 +112,15 @@ function get_gush_by_addr(addr) {
            		console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
            		if (gid) {
            			get_gush(gid);
-           			// var marker = L.marker([lat, lng]).bindPopup('<b>' + addr + '</b>').openPopup();
            			var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
            			$('#addr-error-p').html('');
            		}
            		else {
            			$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
            		}
-           }
-   );
+   })
+   .fail( function() { $('#addr-error-p').html('לא נמצאו נתונים לכתובת "' + addr + '"'); });
+
 }
 
 function highlight_gush(id) {

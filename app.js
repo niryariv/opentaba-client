@@ -80,6 +80,8 @@ function render_plans(plans, gid) {
 			function () { $(this).css("background","")	  ; $(this).prev(".item").css("background",""); }
 	);
 
+	$('#scrobber').hide();
+
 }
 
 function get_gush(gush_id) {
@@ -180,6 +182,7 @@ $(document).ready(function(){
 		function() {
 			var addr = $('#addr-text').val();
 			console.log('Getting gush for address "' + addr + '"');
+			$('#scrobber').show();
 			get_gush_by_addr(addr);
 			return false;
 		}

@@ -13,6 +13,16 @@
 
 	<link rel="alternate" type="application/atom+xml" href="http://opentaba-server.herokuapp.com/feed" title="פיד תוכניות בניה בירושלים">
 
+	<script type="text/javascript">
+		function fb_share(){
+	      window.open(
+	          'http://www.facebook.com/sharer.php?s=100&p[url]=http://opentaba.info&p[images][0]=http://jnul.huji.ac.il/dl/maps/jer/images/jer010/Jer010_b.jpg&p[title]=תב"ע+פתוחה&p[summary]=', 
+	          'facebook_share',
+	          'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no'
+	      );
+	    }
+	</script>
+
 </head>
 <body>
 	<div class="container-fluid ot-main">
@@ -26,6 +36,10 @@
 					<div style="text-align: right;">
 						<a href="#faqModal" role="button" class="btn" data-toggle="modal">מה זו תב"ע?</a>
 						<a href="#contactModal" role="button" class="btn" data-toggle="modal">מי אנחנו</a>
+						<div id="share_box">
+							<a class="icon-twitter icon-2x" href="https://twitter.com/intent/tweet?text=תב"ע+פתוחה&url=http%3A%2F%2Fopentaba.info" alt="Tweet"></a>&nbsp;
+							<a class="icon-facebook icon-2x" href="javascript:fb_share();"></a>
+    					</div>
 					</div>
 					
 					<div id="header" style="text-align: center;">

@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" /><![endif]-->
 	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="lib/bootstrap/css/bootstrap.icon-large.min.css" rel="stylesheet" media="screen">
 	<link href="css/stylesheet.css" rel="stylesheet" media="screen">
 
 	<link rel="alternate" type="application/atom+xml" href="http://opentaba-server.herokuapp.com/feed" title="פיד תוכניות בניה בירושלים">
@@ -31,20 +32,21 @@
 				<div id="map"></div>
 			</div>
 			<div class="span4">
-				<div id="right-bar" style="font-family: Alef; direction: rtl;">
+				<div id="right-bar" >
 					
-					<div style="text-align: right;">
-						<a class="icon-twitter icon-2x" 
-							href="https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info" alt="Tweet"></a>
+					<div  class="align-right">
+						<a href="https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info" alt="Tweet">
+							<i class="icon-twitter icon-large"> </i>
+						</a>
 						&nbsp;
-						<a class="icon-facebook icon-2x" href="javascript:fb_share();"></a>
+						<a href="javascript:fb_share();"><i class="icon-facebook icon-large"></i></a>
 					</div>
 					
-					<div id="header" style="text-align: center;">
+					<div id="header" class="align-right">
 						<h1><a href="javascript: window.location=window.location.pathname;">תב"ע פתוחה</a></h1>
 					</div>
 
-					<div style="text-align: right">
+					<div class="align-right">
 						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת בירושלים:</p>
 						
 						<form id="addr-form"> 
@@ -55,7 +57,7 @@
 						</form>
 					</div>
 					
-					<div id="info" style="text-align: right">
+					<div id="info" class="align-right">
 						<h4><p>ברוך בואך לתב"ע הפתוחה!</p></h4>
 						
 						<p><b>מה זה תב"ע?</b></p>
@@ -160,7 +162,7 @@
 	</div -->
 
 	<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/pdfobject.js"></script>

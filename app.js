@@ -29,6 +29,7 @@ function show_data(url){
 }
 
 function render_plans(plans, gid) {
+	//TODO: rewrite this DRY
 	var out = '<h3 style="color: grey;">גוש ' + gid + '</h3>';
 
 	// html brought to you courtsey of 1998

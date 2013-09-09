@@ -3,7 +3,7 @@ var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
 var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
 
-var CITY_NAME = "ירושלים";
+var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
 
 var MAP_CENTER = [31.765, 35.17];
 var DEFAULT_ZOOM = 13;

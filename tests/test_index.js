@@ -1,6 +1,9 @@
-//var casper = require('casper').create();
-
-//Some setup
+/* "undef":false */
+/*functional testing for the basic functionality of opentaba home page (without specific plan displaying)
+ 
+ runs with casperjs test filename (or casperjs.bat on windows)
+*/
+//Some setup //TODO: move this to a global casper config
 var url = '../index.html';
 casper.options.clientScripts.push('./node_modules/sinon/lib/sinon.js');
 casper.options.clientScripts.push('./fixture.js');
@@ -54,25 +57,10 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 	casper.then(function(){
 		test.assertNotVisible('faqModal');
 	});
-	var hashpath = '/gush/30338';
-	var gushurl = url +'#'+ hashpath;
-
-	casper.thenOpen(gushurl).on('url.changed', initMock).wait(5000)
-		
-	casper.then(function(){
-		//test.assertSelectorHasText('#info','עוד מעט');
-		this.waitForText('30338');	
-		test.assertSelectorHasText('#info','גוש 30338');
-
-		/*this.waitForText('42',function(){
-			//this.echo(this.getHTML());
-			test.assertTextExists('42', 'the answer is 42');
-		});
-		test.assertHttpStatus('200','ajax is returning something');*/
-	});
-
+	//TODO: phantomcss testing for map rendering
+	//TODO: basic form testing (needs sinon injections and mocking
 	casper.run(function(){
-		test.done()
+		test.done();
 	});
 });
 
@@ -81,6 +69,7 @@ function initMock(){
 		var server = sinon.fakeServer.create(); server.autoRespond = true;
 		console.log(planFixture_30338.length);
 		var answer = planFixture_30338;
+		//TODO: change the response for address locating
 		server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans',
 			[200, {"content-type":"application/json"}, answer]);
 		server.respond();
@@ -90,9 +79,9 @@ function initMock(){
 
 	});
 	casper.log('injected sinon fakeserver now', 'debug');
-};
+}
 
 function log(msg){
 	console.log(msg);
-};
+}
 

@@ -10,6 +10,8 @@ casper.options.clientScripts.push('./fixture.js');
 casper.options.logLevel = "debug";
 casper.options.verbose = true;
 casper.options.viewportSize = {width:1024, height:768};
+//initializing phantomcss
+
 //Starting the tests
 casper.test.begin('Basic index.html elements test',23, function suite(test){
 
@@ -41,6 +43,7 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 		test.assertResourceExists('data/gushim.min.js');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
+		
 		//TODO: phantomcss check map rendering
 	});
 
@@ -58,7 +61,7 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 	casper.then(function(){
 		test.assertNotVisible('faqModal');
 	});
-	//TODO: phantomcss testing for map rendering
+
 	//TODO: basic form testing (needs sinon injections and mocking
 	casper.run(function(){
 		test.done();
@@ -70,8 +73,8 @@ function initMock(){
 		var server = sinon.fakeServer.create(); server.autoRespond = true;
 		console.log(planFixture_30338.length);
 		var answer = planFixture_30338;
-		var get_30338 = 'http://0.0.0.0:5000/gush/30338/plans'
-		var content = {"content-type":"application/json"}
+		var get_30338 = 'http://0.0.0.0:5000/gush/30338/plans';
+		var content = {"content-type":"application/json"};
 		//TODO: change the response for address locating
 		server.respondWith('GET',get_30338 ,
 			[200, content , answer]);

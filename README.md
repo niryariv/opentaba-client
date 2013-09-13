@@ -1,1 +1,1 @@
-Client code for OpenTaba - details will arrive soon, but the code is pretty simple to understand.
+[![Build Status](https://travis-ci.org/alonisser/opentaba-client.png?branch=master)](https://travis-ci.org/alonisser/opentaba-client)Client code for OpenTaba - details will arrive soon, but the code is pretty simple to understand.##Testing:see [what's needed](tests/testing.md)##Want to help?look at the issues. Lots of work here

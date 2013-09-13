@@ -35,7 +35,7 @@ function render_plans(plans, gid) {
 	// html brought to you courtsey of 1998
 	out += "<table>";
 	for (var i = 0 ; i<plans.length ; i++) {
-		p = plans[i];
+		var p = plans[i];
 
 		//plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
 		plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number);
@@ -51,20 +51,20 @@ function render_plans(plans, gid) {
 			 '		תוכנית ' + p.number + '</a>' +
 			 '	</td>' +
 			 '	<td>';
-
-		for (var j=0 ; j<p.tasrit_link.length ; j++)
+		var j;
+		for (j=0 ; j<p.tasrit_link.length ; j++)
 			out += '<a onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + 
 					'" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>';
 
-		for (var j=0 ; j<p.takanon_link.length ; j++)
+		for (j=0 ; j<p.takanon_link.length ; j++)
 			out += '<a onclick="show_data('+ "'" + p.takanon_link[j] + "')" + 
 					'" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>';
 
-		for (var j=0 ; j<p.nispahim_link.length ; j++)
+		for (j=0 ; j<p.nispahim_link.length ; j++)
 			out += '<a onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + 
 					'" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>';
 
-		for (var j=0 ; j<p.files_link.length ; j++)
+		for (j=0 ; j<p.files_link.length ; j++)
 			out += '<a href="http://mmi.gov.il' + p.files_link[j] + 
 					'" rel="tooltip" title="קבצי ממג"><i class="icon-download-alt"></i></a>';
 			

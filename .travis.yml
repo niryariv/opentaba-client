@@ -8,8 +8,6 @@ before_script:
    - cd casperjs; git checkout -q tags/1.1-beta1; cd ../
    - export PATH=$PATH:`pwd`/casperjs/bin  
    - phantomjs --version; casperjs --version
-   - mkdir tests/fail_img
-   - chmod -R 0777 tests/fail_img
    - npm install -g grunt-cli
    - cd tests; npm install 
 

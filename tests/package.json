@@ -13,14 +13,16 @@
     "devel": true,
     "browser": true,
     "-W069": true,
-    "-W099": true
+    "-W099": true,
+    "globals":{
+    	"casper":false	
+    }
   },
   "devDependencies": {
     "sinon": "~1.7.3",
     "grunt-casperjs-plugin": "~1.0.3",
     "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.4",
-    "jshint": "~2.1.10"
+    "grunt-contrib-jshint": "~0.6.4"
   },
   "repository": {
     "type": "git",

@@ -19,9 +19,11 @@ Didn't touch that yet
 ###Setting up dependencies:  
 you need npm installed (the ```node.js``` package manager) to install dependencies.
 
+    git submodule update --init (in the project root)
     cd tests
     npm install grunt-cli -g
     npm install 
+    
 
 ###running the tests:  
 

@@ -15,12 +15,24 @@ Didn't touch that yet
 * also need to choose a test runner: [karma](http://karma-runner.github.io/0.10/index.html), [Intern](http://theintern.io/) or other
 
 **We'll be glad for help with this.**
-###Dependencies:
+
+###Setting up dependencies:  
 you need npm installed (the ```node.js``` package manager) to install dependencies.
 
     cd tests
     npm install grunt-cli -g
-    npm install
+    npm install --dev
+
+###running the tests:  
+
+    cd tests
+    npm test
+
+or specific tests:
+
+   cd tests
+   grunt jshint
+   grunt casperjs
 
 ###current state:
 

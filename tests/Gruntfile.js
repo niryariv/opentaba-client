@@ -5,22 +5,11 @@ module.exports = function(grunt){
 		casperjs:{
 			options:{},
 			files:
-				['./test_index.js']
+				['./test_index.js'] //TODO: Add the other testing files when ready
 			
 		},
 		jshint:{
-			options:grunt.file.readJSON('package.json')['jshintConfig']
-		//Doing it DRY
-	/*{
-			"undef": true,
-     			"unused": true,
-     			"jquery": true,
-			"devel":true,
-     			"browser": true,
-     			"-W069":true,
-     			"-W099":true
-
-			}*/,
+			options:grunt.file.readJSON('package.json')['jshintConfig'],
 			files:
 				['../app.js']
 			

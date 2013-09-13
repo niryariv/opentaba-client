@@ -1,4 +1,4 @@
-/* "undef":false */
+/*global casper:false */
 /*functional testing for the basic functionality of opentaba home page (without specific plan displaying)
  
  runs with casperjs test filename (or casperjs.bat on windows)
@@ -26,6 +26,7 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 		test.assertVisible('#header');
 		test.assertExists('#info', 'The info div exists');
 		test.assertVisible('#info');
+		//this.wait(5000);
 		test.assertExists('#map.leaflet-container.leaflet-fade-anim','The map div exists with leaflet class');
 		test.assertExists('#docModal','The doc modal exists');
 		test.assertNotVisible('#docModal');
@@ -69,9 +70,11 @@ function initMock(){
 		var server = sinon.fakeServer.create(); server.autoRespond = true;
 		console.log(planFixture_30338.length);
 		var answer = planFixture_30338;
+		var get_30338 = 'http://0.0.0.0:5000/gush/30338/plans'
+		var content = {"content-type":"application/json"}
 		//TODO: change the response for address locating
-		server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans',
-			[200, {"content-type":"application/json"}, answer]);
+		server.respondWith('GET',get_30338 ,
+			[200, content , answer]);
 		server.respond();
 		console.log('injected sinon');
 		//console.log(server);

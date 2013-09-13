@@ -2,12 +2,13 @@
   "name": "opentaba-client-tests",
   "preferGlobal": "false",
   "description": "testing client for opentaba-server",
+  "version":"0.2.0",
   "scripts": {
     "test": "grunt test"
   },
 
  "jshintConfig": {
-     "undef": true,
+     "undef": false,
      "unused": true,
      "jquery": true,
      "devel":true,

@@ -2,29 +2,26 @@
   "name": "opentaba-client-tests",
   "preferGlobal": "false",
   "description": "testing client for opentaba-server",
-  "version":"0.2.0",
+  "version": "0.2.0",
   "scripts": {
     "test": "grunt test"
   },
-
- "jshintConfig": {
-     "undef": false,
-     "unused": true,
-     "jquery": true,
-     "devel":true,
-     "browser": true,
-     "-W069":true,
-     "-W099":true
-   },
-
+  "jshintConfig": {
+    "undef": false,
+    "unused": true,
+    "jquery": true,
+    "devel": true,
+    "browser": true,
+    "-W069": true,
+    "-W099": true
+  },
   "devDependencies": {
-    "JSHint": "",
     "sinon": "~1.7.3",
     "grunt-casperjs-plugin": "~1.0.3",
     "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.4"
+    "grunt-contrib-jshint": "~0.6.4",
+    "jshint": "~2.1.10"
   },
-
   "repository": {
     "type": "git",
     "url": "https://github.com/niryariv/opentaba-client.git"

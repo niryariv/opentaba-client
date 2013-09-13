@@ -103,7 +103,7 @@ function get_gush(gush_id) {
 		function(d) { 
 			//console.log(d.length);
 			render_plans(d, gush_id);
-		},
+		}
 		);
 	
 	console.log('waiting for json');

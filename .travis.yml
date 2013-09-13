@@ -11,4 +11,4 @@ before_script:
    - npm install -g grunt-cli
    - cd tests; npm install 
 
-script: ./tests/npm test
+script: cd tests;npm test 

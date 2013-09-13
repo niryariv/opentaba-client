@@ -21,7 +21,7 @@ you need npm installed (the ```node.js``` package manager) to install dependenci
 
     cd tests
     npm install grunt-cli -g
-    npm install --dev
+    npm install 
 
 ###running the tests:  
 

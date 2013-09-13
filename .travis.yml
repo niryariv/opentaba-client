@@ -11,6 +11,4 @@ before_script:
    - cd tests
    - npm install --dev
 
-script:.\tests\npm test
-
-
+script: ./tests/npm test

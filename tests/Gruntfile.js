@@ -9,7 +9,9 @@ module.exports = function(grunt){
 			
 		},
 		jshint:{
-			options:{
+			options:grunt.file.readJSON('package.json')['jshintConfig']
+		//Doing it DRY
+	/*{
 			"undef": true,
      			"unused": true,
      			"jquery": true,
@@ -18,7 +20,7 @@ module.exports = function(grunt){
      			"-W069":true,
      			"-W099":true
 
-			},
+			}*/,
 			files:
 				['../app.js']
 			

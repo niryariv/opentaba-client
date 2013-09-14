@@ -5,7 +5,7 @@
 */
 //Some setup //TODO: move this to a global casper config
 var url = '../index.html';
-casper.options.clientScripts.push('./node_modules/sinon/lib/sinon.js');
+casper.options.clientScripts.push('./sinon-1.7.3.js');
 casper.options.clientScripts.push('./fixture.js');
 casper.options.logLevel = "debug";
 casper.options.verbose = true;
@@ -72,7 +72,7 @@ function initMock(){
 	casper.evaluate(function(){
 		var server = sinon.fakeServer.create(); server.autoRespond = true;
 		console.log(planFixture_30338.length);
-		var answer = planFixture_30338;
+		var answer = JSON.stringify(planFixture_30338);
 		var get_30338 = 'http://0.0.0.0:5000/gush/30338/plans';
 		var content = {"content-type":"application/json"};
 		//TODO: change the response for address locating

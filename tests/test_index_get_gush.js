@@ -7,13 +7,13 @@
 //Some setup //TODO: move this to a global casper config
 
 var url = '../index.html';
-casper.options.clientScripts.push('./node_modules/sinon/lib/sinon.js');
+casper.options.clientScripts.push('./sinon-1.7.3.js');
 casper.options.clientScripts.push('./fixture.js');
 casper.options.logLevel = "debug";
 casper.options.verbose = true;
 casper.options.viewportSize = {width:1024, height:768};
 //Starting the tests
-casper.test.begin('Basic index.html elements test',23, function suite(test){
+casper.test.begin('Basic index.html elements test',4, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -24,18 +24,15 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 	var hashpath = '/gush/30338';
 	var gushurl = url +'#'+ hashpath;
 
-	casper.thenOpen(gushurl).on('url.changed', initMock).wait(5000);
-		
-	casper.then(function(){
+	casper.thenOpen(gushurl).on('url.changed', initMock).wait(10000).
+	then(function(){
 		//test.assertSelectorHasText('#info','עוד מעט');
-		this.waitForText('30338');	
-		test.assertSelectorHasText('#info','גוש 30338');
-
-		/*this.waitForText('42',function(){
-			//this.echo(this.getHTML());
-			test.assertTextExists('42', 'the answer is 42');
-		});
-		test.assertHttpStatus('200','ajax is returning something');*/
+		//this.waitForText('30338');	
+		//test.assertHttpStatus('200', 'Ajax function is returning 200');
+		test.assertExists('#info h3','the info h3 exists now');
+		test.assertSelectorHasText('#info h3','גוש 30338');
+		test.assertElementCount('div#info tr.item',31,"31 items exists in info div as expected");
+		test.assertElementCount('div#info a',85, "85 a links should exists in info div");
 	});
 
 	casper.run(function(){
@@ -45,9 +42,10 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 
 function initMock(){
 	casper.evaluate(function(){
-		var server = sinon.fakeServer.create(); server.autoRespond = true;
-		console.log(planFixture_30338.length);
-		var answer = planFixture_30338;
+		var server = sinon.fakeServer.create();
+		server.autoRespond = true;
+		var answer = JSON.stringify(planFixture_30338);
+		//console.log(planFixture_30338.length);
 		server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans',
 			[200, {"content-type":"application/json"}, answer]);
 		server.respond();

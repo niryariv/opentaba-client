@@ -5,7 +5,9 @@ module.exports = function(grunt){
 		casperjs:{
 			options:{},
 			files:
-				['./test_index.js', './test_map_regression.js'] //TODO: Add the other testing files when ready
+				['./test_index.js',
+				'./test_map_regression.js',
+				'./test_index_get_gush.js'] //TODO: Add the other testing files when ready
 			
 		},
 		jshint:{

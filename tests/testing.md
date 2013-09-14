@@ -8,7 +8,7 @@ building a comprehensive test suite for the opentaba-client. allowing us to acce
 
 * Also using [PhantomCSS](https://github.com/alonisser/PhantomCSS) (a specific fork) to test for the map rendering (can't be tested by the DOM because doesn't appear there, pure js)
 
-* Using sinon to mock the api
+* Using [sinon]() for stubbing and mocking. Notice we currently are using two versions of sinon. one in ```node_modules``` for server side node work adapted as a node module. and the version in ```tests\sinon-1.7.3.js``` for injecting browserside testing.
 
 * TODO: maybe we'll also use saucelabs selenium testing service
 

@@ -11,7 +11,8 @@ var casper = require('casper').create({
 		height: 768
 	},
     	verbose:true,
-	logLevel:"debug"
+	logLevel:"debug",
+    	waitTimeout:15000
 });
 
 //initializing phantomcss

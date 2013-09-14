@@ -4,8 +4,13 @@ building a comprehensive test suite for the opentaba-client. allowing us to acce
 ##how?
 
 ###functional testing:
-* using [Casperjs](http://casperjs.org/) above the [Phantomjs](http://phantomjs.org/index.html) headless webkit browser or [slimer.js](http://slimerjs.org/) gecko based headless browser to do functional testing.
-* maybe we'll also use saucelabs selenium testing service
+* Using [Casperjs](http://casperjs.org/) above the [Phantomjs](http://phantomjs.org/index.html) headless webkit browser or [slimer.js](http://slimerjs.org/) gecko based headless browser to do functional testing.
+
+* Also using [PhantomCSS](https://github.com/alonisser/PhantomCSS) (a specific fork) to test for the map rendering (can't be tested by the DOM because doesn't appear there, pure js)
+
+* Using sinon to mock the api
+
+* TODO: maybe we'll also use saucelabs selenium testing service
 
 ###Unit testing:
 
@@ -36,6 +41,12 @@ or specific tests:
    grunt jshint
    grunt casperjs
 
+###Adding new tests:
+
+* If adding new casperjs tests, they should be also added to the file array in the **Gruntfile** casperjs task.
+
 ###current state:
 
- just starting with functional testing
+ * Basic functional testing for index.html works, including map image regression test.
+ * working on More functional testing - for displayed plans
+ * integrated jshint but doesn't fail by it yet. need to bring down the number of js alerts on app.js for that.

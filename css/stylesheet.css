@@ -43,3 +43,12 @@ body{
     vertical-align: baseline;
     display: none;
 }
+
+#right-bar {
+    font-family: Alef;
+    direction: rtl;
+}
+
+.align-right {
+    text-align: right;
+}

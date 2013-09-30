@@ -1,0 +1,20 @@
+language: node_js
+
+
+node_js:
+   - 0.8
+
+before_script:
+   - git clone -q git://github.com/n1k0/casperjs.git
+   - cd casperjs; git checkout -q tags/1.1-beta1; cd ../
+   - export PATH=$PATH:`pwd`/casperjs/bin  
+   - phantomjs --version; casperjs --version
+
+before_install:
+   - git submodule update --init --recursive
+
+install:
+   - npm install -g grunt-cli
+   - cd tests; npm install 
+
+script: cd tests;npm test 

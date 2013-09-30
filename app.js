@@ -3,7 +3,7 @@ var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
 var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
 
-var CITY_NAME = "ירושלים";
+var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
 
 var MAP_CENTER = [31.765, 35.17];
 var DEFAULT_ZOOM = 13;
@@ -29,15 +29,16 @@ function show_data(url){
 }
 
 function render_plans(plans, gid) {
+	//TODO: rewrite this DRY
 	var out = '<h3 style="color: grey;">גוש ' + gid + '</h3>';
 
 	// html brought to you courtsey of 1998
 	out += "<table>";
 	for (var i = 0 ; i<plans.length ; i++) {
-		p = plans[i];
+		var p = plans[i];
 
 		//plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
-		plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number)
+		plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number);
 		
 		out+='<tr style="vertical-align:top" class="item">' +
 			 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
@@ -50,22 +51,22 @@ function render_plans(plans, gid) {
 			 '		תוכנית ' + p.number + '</a>' +
 			 '	</td>' +
 			 '	<td>';
-
-		for (var j=0 ; j<p.tasrit_link.length ; j++)
+		var j;
+		for (j=0 ; j<p.tasrit_link.length ; j++)
 			out += '<a onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + 
-					'" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>'
+					'" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>';
 
-		for (var j=0 ; j<p.takanon_link.length ; j++)
+		for (j=0 ; j<p.takanon_link.length ; j++)
 			out += '<a onclick="show_data('+ "'" + p.takanon_link[j] + "')" + 
-					'" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>'
+					'" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>';
 
-		for (var j=0 ; j<p.nispahim_link.length ; j++)
+		for (j=0 ; j<p.nispahim_link.length ; j++)
 			out += '<a onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + 
-					'" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>'
+					'" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>';
 
-		for (var j=0 ; j<p.files_link.length ; j++)
+		for (j=0 ; j<p.files_link.length ; j++)
 			out += '<a href="http://mmi.gov.il' + p.files_link[j] + 
-					'" rel="tooltip" title="קבצי ממג"><i class="icon-download-alt"></i></a>'
+					'" rel="tooltip" title="קבצי ממג"><i class="icon-download-alt"></i></a>';
 			
 		out+='	</td>'  +
 			 '</tr>' 	+
@@ -100,22 +101,26 @@ function get_gush(gush_id) {
 	$.getJSON(
 		API_URL + 'gush/' + gush_id + '/plans',		
 		function(d) { 
-			render_plans(d, gush_id); 
+			//console.log(d.length);
+			render_plans(d, gush_id);
 		}
-	)
+		);
+	
+	console.log('waiting for json');
+	
 }
 
 // find a rendered gush based on ID
 function find_gush(gush_id){
 	g = gushim.features.filter(
 		function(f){ return (f.properties.Name == gush_id); }
-	)
+	);
 	return g[0];
 }
 
 // get a gush by street address
 function get_gush_by_addr(addr) {
-	if (!addr.endsWith(" " + CITY_NAME)) {
+	if (!addr.endsWith(" " + CITY_NAME)) { //TODO: change to regex with cityname
 		addr = addr + " " + CITY_NAME;
 	}
 	
@@ -124,7 +129,7 @@ function get_gush_by_addr(addr) {
 		ADDR_DB_API_URL + 'locate/' + addr,
 		function (r) {
 			$('#scrobber').hide();
-			gid = r["gush_id"]; lat = r["lat"]; lon = r["lon"];
+			var gid = r["gush_id"];var lat = r["lat"];var lon = r["lon"];
 			console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
 			if (gid) {
 				get_gush(gid);

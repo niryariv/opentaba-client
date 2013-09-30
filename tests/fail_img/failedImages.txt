@@ -1,0 +1,1 @@
+"a folder for diff of failded image regression test"

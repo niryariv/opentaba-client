@@ -1,0 +1,7 @@
+[submodule "tests/modules/casperserver"]
+	path = tests/modules/casperserver
+	url = https://github.com/casperjs/casperserver.git
+
+[submodule "tests/PhantomCSS"]
+	path = tests/PhantomCSS
+	url = https://github.com/alonisser/PhantomCSS.git

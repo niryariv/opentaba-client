@@ -41,7 +41,7 @@ casper.test.begin('Testing a specific gush plans display',5, function suite(test
     });
 
     casper.then(function(){
-        phantomcss.screenshot("#map.leaflet-container.leaflet-fade-anim","mapon_gush_30338.png")
+        phantomcss.screenshot("#map.leaflet-container.leaflet-fade-anim","mapon_gush_30338.png");
     });
 
     var href;
@@ -54,7 +54,7 @@ casper.test.begin('Testing a specific gush plans display',5, function suite(test
     casper.then(function(){
         //implement a test for icons
     });
-    
+
     casper.then(function(){
 
         phantomcss.screenshot('#info','info_div.png');
@@ -65,8 +65,7 @@ casper.test.begin('Testing a specific gush plans display',5, function suite(test
     });
 
     casper.then(function check_phantomcss(){
-        test.assert
-        test.assertEqual(phantomcss.getExitStatus(),0,'#info div and map gush div should look according to predefined pictures')
+        test.assertEqual(phantomcss.getExitStatus(),0,'#info div and map gush div should look according to predefined pictures');
     });
 
 

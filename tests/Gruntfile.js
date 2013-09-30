@@ -1,9 +1,9 @@
 module.exports = function(grunt){
-	
+	var engine = grunt.option('engine') || 'phantomjs';
 	grunt.initConfig({
 		pkg:grunt.file.readJSON('package.json'),
 		casperjs:{
-			options:{},
+			options:{'engine':engine},
 			files:
 				['./test_index.js',
 				'./test_map_regression.js',

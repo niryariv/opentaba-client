@@ -64,6 +64,7 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 
 	//TODO: basic form testing (needs sinon injections and mocking
 	casper.run(function(){
+		this.echo(phantom.casperEngine,'debug');
 		test.done();
 	});
 });

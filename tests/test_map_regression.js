@@ -21,7 +21,8 @@ var phantomcss = require('./PhantomCSS/phantomcss.js');
 phantomcss.init({
     libraryRoot:'./PhantomCSS',
     screenshotRoot:'./img',
-    failedComparisonsRoot:'./fail_img'
+    failedComparisonsRoot:'./fail_img',
+    threshold:0.08
 });
 var delay = 10;
 casper.start(url).then(function(){

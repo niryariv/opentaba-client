@@ -30,7 +30,7 @@ casper.start(url).then(function(){
 });
 
 casper.then(function now_check_the_screenshot(){
-    phantomcss.compareAll();
+    phantomcss.compareMatched(".full_map");
 }).
 run(function end_it(){
     console.log('ending the phantomcss test');

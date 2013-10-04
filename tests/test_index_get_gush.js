@@ -17,11 +17,12 @@ var phantomcss = require('./PhantomCSS/phantomcss.js');
 phantomcss.init({
     libraryRoot:'./PhantomCSS',
     screenshotRoot:'./img',
-    failedComparisonsRoot:'./fail_img'
+    failedComparisonsRoot:'./fail_img',
+    threshold: 0.08
 });
 //var delay = 10;
 //Starting the tests
-casper.test.begin('Testing a specific gush plans display',5, function suite(test){
+casper.test.begin('Testing a specific gush plans display',6, function suite(test){
 
     casper.on('page.init',initMock).
     on('remote.message',log).
@@ -60,14 +61,20 @@ casper.test.begin('Testing a specific gush plans display',5, function suite(test
         phantomcss.screenshot('#info','info_div.png');
         //implement gush picture
     });
-    casper.then(function now_check_the_screenshot(){
-        phantomcss.compareAll();
+    casper.then(function compare_map_gush(){
+        phantomcss.compareMatched(".mapon_gush_30338");
     });
 
-    casper.then(function check_phantomcss(){
-        test.assertEqual(phantomcss.getExitStatus(),0,'#info div and map gush div should look according to predefined pictures');
+    casper.then(function check_phantomcss_map_gush(){
+        test.assertEqual(phantomcss.getExitStatus(),0,'map gush div should look according to predefined pictures');
     });
 
+    casper.then(function check_info_screenshot(){
+        phantomcss.compareMatched(".info_div");
+    });
+
+    casper.then(function check_phantomcss_info_div(){
+        test.assertEqual(phantomcss.getExitStatus(),0,'info div should look according to predefined picture');});
 
     casper.run(function(){
         test.done();

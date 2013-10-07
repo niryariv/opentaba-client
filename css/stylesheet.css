@@ -52,3 +52,9 @@ body{
 .align-right {
     text-align: right;
 }
+
+.a [class^="icon-"], a [class*=" icon-"]
+{
+    text-decoration: none;
+    
+}

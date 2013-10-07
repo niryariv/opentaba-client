@@ -3,6 +3,32 @@ var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : CITY_API_URL;
 var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
 
+// Get the wanted gushim (the subsomain)
+var city = cities[window.location.host.substr(0, window.location.host.indexOf('.'))];
+if (city == undefined) { city = cities['jerusalem']; }
+		
+var CITY_NAME = city.Display;
+var MAP_CENTER = city.Center;
+var CITY_API_URL = city.Heroku;
+		
+// Enable getScript cache
+$.ajaxSetup({
+	cache: true
+});
+		
+// Load the wanted gushim's json
+$.getScript(city.JsonFile, function(data, textStatus, jqxhr) {
+	L.geoJson(gushim,
+	{
+		onEachFeature: onEachFeature,
+		style : {
+			"color" : "#777",
+			"weight": 1,
+			"opacity": 0.9
+		}
+	}).addTo(map);
+});
+
 var DEFAULT_ZOOM = 13;
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
@@ -218,6 +244,9 @@ $(document).ready(function(){
 			return false;
 		}
 	);
+	
+	// Append city's hebrew name
+	$('#city-text').append('ב' + CITY_NAME + ':');
 	
 	// Populate the jump-to-city dropdown
 	var cityJump = $('#city-jump');

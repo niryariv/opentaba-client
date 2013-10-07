@@ -23,36 +23,6 @@
 	      );
 	    }
 	</script>
-
-	<script src="data/cities.js"></script>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script>
-		// Get the wanted gushim (the subsomain)
-		var city = cities[window.location.host.substr(0, window.location.host.indexOf('.'))];
-		if (city == undefined) { city = cities['jerusalem']; }
-		
-		var CITY_NAME = city.Display;
-		var MAP_CENTER = city.Center;
-		var CITY_API_URL = city.Heroku;
-		
-		// Enable getScript cache
-		$.ajaxSetup({
-			cache: true
-		});
-		
-		// Load the wanted gushim's json
-		$.getScript(city.JsonFile, function(data, textStatus, jqxhr) {
-			L.geoJson(gushim,
-			{
-				onEachFeature: onEachFeature,
-				style : {
-					"color" : "#777",
-					"weight": 1,
-					"opacity": 0.9
-				}
-			}).addTo(map);
-		});
-	</script>
 </head>
 <body>
 	<div class="container-fluid ot-main">
@@ -75,7 +45,7 @@
 					</div>
 
 					<div class="align-right">
-						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת ב<script>document.write(CITY_NAME);</script>:</p>
+						<p id="city-text">בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת </p>
 						
 						<form id="addr-form"> 
 							<input type="text" id="addr-text" name="addr" placeholder="הכניסו כתובת"/>
@@ -84,7 +54,7 @@
 							<p style="color: red" id="addr-error-p"></p>
 						</form>
 					</div>
-					<div style="text-align: right">
+					<div class="align-right">
 						<select id="city-jump">
 							<option value="none">בחר עיר אחרת...</option>
 						</select>
@@ -200,6 +170,7 @@
 	<script src="lib/pdfobject.js"></script>
 	<script src="lib/path.js"></script>
 
+	<script src="data/cities.js"></script>
 	<script src="app.js"></script>	
 
 	<script type="text/javascript">

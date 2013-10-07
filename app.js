@@ -1,11 +1,8 @@
  // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/';
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : CITY_API_URL;
 var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
 
-var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
-
-var MAP_CENTER = [31.765, 35.17];
 var DEFAULT_ZOOM = 13;
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
@@ -221,6 +218,31 @@ $(document).ready(function(){
 			return false;
 		}
 	);
+	
+	// Populate the jump-to-city dropdown
+	var cityJump = $('#city-jump');
+	$.each(cities, function(i, item) {
+		cityJump.append($('<option />').val(i).text(item.Display));
+	});
+	
+	// When the jump-to-city selection changes...
+	cityJump.change(function() {
+		// Get the value, if it is not the dummy 'none'
+		var sel = $(this).val();
+		if (sel != 'none') {
+			// Split the location. If we are in a subdomain / 'www' replace it with that value, otherwise add the value
+			var sepUrl = window.location.host.split('.');
+			if (sepUrl[0] == 'www' || cities[sepUrl[0]] != undefined) {
+				sepUrl[0] = sel;
+			}
+			else {
+				sepUrl.splice(0, 0, sel);
+			}
+			
+			// Redirect to requested city
+			window.location = window.location.protocol + '//' + sepUrl.join('.');
+		}
+	});
 });
 
 
@@ -232,7 +254,7 @@ L.tileLayer(tile_url, {
 	minZoom: 13
 }).addTo(map);
 
-L.geoJson(gushim,
+/*L.geoJson(gushim,
 	{
 		onEachFeature: onEachFeature,
 		style : {
@@ -241,4 +263,4 @@ L.geoJson(gushim,
 			"opacity": 0.9
 		}
 	}
-).addTo(map);
+).addTo(map);*/

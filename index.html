@@ -24,6 +24,35 @@
 	    }
 	</script>
 
+	<script src="data/cities.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script>
+		// Get the wanted gushim (the subsomain)
+		var city = cities[window.location.host.substr(0, window.location.host.indexOf('.'))];
+		if (city == undefined) { city = cities['jerusalem']; }
+		
+		var CITY_NAME = city.Display;
+		var MAP_CENTER = city.Center;
+		var CITY_API_URL = city.Heroku;
+		
+		// Enable getScript cache
+		$.ajaxSetup({
+			cache: true
+		});
+		
+		// Load the wanted gushim's json
+		$.getScript(city.JsonFile, function(data, textStatus, jqxhr) {
+			L.geoJson(gushim,
+			{
+				onEachFeature: onEachFeature,
+				style : {
+					"color" : "#777",
+					"weight": 1,
+					"opacity": 0.9
+				}
+			}).addTo(map);
+		});
+	</script>
 </head>
 <body>
 	<div class="container-fluid ot-main">
@@ -46,16 +75,20 @@
 					</div>
 
 					<div class="align-right">
-						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת בירושלים:</p>
+						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת ב<script>document.write(CITY_NAME);</script>:</p>
 						
 						<form id="addr-form"> 
-							<input type="text" id="addr-text" name="addr" placeholder="הכניסו כתובת בירושלים"/>
+							<input type="text" id="addr-text" name="addr" placeholder="הכניסו כתובת"/>
 							<button type="submit" class="btn" style="vertical-align: top;">חפש</button>
 							<img src="css/ajax-loader.gif" id="scrobber" />
 							<p style="color: red" id="addr-error-p"></p>
 						</form>
 					</div>
-					
+					<div style="text-align: right">
+						<select id="city-jump">
+							<option value="none">בחר עיר אחרת...</option>
+						</select>
+					</div>
 					<div id="info" class="align-right">
 						<h4><p>ברוך בואך לתב"ע הפתוחה!</p></h4>
 						
@@ -66,7 +99,7 @@
 
 						<p><b>מהי תב"ע פתוחה?</b></p>
 						<p>
-							תב"ע פתוחה מגישה ממשק נוח לאיתור תוכניות תב"ע באיזור מסוים (כרגע רק בירושלים), ומשם להגיע לפרטי התוכנית באתר רשות המקרקעין.
+							תב"ע פתוחה מגישה ממשק נוח לאיתור תוכניות תב"ע באיזור מסוים (<del>כרגע</del> <ins>כבר לא</ins> רק בירושלים), ומשם להגיע לפרטי התוכנית באתר רשות המקרקעין.
 						</p>
 
 						<p><b>הצטרפו אלינו!</b></p>
@@ -166,8 +199,6 @@
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/pdfobject.js"></script>
 	<script src="lib/path.js"></script>
-
-	<script src="data/gushim.min.js"></script>
 
 	<script src="app.js"></script>	
 

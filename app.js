@@ -1,8 +1,3 @@
- // deprecating, replacing with serverless mode
-var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : CITY_API_URL;
-var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
-
 // Get the wanted gushim (the subsomain)
 var city = cities[window.location.host.substr(0, window.location.host.indexOf('.'))];
 if (city == undefined) { city = cities['jerusalem']; }
@@ -10,7 +5,13 @@ if (city == undefined) { city = cities['jerusalem']; }
 var CITY_NAME = city.Display;
 var MAP_CENTER = city.Center;
 var CITY_API_URL = city.Heroku;
-		
+var CITY_FILE = city.JsonFile;
+
+// deprecating, replacing with serverless mode
+var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : CITY_API_URL;
+var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
+
 // Enable getScript cache
 $.ajaxSetup({
 	cache: true

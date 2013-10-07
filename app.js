@@ -47,22 +47,19 @@ function render_plans(plans, gid) {
 			 '</tr>' +
 			 '<tr class="details">' +
 			 '	<td colspan="2">' +
-			 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי"><!-- i class="icon-share"></i -->'+
+			 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי">'+
 			 '		תוכנית ' + p.number + '</a>' +
 			 '	</td>' +
 			 '	<td>';
 		var j;
 		for (j=0 ; j<p.tasrit_link.length ; j++)
-			out += '<a onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + 
-					'" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>';
+			out += '<a href="'+ p.tasrit_link[j] + '" target="_blank" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>';
 
 		for (j=0 ; j<p.takanon_link.length ; j++)
-			out += '<a onclick="show_data('+ "'" + p.takanon_link[j] + "')" + 
-					'" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>';
+			out += '<a href="'+ p.takanon_link[j] + '" target="_blank" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>';
 
 		for (j=0 ; j<p.nispahim_link.length ; j++)
-			out += '<a onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + 
-					'" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>';
+			out += '<a href="'+ p.nispahim_link[j] + '" target="_blank" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>';
 
 		for (j=0 ; j<p.files_link.length ; j++)
 			out += '<a href="http://mmi.gov.il' + p.files_link[j] + 

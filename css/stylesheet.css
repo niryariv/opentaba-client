@@ -66,8 +66,11 @@ h1 {
     text-align: center;
 }
 
+#share_icons{
+    margin-top: 5px;
+}
+
 #share_icons a{
     margin-left: 10px;
-    margin-top: 5px;
     color: #999;
 }

@@ -56,5 +56,14 @@ body{
 .a [class^="icon-"], a [class*=" icon-"]
 {
     text-decoration: none;
-    
+    color: #999;
+    margin-left: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#share_icons {
+    margin-top: 5px;
 }

@@ -10,7 +10,7 @@ var CITY_FILE = city.JsonFile;
 // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : CITY_API_URL;
-var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-address-db.herokuapp.com/';
+var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-address-db.herokuapp.com/';
 
 // Enable getScript cache
 $.ajaxSetup({

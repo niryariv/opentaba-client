@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',23, function suite(test){
+casper.test.begin('Basic index.html elements test',29, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -40,9 +40,15 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 		//very tied to implentation should think about this
 		test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
-		test.assertResourceExists('data/gushim.min.js');
+		test.assertResourceExists('data/gushim/jerusalem.gush.js'); // The default city. need subdomains to load other ones
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
+		test.assertExists('#city-text');
+		test.assertVisible('#city-text');
+		test.assertSelectorHasText('#city-text', 'בירושלים:', 'City name correctly displayed'); // Default city again
+		test.assertExists('#city-jump');
+		test.assertVisible('#city-jump');
+		test.assertElementCount('#city-jump option', 34, 'There are 34 loaded cities');
 		
 		//TODO: phantomcss check map rendering
 	});

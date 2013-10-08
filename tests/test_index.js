@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',29, function suite(test){
+casper.test.begin('Basic index.html elements test',30, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -40,6 +40,7 @@ casper.test.begin('Basic index.html elements test',29, function suite(test){
 		//very tied to implentation should think about this
 		test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
+		test.assertResourceExists('data/cities.js');
 		test.assertResourceExists('data/gushim/jerusalem.gush.js'); // The default city. need subdomains to load other ones
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');

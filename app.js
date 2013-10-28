@@ -16,6 +16,10 @@ var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba
 $.ajaxSetup({
 	cache: true
 });
+
+// Use delegation to allow the big gushim json to be loaded asynchronously
+var gotGushimDelegate = null;
+var gotGushimDelegateParam = null;
 		
 // Load the wanted gushim's json
 $.getScript(city.JsonFile, function(data, textStatus, jqxhr) {
@@ -28,6 +32,10 @@ $.getScript(city.JsonFile, function(data, textStatus, jqxhr) {
 			"opacity": 0.9
 		}
 	}).addTo(map);
+	
+	if (gotGushimDelegate != null) {
+		gotGushimDelegate(gotGushimDelegateParam);
+	}
 });
 
 var DEFAULT_ZOOM = 13;
@@ -221,7 +229,10 @@ $(document).ready(function(){
 	Path.map("#/gush/:gush_id").to(
 		function(){ 
 			$("#docModal").modal('hide');
-			get_gush(this.params['gush_id'].split('?')[0]);  // remove '?params' if exists
+			
+			// Use a delegate because this script will usually run before we finish loading the big gushim json
+			gotGushimDelegateParam = this.params['gush_id'].split('?')[0];
+			gotGushimDelegate = get_gush;
 		}
 	);
 

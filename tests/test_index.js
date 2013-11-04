@@ -49,7 +49,7 @@ casper.test.begin('Basic index.html elements test',30, function suite(test){
 		test.assertSelectorHasText('#city-text', 'בירושלים:', 'City name correctly displayed'); // Default city again
 		test.assertExists('#city-jump');
 		test.assertVisible('#city-jump');
-		test.assertElementCount('#city-jump option', 34, 'There are 34 loaded cities');
+		test.assertElementCount('#city-jump option', 38, 'There are 34 loaded cities');
 		
 		//TODO: phantomcss check map rendering
 	});

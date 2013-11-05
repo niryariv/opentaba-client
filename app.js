@@ -141,10 +141,9 @@ function get_gush_by_addr(addr) {
 				// so it only has a city. This happens because it didn't find the address, but we 
 				// did append the name of the current city at the end, and Google apparently thinks  
 				// 'better something than nothing'. We're trying to ignore this (should test though)
-				var cityTypes = [ 'locality', 'political' ];
-				// This is a jquery (apparently undocumented) method for comparing two arrays
-				if ($(r['results'][0]['types']).not(cityTypes).length == 0 && 
-					$(cityTypes).not(r['results'][0]['types']).length == 0) {
+				if (r['results'][0]['types'].length == 2 && 
+					$.inArray('locality', r['results'][0]['types']) > -1 && 
+					$.inArray('political', r['results'][0]['types']) > -1) {
 					$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
 				}
 				else {

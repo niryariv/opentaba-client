@@ -3,6 +3,9 @@ var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/';
 var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-address-db.herokuapp.com/';
 
+var gushimLayer;
+leafletPip.bassackwards = true;
+
 var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
 
 var MAP_CENTER = [31.765, 35.17];
@@ -122,25 +125,51 @@ function get_gush_by_addr(addr) {
 	}
 	
 	console.log("get_gush_by_addr: " + addr);
+	
+	// Use Google api to find a gush by address
 	$.getJSON(
-		ADDR_DB_API_URL + 'locate/' + addr,
+		'https://maps.googleapis.com/maps/api/geocode/json?address='+addr+'&sensor=false',
 		function (r) {
 			$('#scrobber').hide();
-			var gid = r["gush_id"];var lat = r["lat"];var lon = r["lon"];
-			console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
-			if (gid) {
-				get_gush(gid);
-				var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
-				$('#addr-error-p').html('');
-			} else {
+			$('#addr-error-p').html('');
+
+			if (r['status'] == 'OK' && r['results'].length > 0) {
+				// Here we have a case when Google api returns without an actual place (even a street), 
+				// so it only has a city. This happens because it didn't find the address, but we 
+				// did append the name of the current city at the end, and Google apparently thinks  
+				// 'better something than nothing'. We're trying to ignore this (should test though)
+				if (r['results'][0]['types'].length == 2 && 
+					$.inArray('locality', r['results'][0]['types']) > -1 && 
+					$.inArray('political', r['results'][0]['types']) > -1) {
+					$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+				}
+				else {
+					var lat = r['results'][0]['geometry']['location']['lat'];
+					var lon = r['results'][0]['geometry']['location']['lng'];
+					console.log('got lon: ' + lon + ', lat: ' + lat);
+      
+					// Using leafletpip we try to find an object in the gushim layer with the coordinate we got
+					var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
+					if (gid && gid.length > 0) {
+						get_gush(gid[0].gushid);
+						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
+					} else {
+						$('#addr-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
+					}
+				}
+			}
+			else if (r['status'] == 'ZERO_RESULTS') {
 				$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+			}
+			else {
+				$('#addr-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
 			}
 		}
 	)
    .fail(
    		function(){
    			$('#scrobber').hide(); 
-   			$('#addr-error-p').html('לא נמצאו נתונים לכתובת "' + addr + '"'); 
+   			$('#addr-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
    		}
    	);
 }
@@ -229,7 +258,7 @@ L.tileLayer(tile_url, {
 	minZoom: 13
 }).addTo(map);
 
-L.geoJson(gushim,
+gushimLayer = L.geoJson(gushim,
 	{
 		onEachFeature: onEachFeature,
 		style : {

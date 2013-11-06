@@ -22,7 +22,7 @@ phantomcss.init({
 });
 //var delay = 10;
 //Starting the tests
-casper.test.begin('Testing a specific gush plans display',6, function suite(test){
+casper.test.begin('Testing a specific gush plans display',10, function suite(test){
 
     casper.on('page.init',initMock).
     on('remote.message',log).

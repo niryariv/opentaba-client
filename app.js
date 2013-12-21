@@ -250,7 +250,7 @@ $(document).ready(function(){
 });
 
 
-var map = L.map('map', { scrollWheelZoom: true }).setView(MAP_CENTER, DEFAULT_ZOOM);
+var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(MAP_CENTER, DEFAULT_ZOOM);
 
 tile_url = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
 L.tileLayer(tile_url, {

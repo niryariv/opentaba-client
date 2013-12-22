@@ -99,7 +99,7 @@ function get_gush(gush_id) {
 	location.hash = "#/gush/" + gush_id;
 	
 	$.getJSON(
-		API_URL + 'gush/' + gush_id + '/plans',		
+		API_URL + 'gush/' + gush_id + '/plans.json',
 		function(d) { 
 			//console.log(d.length);
 			render_plans(d, gush_id);

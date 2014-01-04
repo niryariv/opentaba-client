@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>תב"ע פתוחה</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" /><![endif]-->
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="css/stylesheet.css" rel="stylesheet" media="screen">
+
+	<link rel="alternate" type="application/atom+xml" href="http://opentaba-server.herokuapp.com/feed" title="פיד תוכניות בניה בירושלים">
+
+	<script type="text/javascript">
+		function fb_share(){
+	      window.open(
+	          'http://www.facebook.com/sharer.php?s=100&p[url]=http://opentaba.info&p[images][0]=http://jnul.huji.ac.il/dl/maps/jer/images/jer010/Jer010_b.jpg&p[title]=תב"ע+פתוחה&p[summary]=', 
+	          'facebook_share',
+	          'height=320, width=640, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no'
+	      );
+	    }
+	</script>
+
+</head>
+<body>
+	<div class="container-fluid ot-main">
+		<div class="row-fluid ot-main">
+			<div class="span8 ot-main">
+				<div id="map"></div>
+			</div>
+			<div class="span4">
+				<div id="right-bar" style="font-family: Alef; direction: rtl;">
+					
+					<div style="text-align: right;">
+						<a class="icon-twitter icon-2x" 
+							href="https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info" alt="Tweet"></a>
+						&nbsp;
+						<a class="icon-facebook icon-2x" href="javascript:fb_share();"></a>
+					</div>
+					
+					<div id="header" style="text-align: center;">
+						<h1><a href="javascript: window.location=window.location.pathname;">תב"ע פתוחה</a></h1>
+					</div>
+
+					<div style="text-align: right">
+						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת בירושלים:</p>
+						
+						<form id="addr-form"> 
+							<input type="text" id="addr-text" name="addr" placeholder="הכניסו כתובת בירושלים"/>
+							<button type="submit" class="btn" style="vertical-align: top;">חפש</button>
+							<img src="css/ajax-loader.gif" id="scrobber" />
+							<p style="color: red" id="addr-error-p"></p>
+						</form>
+					</div>
+					
+					<div id="info" style="text-align: right">
+						<h4><p>ברוך בואך לתב"ע הפתוחה!</p></h4>
+						
+						<p><b>מה זה תב"ע?</b></p>
+						<p>
+							תב"ע היא "תוכנית בנין עיר". לכל תוכנית בניה, משיפוץ בנין ועד הקמת עיר שלמה, יש תב"ע שמגדירה בדיוק מה יבוצע. תהליך אישור התב"ע מאפשר לאזרחים להיות מעורבים ולהשפיע על תוכניות בניה באיזור מגוריהם. <a href="#faqModal" data-toggle="modal">עוד על תב"ע.</a>
+						</p>
+
+						<p><b>מהי תב"ע פתוחה?</b></p>
+						<p>
+							תב"ע פתוחה מגישה ממשק נוח לאיתור תוכניות תב"ע באיזור מסוים (כרגע רק בירושלים), ומשם להגיע לפרטי התוכנית באתר רשות המקרקעין.
+						</p>
+
+						<p><b>הצטרפו אלינו!</b></p>
+						<p>
+							תב"ע פתוחה היא פרויקט של <a href="http://www.hasadna.org.il/">הסדנא לידע ציבורי</a> שמובל על ידי <a href="http://planning-jerusalem.blogspot.co.il/">יאיר אסף-שפירא</a> ו<a href="http://niryariv.wordpress.com/">ניר יריב</a>.
+							כל הקוד באתר פתוח לציבור. גם את ואתה יכולים לתרום, 
+							<a href="https://github.com/niryariv/opentaba-server">בצד השרת</a> או <a href="https://github.com/niryariv/opentaba-client">הממשק</a>.
+						</p>
+
+						<p>
+							<b>מסייעים לפרויקט:</b><br />
+							גילעד גולדברג<br />
+							פינחס ליכטמן<br />
+							מעין אלכסנדר<br />
+							<a href="http://degeladom.wordpress.com/">אלון ניסר</a><br />
+							<a href="http://gizra.com/">גיזרה פתרונות אינטרנט</a><br />
+						</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="docModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="docModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="docModalLabel">צפיה במסמך</h3>
+		</div>
+		<div class="modal-body">
+			<div id="modal-doc">עוד מעט..</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">סגור</button>
+			<a class="btn btn-primary" href="" target="_blank" id="doc_new_window"><i class="icon-zoom-in icon-white"></i> פתח בחלון חדש</a>
+		</div>
+	</div>
+
+	
+	<div id="faqModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="faqModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="faqModalLabel">מה זו תב"ע</h3>
+		</div>
+		<div class="modal-body" style="direction: rtl;">
+			<h4>מהי תב"ע? למה זה חשוב?</h4>
+			<p>תב"ע, תכנית בניין עיר, היא מסמך חוקי שנערך על-ידי מתכנן, עובר תהליך אישור (שיפורט עוד מעט), ולאחר שהוא מאושר הוא הופך למעשה לחוק הקובע מה מותר לעשות בתחום התכנון והבנייה בשטח שעליו חלה התב"ע (יכול להיות בניין בודד, קבוצת בניינים, שכונה או עיר שלמה), ומה אסור. כוחה של התב"ע מוגדר בחוק התכנון והבנייה (נוסח מלא של החוק כאן או כאן) המינוח השגור "תכנית בניין עיר\ערים" מקורו בחוק הבריטי, וכיום ההתייחסות בחוק היא למינוח "תכנית" (קיימים מספר סוגים של תכניות. ההתייחסות ב-"תבע פתוחה" היא לתכניות מקומיות ומפורטות (ולא לתכניות מחוזיות או ארציות).</p>
+			<p>התב"ע יכולה לקבוע, לדוגמה, כי בשטח מסוים מותר לבנות בניין, שגובהו 8 קומות, וחזיתו הקדמית צריכה להיות מרוחקת מהרחוב 5 מטרים, וצריכה להיות מצופה באבן. הבניין יהיה מיועד למגורים (כלומר זה מה שמותר לעשות בו), ושטח הדירות יהיה בין 80 לבין 140 מ"ר. אותה תב"ע יכולה לקבוע כי שטח (מגרש) סמוך, יהיה מיועד לגן ילדים ומותר יהיה לבנות מעליו טיפת חלב בתנאי שתהיה לה כניסה נפרדת, וכי, מגרש שלישי יהיה פארק.</p>
+			<p>התב"ע, אם כך, משפיעה מאוד על חיינו - בניין חדש שנבנה, תוספת בנייה, חלק מפארק שנלקח לטובת כביש, או שכונה חדשה - כולם תוצאה של אישור תב"ע. חשוב לדעת כאשר תב"ע כלשהי נמצאת בתהליך אישור - כי יש לאזרח זמן מוגבל להשתתף בתהליך, ואחרי אישור התב"ע קשה הרבה יותר להשפיע - למנוע את בניית הבניין או להנמיך אותו, לשמור את הפארק, לוודא שיהיה בשכונה החדשה בית ספר וכולי. חשוב גם לדעת מה אומרת תב"ע שכבר אושרה, מפני שבין אישור התב"ע לבין הבנייה ישנו הליך נוסף - היתר הבנייה. ידיעת התב"ע נותנת לנו בקרה על הליך היתר הבנייה, ועל הבנייה עצמה.</p>
+			<h4>מה כוללת תב"ע?</h4>
+			<p>תב"ע כוללת שני מסמכים עיקריים - תשריט (מפה) ותקנון (הוראות). התשריט מסמן את השטח ומחלק אותו לאזורים (מגרשים) - כל מגרש צבוע בצבע אחר (ונושא מספר), והתקנון קובע מה מותר ומה אסור לעשות (ובעיקר לבנות) בכל צבע ובכל מגרש. התשריט כולל גם מפה של המצב הקיים - לפני אישור התב"ע, וגם של המצב אחרי אישורה - עם השינויים שהיא יוצרת - מפה זו נקראת "מצב מוצע".
+			בנוסף, כולל התשריט פרטים חשובים כמו שטחי המגרשים, שם היזם והמתכנן, תאריכים וכולי. התקנון כולל פרטים רבים כגון הגדרות, דברי הסבר, טבלאות שטחים, שימושים מותרים בשטח וכולי. כדאי לקרוא את התקנון בעיון - זהו מסמך משפטי שיהפוך לחוק, וכל מילה חשובה.
+			בנוסף, כוללת התב"ע נספחים. הנספחים קובעים פרטים חשובים כגון פרטי הבינוי. חלק מהנספחים מחייבים, וחלק מהם מנחים בלבד. לצערנו לא תמיד הנספחים נסרקים ומועלים לאינטרנט.</p>
+			<p>זה מספר שנים שהתב"עות נערכות ומוגשות לפי נוהל קבוע - נוהל מבא"ת (מבנה אחיד לתכניות). לאחר שראיתם תכנית או שתיים הערוכות לפי נוהל מבא"ת, יהיה לכם די קל להבין מי נגד מי כאשר תראו תכנית נוספת.</p>
+
+			<h4>מהו תהליך האישור?</h4>
+			<p>היוזמה להכנת התב"ע היא בדרך כלל של היזם או בעל הקרקע - במקרה בו יזם קנה קרקע ורוצה לבנות עליה - או של גוף ממסדי - העירייה, משרד השיכון, מינהל מקרקעי ישראל  - במקרה של תכנון שכונה (או עיר). יזם התכנית פונה לשם הכנתה לאדריכל או מתכנן, שעורך את התכנית, לרוב באמצעות צוות רב תחומי. עורך התכנית מתייעץ עם העירייה כבר בשלב ההכנה של התכנית - כדי לקבל הנחיות ותנאים שהוא חייב לעמוד בהם.</p>
+			<p>לאחר סיום התכנון, מוגשת התכנית לועדה המקומית לתכנון ובנייה. ועדה זו שוכנת ברוב המקרים בעירייה, ומורכבת מחברי מועצת העיר. הועדה דנה בתכנית לאחר שמתקבלות המלצות האגפים השונים בעירייה לגביה, ומחליטה מהי המלצתה לגבי התכנית. הועדה מעבירה את התכנית עם ההמלצה לועדה המחוזית לתכנון ובנייה. ראוי לציין כי ישנן תב"עות שבסמכותה של הועדה המקומית לאשר, אך אנו לא דנים באלו כאן.</p>
+			<p>הועדה המחוזית דנה בתכנית, ומחליטה האם צריך לערוך בה שינויים, או שניתן להפקיד אותה להתנגדויות.לאחר ההחלטה על הפקדה, מופקדים עותקים של התב"ע במשרדי הועדה המקומית והמחוזית, לעיון הציבור ולהגשת התנגדויות. לפי חוק התכנון והבנייה רשאי להגיש התנגדות לתב"ע "כל מעונין בקרקע, בבנין או בכל פרט תכנוני אחר הרואה את עצמו נפגע". בנוסף, ישנה רשימה של גופים שאושרו על-ידי שר הפנים להגיש התנגדות בכל תכנית. ביניהם החברה להגנת הטבע, אגודת האדריכלים, אתרא קדישא, אדם טבע ודין ועוד. מיום ההפקדה (הכוללת גם תליית שלט באתר ופרסום בעיתונות - אלו הן אותן "הודעות בענייני תכנון ובנייה") ישנם חודשיים להגשת התנגדות, עם אפשרות להארכה. הגשת התנגדות כרוכה בתשלום אגרה</p>
+			<p>טווח הזמן המוקצה להגשת התנגדות הוא 60 יום. לאחר תום התקופה (הניתנת להארכה ל-90 יום), דנה הועדה המחוזית בהתנגדויות. מגישי ההתנגדויות מוזמנים לפרט את טענותיהם בפני הועדה, והיא מחליטה לגבי כל התנגדות האם לקבלה, לקבל באופן חלקי, או לדחות לחלוטין. אם מוגשות התנגדויות רבות, הועדה ממנה "חוקר" שתפקידו לשמוע את ההתנגדויות ולהגיש את המלצותיו לועדה. לאחר הדיון בהתנגדויות תועבר התב"ע לתיקונים הנדרשים, ולאחר מכן הועדה תדון עליה שוב, ותחליט אם לאשר את התב"ע, או בז'רגון המקצועי "לתת לה תוקף".</p>
+			<p>לאחר אישור התב"ע, על-מנת לפתוח בהליכי הבנייה ישנו שלב נוסף - היתר הבנייה. אך כאן המקום לציין כי במקרים רבים ישנן שתי תב"עות - תכנית מיתאר כללית, ותכנית מפורטת. רק על-סמך תכנית מפורטת (המינוח בתקנון הוא "תכנית הכוללת הוראות מפורטות") ניתן להוציא היתר בנייה.</p>
+			<h4>היתר בנייה</h4>
+			<p>היתר הבנייה הוא האישור הסופי אותו על היזם להשיג לפני הבנייה. גם אם התב"ע מאושרת, יש להוציא היתר בנייה על-מנת לבנות. ההיתר נשען על תב"ע, כלומר חייב למלא אחרי הוראותיה, אך הוא מפרט את הבנייה בצורה מדוייקת יותר, וכולל גם חומרי בנייה, תכניות אדריכליות ועוד. את היתר הבנייה מקבל היזם מהועדה המקומית, וגם בהליך זה ישנה חובה ליידע את הציבור, אך לא באמצעות פרסום בעיתון, אלא על-ידי משלוח הודעות לבעלי החלקות הסמוכות.</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">סגור</button>
+		</div>
+	</div>
+
+	<!--div id="contactModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="contactModalLabel">מי אנחנו</h3>
+		</div>
+		<div class="modal-body" style="direction: rtl;">
+			<p>אתר תב"ע פתוחה נבנה ומופעל בהתנדבות על ידי <a href="http://planning-jerusalem.blogspot.co.il/">יאיר אסף-שפירא</a> ו<a href="http://niryariv.wordpress.com/">ניר יריב</a>. למשוב, שאלות והצעות צרו איתנו קשר ב <a href="mailto:niryariv@gmail.com">niryariv@gmail.com</a> או <a href="mailto:yair.assafshapira@gmail.com">yair.assafshapira@gmail.com</a></p>
+
+			<p>מעצב? כותבת קוד? כל הקוד באתר פתוח לציבור <a href="https://github.com/niryariv/opentaba-client">כאן</a> ו<a href="https://github.com/niryariv/opentaba-server">כאן</a>. נשמח לשתף פעולה.</p>
+
+			<p>
+				<b>מסייעים לפרויקט:</b><br />
+				גילעד גולדברג<br />
+				פינחס ליכטמן<br />
+				<a href="http://gizra.com/">גיזרה פתרונות אינטרנט</a><br />
+				<a href="http://www.hasadna.org.il/">הסדנא לידע ציבורי</a><br />
+			</p>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">סגור</button>
+		</div>
+	</div -->
+
+	<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="lib/pdfobject.js"></script>
+	<script src="lib/path.js"></script>
+
+    <!-- Change city file name manually --!>
+	<script src="data/ashkelon.gush.neighbours.js"></script>
+
+	<script src="app_neighbours.js"></script>	
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-37675804-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>
+<!- Jerusalem, winter 2013 -->

@@ -52,3 +52,25 @@ body{
 .align-right {
     text-align: right;
 }
+
+a:hover{
+    text-decoration: none;
+}
+
+a[rel="tooltip"]{
+    color: #000;
+    margin-left: 3px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#share_icons{
+    margin-top: 5px;
+}
+
+#share_icons a{
+    margin-left: 10px;
+    color: #999;
+}

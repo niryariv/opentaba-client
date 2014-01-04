@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',23, function suite(test){
+casper.test.begin('Basic index.html elements test',26, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -61,9 +61,49 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 	casper.then(function(){
 		test.assertNotVisible('faqModal');
 	});
+	
+	// Address search tests
+	casper.then(function(){
+		// make sure an invalid address returns an error
+		casper.waitFor(function check() {
+			return casper.evaluate(function() {
+				get_gush_by_addr('רחובשלאקיים');
+				return true;
+			});
+		}, function then() {
+			this.wait(3000, function() {
+				test.assertSelectorHasText('#addr-error-p', 'כתובת שגויה או שלא נמצאו נתונים', 'Search for an invalid address');
+			});
+		});
+
+		// make sure an address found in a different city (not in the current gushim file) displays the right message
+		casper.waitFor(function check() {
+			return casper.evaluate(function() {
+				get_gush_by_addr('שדרות מוריה חיפה');
+				return true;
+			});
+		}, function then() {
+			this.wait(3000, function() {
+				test.assertSelectorHasText('#addr-error-p', 'לא נמצא גוש התואם לכתובת', 'Search for an address in a differenct city (no gush will be found)');
+			});
+		});
+
+		// make sure we do find a good jerusalem address
+		casper.waitFor(function check() {
+			return casper.evaluate(function() {
+				get_gush_by_addr('ברנר 9');
+				return true;
+			});
+		}, function then() {
+			this.wait(3000, function() {
+				test.assertSelectorDoesntHaveText('#addr-error-p', 'כתובת', 'Search for a good address');
+			});
+		});
+	});
 
 	//TODO: basic form testing (needs sinon injections and mocking
 	casper.run(function(){
+		this.echo(phantom.casperEngine,'debug');
 		test.done();
 	});
 });

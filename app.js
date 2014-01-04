@@ -8,7 +8,8 @@ leafletPip.bassackwards = true;
 
 var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
 
-var MAP_CENTER = [31.765, 35.17];
+var MAP_CENTER = gushim.features[0].geometry.coordinates[0][0].slice(0,
+        2).reverse()
 var DEFAULT_ZOOM = 13;
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
@@ -198,8 +199,28 @@ function clear_all_highlit() {
 function onEachFeature(feature, layer) {
 	// layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({
-				'mouseover'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0 	, color: "red" 	}) } } ,
-				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#777" }) } },
+				'mouseover'	: function() {
+                    if (highlit.indexOf(this["gushid"]) < 0) {
+                        this.setStyle({ opacity: 0 	, color: "red" 	})
+                    }
+                    for (var i = 0; i < this["neighbours"].length; i++) {
+                        neighbour = this["neighbours"][i];
+                        if (highlit.indexOf(neighbour) < 0) {
+                            map._layers['gush_' + neighbour].setStyle({ opacity: 0 	, color: "blue"	})
+                        }
+                    }
+                } ,
+				'mouseout'	: function() {
+                    if (highlit.indexOf(this["gushid"]) < 0) {
+                        this.setStyle({ opacity: 0.95, color: "#777" })
+                    }
+                    for (var i = 0; i < this["neighbours"].length; i++) {
+                        neighbour = this["neighbours"][i];
+                        if (highlit.indexOf(neighbour) < 0) {
+                            map._layers['gush_' + neighbour].setStyle({ opacity: 0.95, color: "#777" })
+                        }
+                    }
+                },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
 					location.hash = "#/gush/" + feature.properties.Name;
@@ -207,6 +228,7 @@ function onEachFeature(feature, layer) {
 				}
 			});
 	layer["gushid"] = feature.properties.Name;
+	    layer["neighbours"] = feature.properties.neighbours;
 	layer._leaflet_id = 'gush_' + feature.properties.Name;
 }
 

@@ -41,7 +41,8 @@ function render_plans(plans, gid) {
 		var p = plans[i];
 
 		//plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
-		plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number);
+		//plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number);
+		plan_link = p.details_link;
 		
 		out+='<tr style="vertical-align:top" class="item">' +
 			 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +

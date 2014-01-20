@@ -25,14 +25,19 @@ phantomcss.init({
     threshold:0.08
 });
 var delay = 10;
-casper.start(url).then(function(){
-    phantomcss.screenshot('#map.leaflet-container.leaflet-fade-anim','full_map.png');
-});
+casper.test.begin('Testing map regression',1,function suite(test){
 
-casper.then(function now_check_the_screenshot(){
-    phantomcss.compareMatched(".full_map");
-}).
-run(function end_it(){
-    console.log('ending the phantomcss test');
-    phantom.exit(phantomcss.getExitStatus());
+  casper.start(url).then(function(){
+      phantomcss.screenshot('#map.leaflet-container.leaflet-fade-anim','full_map.png');
+  });
+
+  casper.then(function now_check_the_screenshot(){
+      phantomcss.compareMatched(".full_map");
+  }).
+  run(function end_it(){
+      console.log('ending the phantomcss test');
+      test.done(phantomcss.getExitStatus())
+      phantom.exit(phantomcss.getExitStatus());
+  });
+
 });

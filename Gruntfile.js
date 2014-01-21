@@ -23,7 +23,7 @@ grunt.initConfig({
 		html: ['<%= baseConfig.app %>/index.html'],
 
         options: {
-            dest: '<%= yeoman.dist %>',
+            dest: '<%= baseConfig.dist %>',
             flow:{
                 steps:{
                     'js':['concat'],
@@ -37,7 +37,7 @@ grunt.initConfig({
                 html: ['<%= baseConfig.dist %>/{,*/}*.html'],
                 css: ['<%= baseConfig.dist %>/css/{,*/}*.css'],
                 options: {
-                    assetsDirs: ['<%= baseConfig.dist %>','<%= baseConfig.dist %>/css/images','<%= yeoman.dist %>/css/font'],
+                    assetsDirs: ['<%= baseConfig.dist %>','<%= baseConfig.dist %>/css/images','<%= baseConfig.dist %>/css/font'],
                     patterns:{
                         js:[]
                     }
@@ -100,6 +100,17 @@ grunt.initConfig({
                         ]
                     }
                 },
+                dist:{
+                    options: {
+                        port: 9002,
+                        open: 'http://local.opentaba.info:9002/',
+
+                        base: [
+                            '.tmp',
+                            '<%= baseConfig.dist %>'
+                        ]
+                    }
+                }
             },
 
             copy:{
@@ -113,7 +124,7 @@ grunt.initConfig({
                             src: [
                                 '*.{ico,png,txt}',
                                 '*.html',
-                                'languages/*',
+                                'data/**.*.js',
                                 'css/images/{,*/}*.{webp}',
                                 'css/font/*'
                             ]
@@ -129,8 +140,20 @@ grunt.initConfig({
                 styles: {
                     expand: true,
                     cwd: '<%= baseConfig.app %>/css',
-                    dest: '.tmp/styles/',
+                    dest: '.tmp/css/',
                     src: '{,*/}*.css'
+                },
+                static:{
+                    files :[
+                        {
+                            expand:true,
+                            dot:true,
+                            flatten:true,
+                            cwd:'<%= baseConfig.app %>',
+                            dest: '<%= baseConfig.dist %>/font',
+                            src:['lib/font-awesome/font/*']
+                        }
+                    ]
                 }
             },
             watch:{
@@ -158,7 +181,7 @@ grunt.initConfig({
                     },
                     files: [
                         '<%= baseConfig.app %>/{,*/}*.html',
-                        '.tmp/styles/{,*/}*.css',
+                        '.tmp/css/{,*/}*.css',
                         '<%= baseConfig.app %>/css/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                     ]
                 },
@@ -183,10 +206,6 @@ grunt.initConfig({
                     ]
             }
             },
-            concat:{
-
-            },
-
 
             uglify:{
                 dist: {
@@ -196,8 +215,8 @@ grunt.initConfig({
                         },
                         files: {
 
-                            '<%= yeoman.dist %>/app.js': [
-                                '<%= yeoman.dist %>/app.js'
+                            '<%= baseConfig.dist %>/app.js': [
+                                '<%= baseConfig.dist %>/app.js'
                             ]
                         }
 
@@ -272,9 +291,9 @@ grunt.initConfig({
                     files: [
                         {
                             expand: true,
-                            cwd: '.tmp/styles/',
+                            cwd: '.tmp/css/',
                             src: '{,*/}*.css',
-                            dest: '.tmp/styles/'
+                            dest: '.tmp/css/'
                         }
                     ]
                 }
@@ -284,8 +303,8 @@ grunt.initConfig({
                 compile: { // if multiple files are given, this will keep the same folder structure and files
                         expand: true,
                             cwd:   '<%= baseConfig.dist%>',
-                            src: ['*app.js'],
-                            dest: '<%= yeoman.dist%>',
+                            src: ['app.js'],
+                            dest: '<%= baseConfig.dist%>',
                             ext: '.js'
                     },
 
@@ -333,19 +352,18 @@ grunt.initConfig({
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
-//        'concat',
+        'concat',
         'cssmin',
        	'groundskeeper',
-        'ngmin',
+//        'ngmin',
         'copy:dist',
         'uglify',
         'rev',
         'usemin',
         'htmlmin',
+        'copy:static'
 
     ]);
-	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-casperjs-plugin');
 	grunt.registerTask('test_all',['jshint', 'casperjs']);
 	grunt.registerTask('test',['casperjs']);
 	grunt.registerTask('default',['test_all']);

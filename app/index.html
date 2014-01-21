@@ -5,14 +5,22 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- build:css /css/vendor.css -->
+    <!-- bower:css -->
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <!-- endbower -->
+    <!-- endbuild -->
 
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" /><![endif]-->
-	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
-	<link href="css/stylesheet.css" rel="stylesheet" media="screen">
 
-	<link rel="alternate" type="application/atom+xml" href="http://opentaba-server.herokuapp.com/feed" title="פיד תוכניות בניה בירושלים">
+    <!-- build:css({.tmp,app}) /css/main.css -->
+	<link href="css/stylesheet.css" rel="stylesheet" media="screen">
+    <!-- endbuild -->
+
+
+    <link rel="alternate" type="application/atom+xml" href="http://opentaba-server.herokuapp.com/feed" title="פיד תוכניות בניה בירושלים">
 
 	<script type="text/javascript">
 		function fb_share(){
@@ -162,15 +170,19 @@
 
 	<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	
-	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- build:js /scripts/vendor.js -->
+
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/pdfobject.js"></script>
-	<script src="lib/path.js"></script>
+    <!-- endbuild -->
 
+    <!-- build:js({.tmp,app}) /scripts/scripts.js -->
+
+    <script src="lib/path.js"></script>
 	<script src="data/gushim.min.js"></script>
-
-	<script src="app.js"></script>	
-
+	<script src="app.js"></script>
+    <!-- endbuild -->
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-37675804-1']);
@@ -184,4 +196,4 @@
 	</script>
 </body>
 </html>
-<!- Jerusalem, winter 2013 -->
+<!-- Jerusalem, winter 2013 -->

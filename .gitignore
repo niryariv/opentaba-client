@@ -3,3 +3,5 @@ tests/node_modules/
 tests/img/*.diff.png
 npm-debug.log
 node_modules/
+dist
+.tmp

@@ -160,7 +160,7 @@ grunt.initConfig({
                 options:{
                     base:'<%= baseConfig.dist %>'
                 },
-                src:['**']
+                src:['**/*']
             },
             watch:{
                 js: {
@@ -353,25 +353,25 @@ grunt.initConfig({
         ]);
     });
     grunt.registerTask('partBuild', [
-        'clean:dist',
+        'clean:dist', //clean the dist folder
        // 'bower-install',
         'useminPrepare',
-        'concurrent:dist',
-        'autoprefixer',
-        'concat',
-        'cssmin',
-       	'groundskeeper',
-//        'ngmin',
-        'copy:dist',
-        'uglify',
-        'rev',
-        'usemin',
-        'htmlmin',
-        'copy:static'
+        'concurrent:dist', //image minification inside this task
+        'autoprefixer', //prefix css for different browsers
+        'concat', //concats css files and js files together according to usemin block in index.html
+        'cssmin', //css minifier
+       	'groundskeeper', //remove console.log remarks
+        'copy:dist', // copy some dependency and images
+        'uglify', //compress and mangle our scripts
+        'rev', //changes file name to disable browser caching
+        'usemin', //execute the final stage of useminPrepare
+        'htmlmin', // minify html
+        'copy:static' //copies unrevvyed dependency (font-awesome) until we figure how to rev them too
 
     ]);
 	grunt.registerTask('test_all',['jshint', 'casperjs']);
 	grunt.registerTask('test',['casperjs']);
 	grunt.registerTask('default',['test_all']);
+    grunt.registerTask('build',['partBuild', 'gh-pages']); // run the build + pushes to gh-pages
 
 };

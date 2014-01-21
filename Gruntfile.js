@@ -8,7 +8,7 @@ grunt.initConfig({
 	pkg:grunt.file.readJSON('package.json'),
 	baseConfig	: {
         // configurable paths
-        app: require('./bower.json').appPath || 'app',
+        app:  'app',
         dist: 'dist'
     },
 	casperjs:{
@@ -18,6 +18,7 @@ grunt.initConfig({
 			['./tests/specs.*js']
 
 	},
+
 	useminPrepare:{
 		html: ['<%= baseConfig.app %>/index.html'],
 
@@ -33,17 +34,21 @@ grunt.initConfig({
         }
     },
             usemin:{
-                html: ['<%= baseConfig.dist %>/{,*/}*.html',
+                html: ['<%= baseConfig.dist %>/{,*/}*.html'],
                 css: ['<%= baseConfig.dist %>/css/{,*/}*.css'],
-                        options: {
-                            assetsDirs: ['<%= baseConfig.dist %>','<%= baseConfig.dist %>/css/images','<%= yeoman.dist %>/css/font'],
-                            patterns:{
-                                js:[]
-                            }
-                        }
-                    },
+                options: {
+                    assetsDirs: ['<%= baseConfig.dist %>','<%= baseConfig.dist %>/css/images','<%= yeoman.dist %>/css/font'],
+                    patterns:{
+                        js:[]
+                    }
+                }
+            },
             jshint:{
-                options:grunt.file.readJSON('package.json')['jshintConfig'],
+                // options:grunt.file.readJSON('package.json')['jshintConfig'],
+                options:{
+                    jshintrc: '.jshintrc',
+
+                },
                 all:{
                     files:
                         ['./app/app.js']
@@ -67,13 +72,34 @@ grunt.initConfig({
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost',
                 livereload: 35729,
-                middleware: function (connect, options) {
-                    var optBase = (typeof options.base === 'string') ? [options.base] : options.base;
-                    return [require('connect-modrewrite')(['!(\\..+)$ / [L]'])].concat(
-                        optBase.map(function (path) {
-                            return connect.static(path);
-                        }));
-                }
+//                    middleware: function (connect, options) {
+//                        var optBase = (typeof options.base === 'string') ? [options.base] : options.base;
+//                        return [require('connect-modrewrite')(['!(\\..+)$ / [L]'])].concat(
+//                            optBase.map(function (path) {
+//                                return connect.static(path);
+//                            }));
+//                    }
+                },
+                livereload: {
+                    options: {
+                        hostname: 'local.opentaba.info',
+                        open: 'http://local.opentaba.info:9000/',
+                        base: [
+                            '.tmp',
+                            '<%= baseConfig.app %>'
+                        ]
+                    }
+                },
+                test: {
+                    options: {
+                        port: 9001,
+                        base: [
+                            '.tmp',
+                            'test',
+                            '<%= baseConfig.app %>'
+                        ]
+                    }
+                },
             },
 
             copy:{
@@ -99,35 +125,45 @@ grunt.initConfig({
                             src: ['generated/*']
                         }
                     ]
+                },
+                styles: {
+                    expand: true,
+                    cwd: '<%= baseConfig.app %>/css',
+                    dest: '.tmp/styles/',
+                    src: '{,*/}*.css'
+                }
             },
             watch:{
                 js: {
-                files: [
-                    '<%= baseConfig.app %>/{,*/}*.js',
-                tasks: ['newer:jshint:all'],
-                options: {
-                    livereload: true
+                    files: [
+                        '<%= baseConfig.app %>/{,*/}*.js'
+                    ],
+                    tasks: ['newer:jshint:all'],
+                    options: {
+                        livereload: true
+                    }
                 }
-            },
-            jsTest: {
-                files: ['tests/unit/{,*/}*.js'],
-                tasks: ['newer:jshint:test', 'karma']
-            },
 
-            gruntfile: {
-                files: ['Gruntfile.js']
-            },
-            livereload: {
-                options: {
-                    livereload: '<%= connect.options.livereload %>'
+//            jsTest: {
+//                files: ['tests/spec/{,*/}*.js'],
+//                tasks: ['newer:jshint:test', 'karma']
+//            },
+
+                ,gruntfile: {
+                    files: ['Gruntfile.js']
                 },
-                files: [
-                    '<%= baseConfig.app %>/{,*/}*.html',
-                    '.tmp/styles/{,*/}*.css',
-                    '<%= baseConfig.app %>/css/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-                ]
-            }
-            },
+                livereload: {
+                    options: {
+                        livereload: '<%= connect.options.livereload %>'
+                    },
+                    files: [
+                        '<%= baseConfig.app %>/{,*/}*.html',
+                        '.tmp/styles/{,*/}*.css',
+                        '<%= baseConfig.app %>/css/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    ]
+                },
+
+        },
 
             htmlmin:{
                 dist: {
@@ -147,13 +183,11 @@ grunt.initConfig({
                     ]
             }
             },
-            styles: {
-                expand: true,
-                cwd: '<%= baseConfig.app %>/css',
-                dest: '.tmp/styles/',
-                src: '{,*/}*.css'
-            }
+            concat:{
+
             },
+
+
             uglify:{
                 dist: {
                         options:{
@@ -194,10 +228,10 @@ grunt.initConfig({
                     open:'http://localhost:9002/',
                     port: 9002,
                     base: '<%= baseConfig.dist %>'
-                }
-            },
+                    }
+                },
 
-            }
+            },
             concurrent:{
 
             dist: [
@@ -230,6 +264,22 @@ grunt.initConfig({
                 ]
                 }
             },
+            autoprefixer:{
+                options: {
+                    browsers: ['last 3 version', '> 2%']
+                },
+                dist: {
+                    files: [
+                        {
+                            expand: true,
+                            cwd: '.tmp/styles/',
+                            src: '{,*/}*.css',
+                            dest: '.tmp/styles/'
+                        }
+                    ]
+                }
+
+            },
             groundskeeper:{
                 compile: { // if multiple files are given, this will keep the same folder structure and files
                         expand: true,
@@ -242,12 +292,27 @@ grunt.initConfig({
                     options:{
 
                     //                replace:"0"
+                    }
+        },
+        clean:{
+            dist: {
+                files: [
+                    {
+                        dot: true,
+                        src: [
+                            '.tmp',
+                            '<%= baseConfig.dist %>/*',
+                            '!<%= baseConfig.dist %>/.git*'
+                        ]
+                    }
+                ]
+            },
+            server: '.tmp'
+        }
+	})
 
-            }
 
 
-
-	});
 	grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['partBuild', 'connect:dist:keepalive']);
@@ -256,7 +321,7 @@ grunt.initConfig({
         grunt.task.run([
             'clean:server',
             //'bower-install',
-            'concurrent:server',
+//            'concurrent:server',
             'autoprefixer',
             'connect:livereload',
             'watch'
@@ -268,7 +333,7 @@ grunt.initConfig({
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
-        'concat',
+//        'concat',
         'cssmin',
        	'groundskeeper',
         'ngmin',

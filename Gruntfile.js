@@ -156,6 +156,12 @@ grunt.initConfig({
                     ]
                 }
             },
+            'gh-pages':{
+                options:{
+                    base:'<%= baseConfig.dist %>'
+                },
+                src:['**']
+            },
             watch:{
                 js: {
                     files: [

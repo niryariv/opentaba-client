@@ -1,0 +1,12 @@
+{
+    "undef": false,
+    "unused": true,
+    "jquery": true,
+    "devel": true,
+    "browser": true,
+    "-W069": true,
+    "-W099": true,
+    "globals": {
+      "casper": false
+    }
+  }

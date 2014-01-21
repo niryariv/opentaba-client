@@ -6,19 +6,7 @@
   "scripts": {
     "test": "grunt test"
   },
-  "jshintConfig": {
-    "undef": false,
-    "unused": true,
-    "jquery": true,
-    "devel": true,
-    "browser": true,
-    "-W069": true,
-    "-W099": true,
-    "globals": {
-      "casper": false
-    }
-  },
-  "devDependencies": {
+   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-casperjs-plugin": "~1.0.3",
     "sinon": "~1.7.3",
@@ -41,7 +29,7 @@
     "load-grunt-tasks": "~0.2.0",
     "time-grunt": "~0.2.1",
     "grunt-bump": "0.0.13",
-    "grunt-groundskeeper": "~0.1.7",
+    "grunt-groundskeeper": "~0.1.7"
   },
   "repository": {
     "type": "git",

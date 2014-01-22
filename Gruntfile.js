@@ -15,7 +15,7 @@ grunt.initConfig({
 
 		options:{'engine':engine},
 		files:
-			['./tests/specs.*js']
+			['./tests/specs/*.js']
 
 	},
 
@@ -166,7 +166,8 @@ grunt.initConfig({
             watch:{
                 js: {
                     files: [
-                        '<%= baseConfig.app %>/{,*/}*.js'
+                        '<%= baseConfig.app %>/{,*/}*.js',
+                        '<%= baseConfig.app %>/**/{,*/}*.js'
                     ],
                     tasks: ['newer:jshint:all'],
                     options: {

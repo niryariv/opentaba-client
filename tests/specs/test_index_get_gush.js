@@ -95,7 +95,7 @@ function initMock(){
         var server = sinon.fakeServer.create();
         server.autoRespond = true;
         var answer = JSON.stringify(planFixture_30338);
-        server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans',
+        server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans.json',
             [200, {"content-type":"application/json"}, answer]);
         server.respond();
         console.log('injected sinon with test fixture');

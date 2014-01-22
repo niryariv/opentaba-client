@@ -126,7 +126,8 @@ grunt.initConfig({
                                 '*.html',
                                 'data/**.*.js',
                                 'css/images/{,*/}*.{webp}',
-                                'css/font/*'
+                                'css/font/*',
+                                'CNAME'
                             ]
                         },
                         {

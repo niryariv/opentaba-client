@@ -1,23 +1,23 @@
 /*global casper:false */
-/*functional testing for the basic functionality of opentaba home page - The part displayed when showing specific plan 
- 
+/*functional testing for the basic functionality of opentaba home page - The part displayed when showing specific plan
+
  Runs with casperjs test filename (or casperjs.bat on windows)
 */
 
 //Some setup //TODO: move this to a global casper config
 
-var url = '../index.html';
-casper.options.clientScripts.push('./sinon-1.7.3.js');
-casper.options.clientScripts.push('./fixture.js');
+var url = 'http://localhost:9001/';
+casper.options.clientScripts.push('./tests/sinon-1.7.3.js');
+casper.options.clientScripts.push('./tests/fixture.js');
 casper.options.logLevel = "debug";
 casper.options.verbose = true;
 casper.options.viewportSize = {width:1024, height:768};
 
-var phantomcss = require('./PhantomCSS/phantomcss.js');
+var phantomcss = require('../PhantomCSS/phantomcss.js');
 phantomcss.init({
-    libraryRoot:'./PhantomCSS',
-    screenshotRoot:'./img',
-    failedComparisonsRoot:'./fail_img',
+    libraryRoot:'./tests/PhantomCSS',
+    screenshotRoot:'./tests/img',
+    failedComparisonsRoot:'./tests/fail_img',
     threshold: 0.08
 });
 //var delay = 10;

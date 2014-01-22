@@ -1,12 +1,12 @@
 /*global casper:false */
 /*functional testing for the basic functionality of opentaba home page (without specific plan displaying)
- 
+
  runs with casperjs test filename (or casperjs.bat on windows)
 */
 //Some setup //TODO: move this to a global casper config
-var url = '../index.html';
-casper.options.clientScripts.push('./sinon-1.7.3.js');
-casper.options.clientScripts.push('./fixture.js');
+var url = 'http://localhost:9001/';
+casper.options.clientScripts.push('./tests/sinon-1.7.3.js');
+casper.options.clientScripts.push('./tests/fixture.js');
 casper.options.logLevel = "debug";
 casper.options.verbose = true;
 casper.options.viewportSize = {width:1024, height:768};
@@ -43,7 +43,7 @@ casper.test.begin('Basic index.html elements test',23, function suite(test){
 		test.assertResourceExists('data/gushim.min.js');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
-		
+
 		//TODO: phantomcss check map rendering
 	});
 

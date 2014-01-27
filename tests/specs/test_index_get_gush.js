@@ -35,7 +35,7 @@ casper.test.begin('Testing a specific gush plans display', 10, function suite(te
 
     var hashpath = '/gush/30338';
     var gushurl = url + '#' + hashpath;
-    casper.thenOpen(gushurl).on('url.changed', initMock).wait(10000).
+    casper.thenOpen(gushurl).on('url.changed', initMock).wait(30000).
     then(function() {
         test.assertExists('#info h3', 'the info h3 exists now');
         test.assertSelectorHasText('#info h3', 'גוש 30338');
@@ -112,8 +112,8 @@ function initMock() {
         var server = sinon.fakeServer.create();
         server.autoRespond = true;
         var answer = JSON.stringify(planFixture_30338); //from
-        var geocode = JSON.stringfy(mockGeoCode);
-        var searchAnswer = JSON.stringfy(planFixture_30348);
+        var geocode = JSON.stringify(mockGeoCode);
+        var searchAnswer = JSON.stringify(planFixture_30348);
         server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans.json', [200, {
                 "content-type": "application/json"
             },

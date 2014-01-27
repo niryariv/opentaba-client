@@ -556,4 +556,923 @@ var planFixture_30338 = [{
         "$oid": "50ec596689e44b047b778353"
     },
     "day": 23
-}]
+}];
+
+var mockGeoCode = {
+    "results": [{
+        "address_components": [{
+            "long_name": "יד ושם",
+            "short_name": "יד ושם",
+            "types": [
+                "point_of_interest",
+                "establishment"
+            ]
+        }, {
+            "long_name": "הזיכרון",
+            "short_name": "הזיכרון",
+            "types": [
+                "route"
+            ]
+        }, {
+            "long_name": "ירושלים",
+            "short_name": "ירושלים",
+            "types": [
+                "locality",
+                "political"
+            ]
+        }, {
+            "long_name": "ישראל",
+            "short_name": "IL",
+            "types": [
+                "country",
+                "political"
+            ]
+        }, {
+            "long_name": "91034",
+            "short_name": "91034",
+            "types": [
+                "postal_code"
+            ]
+        }],
+        "formatted_address": "יד ושם, הזיכרון, ירושלים, 91034, ישראל",
+        "geometry": {
+            "location": {
+                "lat": 31.773892,
+                "lng": 35.175862
+            },
+            "location_type": "APPROXIMATE",
+            "viewport": {
+                "northeast": {
+                    "lat": 31.7752409802915,
+                    "lng": 35.17721098029149
+                },
+                "southwest": {
+                    "lat": 31.7725430197085,
+                    "lng": 35.17451301970849
+                }
+            }
+        },
+        "types": [
+            "museum",
+            "point_of_interest",
+            "establishment"
+        ]
+    }],
+    "status": "OK"
+};
+
+var planFixture_30348 = [{
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1012891.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=5&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=14023",
+    "gush_id": "30348",
+    "nispahim_link": [
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1012891/4_1.pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1012891/4_2.pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1012891/4_3.pdf"
+    ],
+    "govmap_link": [],
+    "number": "14023",
+    "area": "ירושלים",
+    "day": 13,
+    "essence": "הרחבת יח\"ד, תוספת יח\"ד חדשה",
+    "month": 11,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2013,
+    "files_link": [
+        "/IturTabotData/download/jerus/1012891.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f3"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1012891.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1010740.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=32&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=%u05de%u05e7%2f56%u05d6",
+    "gush_id": "30348",
+    "nispahim_link": [
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1010740/4_1.pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1010740/4_2.pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1010740/4_3.pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1010740/4_4.pdf"
+    ],
+    "govmap_link": [],
+    "number": "מק/56ז",
+    "area": "ירושלים",
+    "day": 28,
+    "essence": "מתחם יד ושם - שינוי תכנית בינוי",
+    "month": 12,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2009,
+    "files_link": [
+        "/IturTabotData/download/jerus/1010740.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f720e"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1010740_L.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1010740_M.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1010285.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=33&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=%u05de%u05e7%2f7951%u05d0",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "מק/7951א",
+    "area": "ירושלים",
+    "day": 5,
+    "essence": "איחוד וחלוקה מחדש",
+    "month": 8,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2008,
+    "files_link": [
+        "/IturTabotData/download/jerus/1010285.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f720f"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1010285.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1009540.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=30&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=9198",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "9198",
+    "area": "ירושלים",
+    "day": 30,
+    "essence": "שינוי יעוד למגורים מיוחד",
+    "month": 1,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2007,
+    "files_link": [
+        "/IturTabotData/download/jerus/1009540.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f720c"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1009540.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1009094.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=25&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=5999",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "5999",
+    "area": "ירושלים",
+    "day": 12,
+    "essence": "קביעת גבולות\"יער אדם\"בצד הדרומי של כביש מס 1.",
+    "month": 1,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2006,
+    "files_link": [
+        "/IturTabotData/download/jerus/1009094.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7207"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1009094-K.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1009094-K1.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1009094-L.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1009094-M.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1050278.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=27&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=7951",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "7951",
+    "area": "ירושלים",
+    "day": 27,
+    "essence": "קביעת הוראות להקמת חניון",
+    "month": 6,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2004,
+    "files_link": [
+        "/IturTabotData/download/jerus/1050278.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7209"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050278.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1050512.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=28&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=8000",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "8000",
+    "area": "ירושלים",
+    "day": 29,
+    "essence": "התווית הרכבת הקלה",
+    "month": 3,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2004,
+    "files_link": [
+        "/IturTabotData/download/jerus/1050512.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f720a"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 10.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 100.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 20.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 200.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 30.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 40.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 50.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 60.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 70.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 80.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/גליון מס 90.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1050512/תשריט מפתח.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1008227.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=10&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1676%2f%u05d0",
+    "gush_id": "30348",
+    "nispahim_link": [
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1008227/100.pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1008227/39-1.pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1008227/39_2.pdf"
+    ],
+    "govmap_link": [],
+    "number": "1676/א",
+    "area": "ירושלים",
+    "day": 16,
+    "essence": "שינוי ייעוד משטח לבניני ציבור למלונאות",
+    "month": 4,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2001,
+    "files_link": [
+        "/IturTabotData/download/jerus/1008227.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f8"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008227.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1003824.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=24&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=56%u05d5",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "56ו",
+    "area": "ירושלים",
+    "day": 17,
+    "essence": "שינוי במערך יעודי הקרקע",
+    "month": 1,
+    "status": "פרסום תוקף ברשומות",
+    "year": 2000,
+    "files_link": [
+        "/IturTabotData/download/jerus/1003824.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7206"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1003824.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1003824_L.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1003824_M.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1004446.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=18&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=4931",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "4931",
+    "area": "ירושלים",
+    "day": 11,
+    "essence": "ייעוד השטח לשטח למתקן הנדסי",
+    "month": 7,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1999,
+    "files_link": [
+        "/IturTabotData/download/jerus/1004446.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7200"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1004446.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1007046.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=23&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=56%u05d4",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "56ה",
+    "area": "ירושלים",
+    "day": 3,
+    "essence": "הרחבת בניה ושינוי יעודים בתוכנית",
+    "month": 7,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1997,
+    "files_link": [
+        "/IturTabotData/download/jerus/1007046.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7205"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1007046_1.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1007046_2.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1003979.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=22&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=56%u05d2",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "56ג",
+    "area": "ירושלים",
+    "day": 3,
+    "essence": "קביעת בינוי לתוספת אגף לבנין המנהלה",
+    "month": 2,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1994,
+    "files_link": [
+        "/IturTabotData/download/jerus/1003979.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7204"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1003979.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1003340.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=17&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=3871",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "3871",
+    "area": "ירושלים",
+    "day": 22,
+    "essence": "מוזיאון הרצל-בינוי עפ\"ינספח (שד' הרצל)",
+    "month": 1,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1990,
+    "files_link": [
+        "/IturTabotData/download/jerus/1003340.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71ff"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1003340.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1006689.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=14&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=2225",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "2225",
+    "area": "ירושלים",
+    "day": 27,
+    "essence": "הרחבת שדרות הרצל,דגניה,תרצה,סמדר ומגדים",
+    "month": 8,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1989,
+    "files_link": [
+        "/IturTabotData/download/jerus/1006689.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71fc"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1006689.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1002970.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=16&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=2889%u05d0",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "2889א",
+    "area": "ירושלים",
+    "day": 6,
+    "essence": "הגדלת מס' הקומות לתחנת מוניות מאושרת",
+    "month": 8,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1989,
+    "files_link": [
+        "/IturTabotData/download/jerus/1002970.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71fe"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1002970.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1008248.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=21&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=56%u05d1",
+    "gush_id": "30348",
+    "nispahim_link": [
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1008248/100(1-3).pdf",
+        "http://mmi.gov.il/IturTabotData/nispachim/jerus/1008248/100(פרספקטיבה).pdf"
+    ],
+    "govmap_link": [],
+    "number": "56ב",
+    "area": "ירושלים",
+    "day": 29,
+    "essence": "יד ושם (רח' הזכרון, הר הזכרון)",
+    "month": 3,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1984,
+    "files_link": [
+        "/IturTabotData/download/jerus/1008248.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7203"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008248.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008248_1.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008248_2.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008248_3.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1005420.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=15&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=2889",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "2889",
+    "area": "ירושלים",
+    "day": 20,
+    "essence": "הקמת ייעוד שצ\"פ לשם הקמת תחנת מוניות",
+    "month": 1,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1983,
+    "files_link": [
+        "/IturTabotData/download/jerus/1005420.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71fd"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1005420.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1008496.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=0&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1042",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1042",
+    "area": "ירושלים",
+    "day": 20,
+    "essence": "אזור בית וגן המורחב",
+    "month": 9,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1979,
+    "files_link": [
+        "/IturTabotData/download/jerus/1008496.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71ee"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008496_1.pdf",
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008496_2.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1007060.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=20&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=56%u05d0",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "56א",
+    "area": "ירושלים",
+    "day": 21,
+    "essence": "הקמת בניני ציבור וביטול דרכים מאושרות",
+    "month": 12,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1978,
+    "files_link": [
+        "/IturTabotData/download/jerus/1007060.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7202"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1007060.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1005619.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=11&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1715",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1715",
+    "area": "ירושלים",
+    "day": 26,
+    "essence": "אחוד חלקות למג' 1 ובנוי (רח' ברגמן)",
+    "month": 6,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1975,
+    "files_link": [
+        "/IturTabotData/download/jerus/1005619.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f9"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1005619.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1008324.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=13&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=2023",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "2023",
+    "area": "ירושלים",
+    "day": 13,
+    "essence": "שינוי יעוד",
+    "month": 2,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1975,
+    "files_link": [
+        "/IturTabotData/download/jerus/1008324.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71fb"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008324.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1007475.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=12&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1752",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1752",
+    "area": "ירושלים",
+    "day": 13,
+    "essence": "בית הסתדרות הרבנים דאמריקה (רח' קרית יובל)",
+    "month": 10,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1974,
+    "files_link": [
+        "/IturTabotData/download/jerus/1007475.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71fa"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1007475.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1008093.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=6&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1440%u05d0",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1440א",
+    "area": "ירושלים",
+    "day": 8,
+    "essence": "תחנת דלק (רח' זנגוויל, תורה ועבודה)",
+    "month": 6,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1972,
+    "files_link": [
+        "/IturTabotData/download/jerus/1008093.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f4"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008093.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1003205.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=9&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1676",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1676",
+    "area": "ירושלים",
+    "day": 23,
+    "essence": "הרחבת דרך ציבורית וייעוד השטח להקמת בנין ציבו",
+    "month": 12,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1971,
+    "files_link": [
+        "/IturTabotData/download/jerus/1003205.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f7"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1003205.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1006135.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=8&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1582",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1582",
+    "area": "ירושלים",
+    "day": 15,
+    "essence": "הרחבת דרכים מאושרות או קיימות",
+    "month": 7,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1971,
+    "files_link": [
+        "/IturTabotData/download/jerus/1006135.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f6"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1006135.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1004027.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=7&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1507",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1507",
+    "area": "ירושלים",
+    "day": 5,
+    "essence": "אחוד חלקות לב\"צ - פנימית נתיב מאיר",
+    "month": 3,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1970,
+    "files_link": [
+        "/IturTabotData/download/jerus/1004027.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f5"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1004027.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1008499.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=2&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1082%u05d1",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1082ב",
+    "area": "ירושלים",
+    "day": 9,
+    "essence": "ביטול הדרך המחברת את רח' החידא ורח' הפסגה",
+    "month": 5,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1968,
+    "files_link": [
+        "/IturTabotData/download/jerus/1008499.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f0"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1008499.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1005085.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=29&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=881%u05d1",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "881ב",
+    "area": "ירושלים",
+    "day": 15,
+    "essence": "אמ\"ת איחוד מפעלים תורניים-ספרותיים",
+    "month": 2,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1968,
+    "files_link": [
+        "/IturTabotData/download/jerus/1005085.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f720b"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1005085.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1006367.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=31&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=%u05d0%2f48",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "א/48",
+    "area": "ירושלים",
+    "day": 13,
+    "essence": "קביעת שטח וגבולות שדה התעופה",
+    "month": 10,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1966,
+    "files_link": [
+        "/IturTabotData/download/jerus/1006367.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f720d"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1006367.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1003437.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=1&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1082%u05d0",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1082א",
+    "area": "ירושלים",
+    "day": 12,
+    "essence": "מגורים 1 בין רחובות הפסגה וחיד\"א",
+    "month": 5,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1966,
+    "files_link": [
+        "/IturTabotData/download/jerus/1003437.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71ef"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1003437.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1006519.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=4&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1178",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1178",
+    "area": "ירושלים",
+    "day": 1,
+    "essence": "הרחבת שד' הרצל (מככר דנמרק - הר הרצל)",
+    "month": 7,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1965,
+    "files_link": [
+        "/IturTabotData/download/jerus/1006519.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f2"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1006519.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1006706.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=3&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=1155",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "1155",
+    "area": "ירושלים",
+    "day": 13,
+    "essence": "הרחבת דרכים כללית בשכונה",
+    "month": 5,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1965,
+    "files_link": [
+        "/IturTabotData/download/jerus/1006706.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f71f1"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1006706.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1007899.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=19&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=56",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "56",
+    "area": "ירושלים",
+    "day": 10,
+    "essence": "הקמת מפעל זכרון \"יד ושם\"",
+    "month": 11,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1960,
+    "files_link": [
+        "/IturTabotData/download/jerus/1007899.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7201"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1007899.pdf"
+    ]
+}, {
+    "takanon_link": [
+        "http://mmi.gov.il/IturTabotData/takanonim/jerus/1006626.pdf"
+    ],
+    "details_link": "http://mmi.gov.il/IturTabot2/taba2.aspx?tbMerchav=102&tUniqueID=26&tblView=tblView_9cc2dbc74ab6&tbMsTochnit=60",
+    "gush_id": "30348",
+    "nispahim_link": [],
+    "govmap_link": [],
+    "number": "60",
+    "area": "ירושלים",
+    "day": 19,
+    "essence": "תכנון המאוזליאון וסביבתו בשטח הר הרצל",
+    "month": 5,
+    "status": "פרסום תוקף ברשומות",
+    "year": 1955,
+    "files_link": [
+        "/IturTabotData/download/jerus/1006626.zip"
+    ],
+    "_id": {
+        "$oid": "52e3a84ab2fb74049c1f7208"
+    },
+    "tasrit_link": [
+        "http://mmi.gov.il/IturTabotData/tabot/jerus/1006626.pdf"
+    ]
+}];

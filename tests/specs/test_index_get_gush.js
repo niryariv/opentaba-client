@@ -80,6 +80,20 @@ casper.test.begin('Testing a specific gush plans display', 10, function suite(te
     casper.then(function check_phantomcss_map_gush() {
         test.assertEqual(phantomcss.getExitStatus(), 0, 'map gush div should look according to predefined pictures');
     });
+
+    casper.then(function searchAddress() {
+        //fill "יד ושם" in search
+    });
+
+    casper.then(function() {
+        //assert url 30348
+
+    });
+
+
+    casper.then(function() {
+        //assert page elements
+    })
     //TODO: find out how to solve the font kerning problem failing this test
     /* casper.then(function check_info_screenshot(){
         phantomcss.compareMatched(".info_div");
@@ -97,7 +111,9 @@ function initMock() {
     casper.evaluate(function() {
         var server = sinon.fakeServer.create();
         server.autoRespond = true;
-        var answer = JSON.stringify(planFixture_30338); //from fixture
+        var answer = JSON.stringify(planFixture_30338); //from
+        var geocode = JSON.stringfy(mockGeoCode);
+        var searchAnswer = JSON.stringfy(planFixture_30348);
         server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans.json', [200, {
                 "content-type": "application/json"
             },
@@ -112,7 +128,19 @@ function initMock() {
                 "content-type": "application/json"
             },
             answer
-        ])
+        ]);
+
+        server.respondWith('GET', 'https://maps.googleapis.com/maps/api/geocode/json?sensor=^false$&address=^\×\\×\\ \×\\×\©\×\\ \×\\×\¨\×\\×\©\×\\×\\×\$', [200, {
+                "content-type": "application/json"
+            },
+            geocode
+        ]);
+
+        server.respondWith('GET', 'https://opentaba-server.herokuapp.com/gush/30348/plans.json', [200, {
+                "content-type": "application/json"
+            },
+            searchAnswer
+        ]);
 
         server.respond();
         console.log('injected sinon with test fixture');

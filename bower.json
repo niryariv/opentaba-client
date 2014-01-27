@@ -1,0 +1,31 @@
+{
+  "name": "opentaba-client",
+  "version": "0.2.0",
+  "homepage": "https://github/niryariv/opentaba-client",
+  "authors": [
+    "alonisser <alonisser@gmail.com>"
+  ],
+  "description": "Open taba webclient",
+  "main": "app/index.html",
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.10.2",
+  },
+  "resolutions": {
+    "jquery": "1.10.2",
+    "bootstrap": "2.3.2"
+  },
+  "devDependencies":{
+
+    "font-awesome": "~4.0.3",
+    "bootstrap": "~3.0.3"
+  }
+}

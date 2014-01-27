@@ -6,3 +6,7 @@ node_modules/
 dist
 .tmp
 tests/fail_img/
+app/lib/jquery/*
+app/lib/font-awesome/*
+app/lib/handlebars/*
+

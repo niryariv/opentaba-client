@@ -7,7 +7,7 @@ before_install:
    - git submodule update --init --recursive
 
 install:
-   - npm install -g grunt-cli
+   - npm install -g grunt-cli bower
    - npm install
    - bower install
 

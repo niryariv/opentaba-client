@@ -9,4 +9,4 @@ tests/fail_img/
 app/lib/jquery/*
 app/lib/font-awesome/*
 app/lib/handlebars/*
-
+app/lib/bootstrap2.3.2/*

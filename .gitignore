@@ -1,3 +1,12 @@
 *~
 tests/node_modules/
-tests/img/*.diff.png
+tests/img/*diff*
+npm-debug.log
+node_modules/
+dist
+.tmp
+tests/fail_img/
+app/lib/jquery/*
+app/lib/font-awesome/*
+app/lib/handlebars/*
+app/lib/bootstrap2.3.2/*

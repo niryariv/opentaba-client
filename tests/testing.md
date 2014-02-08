@@ -18,19 +18,19 @@ Didn't touch that yet
 
 * need to choose a testing framework: [Jasmine](http://pivotal.github.io/jasmine/), [Mocha](http://visionmedia.github.io/mocha/)
 * also need to choose a test runner: [karma](http://karma-runner.github.io/0.10/index.html), [Intern](http://theintern.io/) or other
-
+* using [chai](http://chaijs.com/) matchers
 **We'll be glad for help with this.**
 
-###Setting up dependencies:  
+###Setting up dependencies:
 you need npm installed (the ```node.js``` package manager) to install dependencies.
 
     git submodule update --init (in the project root)
     cd tests
     npm install grunt-cli -g
-    npm install 
-    
+    npm install
 
-###running the tests:  
+
+###running the tests:
 
     cd tests
     npm test

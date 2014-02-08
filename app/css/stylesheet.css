@@ -1,0 +1,60 @@
+body, html {
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.ot-main {
+    height: 100%;
+    padding-left: 0px;
+}
+
+body{
+    background:url('/css/images/lil_fiber.png') repeat;
+}
+
+@font-face {
+    font-family: 'Alef';
+    src: url('/css/font/Alef-bold.eot');
+    src: url('/css/font/Alef-bold.eot?#iefix') format('embedded-opentype'),
+         url('/css/font/Alef-bold.woff') format('woff'),
+         url('/css/font/Alef-bold.ttf') format('truetype'),
+         url('/css/font/Alef-bold.svg#alefbold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Alef';
+    src: url('/css/font/Alef-regular.eot');
+    src: url('/css/font/Alef-regular.eot?#iefix') format('embedded-opentype'),
+         url('/css/font/Alef-regular.woff') format('woff'),
+         url('/css/font/Alef-regular.ttf') format('truetype'),
+         url('/css/font/Alef-regular.svg#alefregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+#scrobber {
+    vertical-align: baseline;
+    display: none;
+}
+
+#right-bar {
+    font-family: Alef;
+    direction: rtl;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.a [class^="icon-"], a [class*=" icon-"]
+{
+    text-decoration: none;
+    
+}

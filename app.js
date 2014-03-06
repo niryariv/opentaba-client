@@ -253,8 +253,8 @@ $(document).ready(function(){
 
 var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(MAP_CENTER, DEFAULT_ZOOM);
 
-//tile_url = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
-tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
+//tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
 
 L.tileLayer(tile_url, {
 	maxZoom: 16,

@@ -180,13 +180,13 @@ function highlight_gush(id) {
 	gush = 'gush_' + id;
 	console.log("highlight_gush ", gush);
 	map.fitBounds(map._layers[gush].getBounds());
-	map._layers[gush].setStyle({opacity: 0 	, color: "blue"});
+	map._layers[gush].setStyle({opacity: 0.2 , color: "#0aa"});
 	highlit.push(id);
 }
 
 function clear_highlight(id) {
 	gush = 'gush_' + id;
-	map._layers[gush].setStyle({opacity: 0.05 , color: "#777"});
+	map._layers[gush].setStyle({opacity: 0.05 , color: "#888"});
 	highlit.splice(highlit.indexOf(id), 1);
 }
 
@@ -200,7 +200,7 @@ function onEachFeature(feature, layer) {
 	// layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({
 				'mouseover'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0 	, color: "red" 	}) } } ,
-				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#777" }) } },
+				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#888" }) } },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
 					location.hash = "#/gush/" + feature.properties.Name;
@@ -255,7 +255,8 @@ var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).set
 
 // tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
 // tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-tile_url = "http://{s}.tiles.mapbox.com/v3/niryariv.i6e92njd/{z}/{x}/{y}.png";
+// tile_url = "http://{s}.tiles.mapbox.com/v3/niryariv.i6e92njd/{z}/{x}/{y}.png";
+tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 
 L.tileLayer(tile_url, {
 	maxZoom: 16,
@@ -266,9 +267,9 @@ gushimLayer = L.geoJson(gushim,
 	{
 		onEachFeature: onEachFeature,
 		style : {
-			"color" : "#777",
+			"color" : "#888",
 			"weight": 1,
-			"opacity": 0.9
+			"opacity": 0.7
 		}
 	}
 ).addTo(map);

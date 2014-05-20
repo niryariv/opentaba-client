@@ -3,7 +3,7 @@
  var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/';
 
 
- var gushimLayer;
+ var gushimLayer, currentGush;
  leafletPip.bassackwards = true;
 
  var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
@@ -132,6 +132,7 @@
      clear_all_highlit();
      highlight_gush(gush_id);
      location.hash = "#/gush/" + gush_id;
+     currentGush = gush_id;
 
      $.getJSON(
          API_URL + 'gush/' + gush_id + '/plans.json',
@@ -260,6 +261,8 @@
          'click': function() {
              $("#info").html("עוד מעט...");
              location.hash = "#/gush/" + feature.properties.Name;
+             console.log('property', feature.properties.Name)
+             currentGush = feature.properties.Name
              get_gush(feature.properties.Name);
          }
      });

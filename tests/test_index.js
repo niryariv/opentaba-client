@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',26, function suite(test){
+casper.test.begin('Basic index.html elements test',23, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -38,7 +38,7 @@ casper.test.begin('Basic index.html elements test',26, function suite(test){
 		test.assertVisible('.icon-twitter');
 		test.assertExists('.icon-facebook', 'The facebook icon exists');
 		//very tied to implentation should think about this
-		test.assertResourceExists('lib/pdfobject.js');
+		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
 		test.assertResourceExists('data/gushim.min.js');
 		test.assertResourceExists('app.js');

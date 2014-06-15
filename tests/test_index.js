@@ -30,8 +30,8 @@ casper.test.begin('Basic index.html elements test',26, function suite(test){
 		test.assertVisible('#info');
 		//this.wait(5000);
 		test.assertExists('#map.leaflet-container.leaflet-fade-anim','The map div exists with leaflet class');
-		test.assertExists('#docModal','The doc modal exists');
-		test.assertNotVisible('#docModal');
+		//test.assertExists('#docModal','The doc modal exists');
+		//test.assertNotVisible('#docModal');
 		test.assertExists('#faqModal','The faq modal exists');
 		test.assertNotVisible('#faqModal');
 		test.assertExists('.icon-twitter', 'The twitter icon exists');

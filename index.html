@@ -9,7 +9,7 @@
 	<meta name="description" content="אתור תוכניות בניה עירונית (תבע) בירושלים">
 	<link rel="canonical" href="http://opentaba.info/" />
 
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 
 	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
@@ -49,13 +49,13 @@
 					</div>
 
 					<div class="align-right">
-						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת בירושלים:</p>
+						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת או מספר גוש בירושלים:</p>
 						
-						<form id="addr-form"> 
-							<input type="text" id="addr-text" name="addr" placeholder="הכניסו כתובת בירושלים"/>
+						<form id="search-form"> 
+							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת או מספר גוש בירושלים"/>
 							<button type="submit" class="btn" style="vertical-align: top;">חפש</button>
 							<img src="css/ajax-loader.gif" id="scrobber" />
-							<p style="color: red" id="addr-error-p"></p>
+							<p style="color: red" id="search-error-p"></p>
 						</form>
 					</div>
 					
@@ -133,7 +133,7 @@
 		</div>
 	</div>
 
-	<script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>

@@ -2,7 +2,7 @@
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/'; 
 
-
+var gushim = {};
 var gushimLayer;
 leafletPip.bassackwards = true;
 
@@ -263,13 +263,20 @@ L.tileLayer(tile_url, {
 	minZoom: 13
 }).addTo(map);
 
-gushimLayer = L.geoJson(gushim,
-	{
-		onEachFeature: onEachFeature,
-		style : {
-			"color" : "#888",
-			"weight": 1,
-			"opacity": 0.7
+$.ajax({
+	url: 'data/gushim.min.js',
+	dataType: 'json'
+}).done(function(res) {
+	gushim = res;
+	
+	gushimLayer = L.geoJson(gushim,
+		{
+			onEachFeature: onEachFeature,
+			style : {
+				"color" : "#888",
+				"weight": 1,
+				"opacity": 0.7
+			}
 		}
-	}
-).addTo(map);
+	).addTo(map);
+}).fail(function(jqXHR, textStatus, errorThrown) { console.log('fail: ' + textStatus); console.log(errorThrown); });

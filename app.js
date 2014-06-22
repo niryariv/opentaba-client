@@ -2,9 +2,13 @@
 var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/'; 
 
-
+var gushim;
 var gushimLayer;
 leafletPip.bassackwards = true;
+
+// use delegation to allow the big gushim json to be loaded asynchronously while still supporting our #/gush/:gush_id address mapping
+var got_gushim_delegate;
+var got_gushim_delegate_param;
 
 var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
 
@@ -132,7 +136,6 @@ function get_gush_by_addr(addr) {
 		'https://maps.googleapis.com/maps/api/geocode/json?address='+addr+'&sensor=false',
 		function (r) {
 			$('#scrobber').hide();
-			$('#addr-error-p').html('');
 
 			if (r['status'] == 'OK' && r['results'].length > 0) {
 				// Here we have a case when Google api returns without an actual place (even a street), 
@@ -142,7 +145,7 @@ function get_gush_by_addr(addr) {
 				if (r['results'][0]['types'].length == 2 && 
 					$.inArray('locality', r['results'][0]['types']) > -1 && 
 					$.inArray('political', r['results'][0]['types']) > -1) {
-					$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+					$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
 				}
 				else {
 					var lat = r['results'][0]['geometry']['location']['lat'];
@@ -155,22 +158,22 @@ function get_gush_by_addr(addr) {
 						get_gush(gid[0].gushid);
 						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
 					} else {
-						$('#addr-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
+						$('#search-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
 					}
 				}
 			}
 			else if (r['status'] == 'ZERO_RESULTS') {
-				$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+				$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
 			}
 			else {
-				$('#addr-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
+				$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
 			}
 		}
 	)
    .fail(
    		function(){
    			$('#scrobber').hide(); 
-   			$('#addr-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
+   			$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
    		}
    	);
 }
@@ -224,7 +227,14 @@ $(document).ready(function(){
 	Path.map("#/gush/:gush_id").to(
 		function(){ 
 			$("#docModal").modal('hide');
-			get_gush(this.params['gush_id'].split('?')[0]);  // remove '?params' if exists
+			
+			if (gushim) {
+				get_gush(this.params['gush_id'].split('?')[0]); // remove '?params' if exists
+			} else {
+				// use a delegate because this script will definetly run before we finish loading the big gushim json
+				got_gushim_delegate_param = this.params['gush_id'].split('?')[0];
+				got_gushim_delegate = get_gush;
+			}
 		}
 	);
 
@@ -239,12 +249,28 @@ $(document).ready(function(){
 
 	Path.listen();
 
-	$('#addr-form').submit(
+	$('#search-form').submit(
 		function() {
-			var addr = $('#addr-text').val();
-			console.log('Getting gush for address "' + addr + '"');
 			$('#scrobber').show();
-			get_gush_by_addr(addr);
+			$('#search-error-p').html('');
+			
+			var search_val = $('#search-text').val();
+			
+			// if it's a number search for a gush with that number, oterwise do address search
+			if (!isNaN(search_val)) {
+				console.log('Trying to find gush #' + search_val);
+				var result = find_gush(parseInt(search_val));
+				if (result)
+					get_gush(parseInt(search_val));
+				else
+					$('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
+				
+				$('#scrobber').hide(); 
+			} else {
+				console.log('Getting gush for address "' + search_val + '"');
+				get_gush_by_addr(search_val);
+			}
+			
 			return false;
 		}
 	);
@@ -263,13 +289,26 @@ L.tileLayer(tile_url, {
 	minZoom: 13
 }).addTo(map);
 
-gushimLayer = L.geoJson(gushim,
-	{
-		onEachFeature: onEachFeature,
-		style : {
-			"color" : "#888",
-			"weight": 1,
-			"opacity": 0.7
+$.ajax({
+	url: 'data/gushim.min.js',
+	dataType: 'json'
+}).done(function(res) {
+	gushim = res;
+	
+	gushimLayer = L.geoJson(gushim,
+		{
+			onEachFeature: onEachFeature,
+			style : {
+				"color" : "#888",
+				"weight": 1,
+				"opacity": 0.7
+			}
 		}
+	).addTo(map);
+	
+	// if the direct gush address mapping was used go ahead and jump to the wanted gush
+	if (got_gushim_delegate) {
+		got_gushim_delegate(got_gushim_delegate_param);
+		map._onResize();
 	}
-).addTo(map);
+});

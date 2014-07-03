@@ -40,7 +40,7 @@ casper.test.begin('Basic index.html elements test',25, function suite(test){
 		//very tied to implentation should think about this
 		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
-		test.assertResourceExists('data/gushim.min.js');
+		test.assertResourceExists('data/gushim.min.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
 		

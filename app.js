@@ -117,8 +117,8 @@ function get_gush(gush_id) {
 
 // find a rendered gush based on ID
 function find_gush(gush_id){
-	g = gushim.features.filter(
-		function(f){ return (f.properties.Name == gush_id); }
+	g = gushim.filter(
+		function(f){ return (f.id == gush_id); }
 	);
 	return g[0];
 }
@@ -206,12 +206,12 @@ function onEachFeature(feature, layer) {
 				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#888" }) } },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
-					location.hash = "#/gush/" + feature.properties.Name;
-					get_gush(feature.properties.Name);
+					location.hash = "#/gush/" + feature.id;
+					get_gush(feature.id);
 				}
 			});
-	layer["gushid"] = feature.properties.Name;
-	layer._leaflet_id = 'gush_' + feature.properties.Name;
+	layer["gushid"] = feature.id;
+	layer._leaflet_id = 'gush_' + feature.id;
 }
 
 // jQuery startup funcs
@@ -290,10 +290,10 @@ L.tileLayer(tile_url, {
 }).addTo(map);
 
 $.ajax({
-	url: 'data/gushim.min.js',
+	url: 'data/gushim.min.topojson',
 	dataType: 'json'
 }).done(function(res) {
-	gushim = res;
+	gushim = topojson.feature(res, res.objects.jerusalem).features;
 	
 	gushimLayer = L.geoJson(gushim,
 		{

@@ -49,14 +49,20 @@
 					</div>
 
 					<div class="align-right">
-						<p>בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת או מספר גוש בירושלים:</p>
+						<p id="muni-text">בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת או מספר גוש</p>
 						
 						<form id="search-form"> 
-							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת או מספר גוש בירושלים" style="width: 85%;"/>
+							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת או מספר גוש:" style="width: 85%;"/>
 							<button type="submit" class="btn" style="width: 14%;">חפש</button>
 							<img src="css/ajax-loader.gif" id="scrobber" />
 							<p style="color: red" id="search-error-p"></p>
 						</form>
+					</div>
+					
+					<div class="align-right">
+						<select id="city-jump" style="width: 100%;">
+							<option value="none">בחר עיר אחרת...</option>
+						</select>
 					</div>
 					
 					<div id="info" class="align-right">
@@ -71,7 +77,7 @@
 
 						<p><b>מהי תב"ע פתוחה?</b></p>
 						<p>
-							תב"ע פתוחה מגישה ממשק נוח לאיתור תוכניות תב"ע באיזור מסוים (כרגע רק בירושלים), ומשם להגיע לפרטי התוכנית באתר רשות המקרקעין.
+							תב"ע פתוחה מגישה ממשק נוח לאיתור תוכניות תב"ע באיזור מסוים (<strike>כרגע</strike> כבר לא רק בירושלים), ומשם להגיע לפרטי התוכנית באתר רשות המקרקעין.
 						</p>
 
 						<p><b>הצטרפו אלינו!</b></p>
@@ -145,6 +151,7 @@
 	<script src="lib/path.js"></script>
 	<script src="lib/leaflet-pip.min.js"></script>
 
+	<script src="data/index.js"></script>	
 	<script src="app.js"></script>	
 
 	<script type="text/javascript">

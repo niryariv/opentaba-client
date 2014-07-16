@@ -43,11 +43,11 @@ Options:
  > - Add the gush numbers to the tools/gushim.py file in the server repository
  > - Update the test_scrape.py test file with the new number of gushim
  
-+ Make sure the changes made locally are good and tests are running, commit and push to client and server master branches, then:
++ Make sure the changes made locally are good and tests are succeeding, commit and push to client and server master branches, then:
   1. For Server
     1. Push changes to heroku remote
-    2. Enter bash environement on heroku dyno and run 'python tools/update_db.py --force' so the new gushim would be added to mongo
-    3. If you want - run 'python scrape.py' and 'python worker.py' to start scraping now, or wait for the scheduled scraping
+    2. Enter bash environment on heroku dyno and run `python tools/update_db.py --force` so the new gushim would be added to mongo
+    3. If you want - run `python scrape.py` and `python worker.py` to start scraping now, or wait for the scheduled scraping
   2. For Client
     1. Register a virtual sub-domain with the MUNI_NAME you supplied the script
-    2. Merge changes with gh-pages branch 
+    2. Merge changes to gh-pages branch 

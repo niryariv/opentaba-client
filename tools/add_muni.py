@@ -9,6 +9,7 @@ import sys
 import os
 import logging
 import json
+import re
 from optparse import OptionParser
 from time import sleep
 from subprocess import Popen
@@ -16,6 +17,10 @@ from helper.geojson_validator import validate_geojson, GeoJSONValidationExceptio
 
 
 def _which(program):
+    """
+    Make sure a given program is in the running PATH so we can use it
+    """
+    
     def is_exe(fpath):
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
@@ -34,6 +39,10 @@ def _which(program):
 
 
 def _load_gushim_json(client_dir, gushim_file):
+    """
+    Load and validate the geojson file given as input for the newmunicipality
+    """
+    
     with open(os.path.join(client_dir, gushim_file)) as gushim_data:
         try:
             gushim_json = json.loads(gushim_data.read().replace('var gushim=', '').rstrip('\n').rstrip(';'))
@@ -47,8 +56,9 @@ def _load_gushim_json(client_dir, gushim_file):
 
 def _get_muni_center(features):
     """
-    get the center point for the municipality - average longtitude and latitude values
+    Get the center point for the municipality - average longtitude and latitude values
     """
+    
     sum_x = 0
     sum_y = 0
     count = 0
@@ -64,6 +74,12 @@ def _get_muni_center(features):
 
 
 def _update_scraper_gushim_list(gushim_json, server_dir):
+    """
+    Update the gushim.py file in the server repository so that the gushim list there
+    would be updated, and then when create_db or update_db are run mongo will have
+    all of them
+    """
+    
     try:
         with open(os.path.join(server_dir, 'tools/gushim.py')) as gushim_data:
             gushim_list = json.loads(gushim_data.read().replace('GUSHIM = ', ''))
@@ -71,18 +87,45 @@ def _update_scraper_gushim_list(gushim_json, server_dir):
         log.warn('Couldn\'t load scraper\'s gushim list. You can safely ignore if it does not exist yet')
         gushim_list = []
     
+    gushim_count = len(gushim_list)
+    
     for f in gushim_json['features']:
         if f['properties']['Name'] != '' and f['properties']['Name'] != '0' and f['properties']['Name'] not in gushim_list:
             gushim_list.append(f['properties']['Name'])
+            gushim_count += 1
     
     out = open(os.path.join(server_dir, 'tools/gushim.py'), 'w')
     out.write('GUSHIM = ' + json.dumps(gushim_list))
     out.close
+    
+    return gushim_count
+
+
+def _update_scraper_test(gushim_count, server_dir):
+    """
+    Modify the test_return_json.py file in the server repository so the tests will continue to run well
+    (the number of gushim is changing here)
+    """
+    
+    with open(os.path.join(server_dir, 'Tests/functional_tests/test_return_json.py')) as test_data:
+        test_code = test_data.read()
+    
+    gush_count_line_re = re.compile('(eq_\(len\(j\), )[0-9]+(\))')
+    test_code = gush_count_line_re.sub('eq_(len(j), %s)' % gushim_count, test_code, count=1)
+    
+    out = open(os.path.join(server_dir, 'Tests/functional_tests/test_return_json.py'), 'w')
+    out.write(test_code)
+    out.close
 
 
 def _convert_to_topojson(client_dir, topojson_file, gushim_file):
-    # the reason i chose to use the official topojson as a subprocess and not https://github.com/calvinmetcalf/topojson.py is because 
-    # topojson.py is not a direct port and i don't trust it to produce exactly the same results. also it's no on pip
+    """
+    Convert the geojson to topojson
+    the reason i chose to use the official topojson as a subprocess and not 
+    https://github.com/calvinmetcalf/topojson.py is because topojson.py is not a direct port and i don't
+    trust it to produce exactly the same results. also it's not on pip
+    """
+    
     topojson_full_path = os.path.join(client_dir, topojson_file)
     p = Popen(['topojson', '--id-property', 'Name', '-q', '1e5', '-o', topojson_full_path, os.path.join(client_dir, gushim_file)])
     for i in range(10):
@@ -168,7 +211,11 @@ if __name__ == '__main__':
     
     # add to gushim.py
     log.debug('Updating the scraper\'s list of gushim')
-    _update_scraper_gushim_list(gushim_json, options.server_dir)
+    gushim_count = _update_scraper_gushim_list(gushim_json, options.server_dir)
+    
+    # update server/Tests/functional_test/test_return_json.py
+    log.debug('Updating the scraper\'s test file\'s number of gushim')
+    _update_scraper_test(gushim_count, options.server_dir)
     
     # convert to topojson
     if options.topo_file_name:

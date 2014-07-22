@@ -274,6 +274,11 @@ $(document).ready(function(){
 			return false;
 		}
 	);
+	
+	$('[data-toggle=offcanvas]').click(function() {
+		$('.row-offcanvas').toggleClass('active');
+		$('.navbar-toggle').toggleClass('active');
+	});
 });
 
 

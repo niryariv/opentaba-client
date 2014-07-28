@@ -73,29 +73,39 @@ def _get_muni_center(features):
     return [eval('{:.6f}'.format(sum_y / count)), eval('{:.6f}'.format(sum_x / count))]
 
 
-def _update_scraper_gushim_list(gushim_json, server_dir):
+def _update_scraper_gushim_list(gushim_json, server_dir, city_name, city_display):
     """
-    Update the gushim.py file in the server repository so that the gushim list there
-    would be updated, and then when create_db or update_db are run mongo will have
-    all of them
+    Update the gushim.py file in the server repository so that the gushim dictionary 
+    there would be updated, and then when create_db or update_db are run mongo will 
+    have all of them
     """
     
     try:
         with open(os.path.join(server_dir, 'tools/gushim.py')) as gushim_data:
-            gushim_list = json.loads(gushim_data.read().replace('GUSHIM = ', ''))
+            gushim_dict = json.loads(gushim_data.read().replace('GUSHIM = ', ''))
     except:
         log.warn('Couldn\'t load scraper\'s gushim list. You can safely ignore if it does not exist yet')
-        gushim_list = []
+        gushim_dict = {}
     
-    gushim_count = len(gushim_list)
+    if type(gushim_dict) is not dict:
+        log.warn('The scraper\'s gushim list is not a dictionary. This is normal if just upgrading to multiple municipalities')
+        gushim_dict = {}
+    
+    gushim_count = 0
+    for c in gushim_dict.keys():
+        gushim_count += len(gushim_dict[c]['list'])
+    
+    # either use an existing list of city gushim or create a new one
+    if city_name not in gushim_dict.keys():
+        gushim_dict[city_name] = {'display': city_display, 'list': []}
     
     for f in gushim_json['features']:
-        if f['properties']['Name'] != '' and f['properties']['Name'] != '0' and f['properties']['Name'] not in gushim_list:
-            gushim_list.append(f['properties']['Name'])
+        if f['properties']['Name'] != '' and f['properties']['Name'] != '0' and f['properties']['Name'] not in gushim_dict[city_name]['list']:
+            gushim_dict[city_name]['list'].append(f['properties']['Name'])
             gushim_count += 1
     
     out = open(os.path.join(server_dir, 'tools/gushim.py'), 'w')
-    out.write('GUSHIM = ' + json.dumps(gushim_list))
+    out.write('GUSHIM = ' + json.dumps(gushim_dict, sort_keys=True, indent=4, separators=(',', ': ')))
     out.close
     
     return gushim_count
@@ -128,7 +138,7 @@ def _convert_to_topojson(client_dir, topojson_file, gushim_file):
     
     topojson_full_path = os.path.join(client_dir, topojson_file)
     p = Popen(['topojson', '--id-property', 'Name', '-q', '1e5', '-o', topojson_full_path, os.path.join(client_dir, gushim_file)])
-    for i in range(10):
+    for i in range(60):
         if not os.path.isfile(topojson_full_path):
             sleep(0.5)
     
@@ -211,7 +221,7 @@ if __name__ == '__main__':
     
     # add to gushim.py
     log.debug('Updating the scraper\'s list of gushim')
-    gushim_count = _update_scraper_gushim_list(gushim_json, options.server_dir)
+    gushim_count = _update_scraper_gushim_list(gushim_json, options.server_dir, options.muni_name, options.muni_display_name)
     
     # update server/Tests/functional_test/test_return_json.py
     log.debug('Updating the scraper\'s test file\'s number of gushim')

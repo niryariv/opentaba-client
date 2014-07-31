@@ -1,3 +1,4 @@
 *~
 tests/node_modules/
 tests/img/*.diff.png
+*.pyc

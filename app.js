@@ -6,11 +6,11 @@ var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.
 var muni = municipalities[window.location.host.substr(0, window.location.host.indexOf('.'))];
 if (muni == undefined) {
 	// for tests - if running locally and muni is undefined (the top domain) just load jerusalem 
-	if (RUNNING_LOCAL) {
+	//if (RUNNING_LOCAL) {
 		muni = municipalities['jerusalem'];
-	} else {
-		window.location = window.location.hostname;
-	}
+	//} else {
+	//	window.location = window.location.hostname;
+	//}
 }
 
 var gushim;

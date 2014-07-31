@@ -294,6 +294,9 @@ L.tileLayer(tile_url, {
 	minZoom: 13
 }).addTo(map);
 
+// add 'locate me' button
+L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
+
 $.ajax({
 	url: 'data/gushim.min.topojson',
 	dataType: 'json'

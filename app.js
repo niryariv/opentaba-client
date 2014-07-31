@@ -289,31 +289,6 @@ $(document).ready(function(){
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
-
-	// populate the jump-to-city dropdown
-	var city_jump = $('#city-jump');
-	$.each(municipalities, function(i, item) {
-		city_jump.append($('<option />').val(i).text(item.display));
-	});
-
-	// when the jump-to-city selection changes...
-	city_jump.change(function() {
-		// get the value, if it is not the dummy 'none'
-		var sel = $(this).val();
-		if (sel != 'none') {
-			// split the location. if we are in a subdomain / 'www' replace it with that value, otherwise add the value
-			var sep_url = window.location.host.split('.');
-			if (sep_url[0] == 'www' || municipalities[sep_url[0]] != undefined) {
-				sep_url[0] = sel;
-			}
-			else {
-				sep_url.splice(0, 0, sel);
-			}
-
-			// redirect to requested municipality
-			window.location = window.location.protocol + '//' + sep_url.join('.');
-		}
-	});
 });
 
 

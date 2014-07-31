@@ -289,6 +289,11 @@ $(document).ready(function(){
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
+
+	$('[data-toggle=offcanvas]').click(function() {
+		$('.row-offcanvas').toggleClass('active');
+		$('.navbar-toggle').toggleClass('active');
+	});
 });
 
 
@@ -303,6 +308,9 @@ L.tileLayer(tile_url, {
 	maxZoom: 16,
 	minZoom: 13
 }).addTo(map);
+
+// add 'locate me' button
+L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
 
 $.ajax({
 	url: muni.file,

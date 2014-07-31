@@ -1,5 +1,6 @@
 body, html {
     height: 100%;
+    margin-right: 15px;
 }
 
 #map {

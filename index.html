@@ -10,6 +10,10 @@
 	<link rel="canonical" href="http://opentaba.info/" />
 
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<link href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css" rel="stylesheet" />
+	<!--[if lt IE 9]>
+		<link href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.ie.css" rel="stylesheet" />
+	<![endif]-->
 
 	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
@@ -30,11 +34,12 @@
 </head>
 <body>
 	<div class="container-fluid ot-main">
-		<div class="row ot-main">
-			<div class="col-md-8 ot-main">
+		<div class="row ot-main row-offcanvas row-offcanvas-right">
+			<img src="img/menu.png" class="navbar-toggle" id="toggle-button" data-toggle="offcanvas" data-target=".sidebar-offcanvas"></img>
+			<div class="col-xs-12 col-sm-8 ot-main">
 				<div id="map"></div>
 			</div>
-			<div class="col-md-4" id="info-div">
+			<div class="col-xs-12 col-sm-4 sidebar-offcanvas" id="info-div">
 				<div id="right-bar" >
 					
 					<div id="share_icons" class="align-right">
@@ -51,7 +56,7 @@
 						<p id="muni-text">בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת או מספר גוש</p>
 						
 						<form id="search-form"> 
-							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת או מספר גוש:" style="width: 85%;"/>
+							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת או מספר גוש:" style="width: 84%;"/>
 							<button type="submit" class="btn" style="width: 14%;">חפש</button>
 							<img src="css/ajax-loader.gif" id="scrobber" />
 							<p style="color: red" id="search-error-p"></p>
@@ -139,6 +144,7 @@
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
 	
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/path.js"></script>
@@ -146,7 +152,7 @@
 
 	<script src="data/index.js"></script>	
 	<script src="app.js"></script>	
-
+	
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-37675804-1']);

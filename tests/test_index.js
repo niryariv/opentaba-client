@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',25, function suite(test){
+casper.test.begin('Basic index.html elements test',27, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -43,6 +43,10 @@ casper.test.begin('Basic index.html elements test',25, function suite(test){
 		test.assertResourceExists('data/jerusalem.js');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
+		
+		// make sure the toggle button exists and is not visible
+		test.assertExists('#toggle-button', 'The toggle button exists');
+		test.assertNotVisible('#toggle-button', 'The toggle button is not visible');
 		
 		//TODO: phantomcss check map rendering
 	});

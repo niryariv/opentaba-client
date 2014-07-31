@@ -139,4 +139,8 @@ h1 {
 	.navbar-toggle.active {
 		right: 80%;
 	}
+    
+    body, html {
+        margin-right: 1px;
+    }
 }

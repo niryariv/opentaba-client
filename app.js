@@ -1,6 +1,17 @@
  // deprecating, replacing with serverless mode
-var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
+var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/'; 
+
+// get the wanted municipality (the subsomain)
+var muni = municipalities[window.location.host.substr(0, window.location.host.indexOf('.'))];
+if (muni == undefined) {
+	// for tests - if running locally and muni is undefined (the top domain) just load jerusalem 
+	if (RUNNING_LOCAL) {
+		muni = municipalities['jerusalem'];
+	} else {
+		window.location = window.location.hostname;
+	}
+}
 
 var gushim;
 var gushimLayer;
@@ -10,9 +21,6 @@ leafletPip.bassackwards = true;
 var got_gushim_delegate;
 var got_gushim_delegate_param;
 
-var CITY_NAME = "ירושלים"; //TODO: replace this with something more scalable.
-
-var MAP_CENTER = [31.765, 35.17];
 var DEFAULT_ZOOM = 13;
 
 // var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
@@ -109,7 +117,9 @@ function get_gush(gush_id) {
 			//console.log(d.length);
 			render_plans(d, gush_id);
 		}
-		);
+		).fail(function() {
+			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
+		});
 	
 	console.log('waiting for json');
 	
@@ -125,8 +135,9 @@ function find_gush(gush_id){
 
 // get a gush by street address
 function get_gush_by_addr(addr) {
-	if (!addr.endsWith(" " + CITY_NAME)) { //TODO: change to regex with cityname
-		addr = addr + " " + CITY_NAME;
+	// add the city name if it is not in the search string
+	if (addr.indexOf(muni.display) == -1) {
+		addr = addr + " " + muni.display;
 	}
 	
 	console.log("get_gush_by_addr: " + addr);
@@ -243,7 +254,7 @@ $(document).ready(function(){
 			$("#docModal").modal('hide');
 			$("#info").html("");
 			clear_all_highlit();
-			map.setView(MAP_CENTER, DEFAULT_ZOOM);
+			map.setView(muni.center, DEFAULT_ZOOM);
 		}
 	);
 
@@ -274,10 +285,14 @@ $(document).ready(function(){
 			return false;
 		}
 	);
+	
+	// append municipality's hebrew name
+	$('#muni-text').append(' ב' + muni.display + ':');
+	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
 });
 
 
-var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(MAP_CENTER, DEFAULT_ZOOM);
+var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(muni.center, DEFAULT_ZOOM);
 
 // tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
 // tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
@@ -290,10 +305,10 @@ L.tileLayer(tile_url, {
 }).addTo(map);
 
 $.ajax({
-	url: 'data/gushim.min.topojson',
+	url: muni.file,
 	dataType: 'json'
 }).done(function(res) {
-	gushim = topojson.feature(res, res.objects.jerusalem).features;
+	gushim = topojson.feature(res, res.objects.gushim).features;
 	
 	gushimLayer = L.geoJson(gushim,
 		{

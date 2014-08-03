@@ -3,14 +3,10 @@ var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || documen
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/'; 
 
 // get the wanted municipality (the subsomain)
-var muni = municipalities[window.location.host.substr(0, window.location.host.indexOf('.'))];
+var muni = municipalities[parent.location.host.substr(0, parent.location.host.indexOf('.'))];
 if (muni == undefined) {
-	// for tests - if running locally and muni is undefined (the top domain) just load jerusalem 
-	if (RUNNING_LOCAL) {
-		muni = municipalities['jerusalem'];
-	} else {
-		window.location = window.location.hostname;
-	}
+	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
+    muni = municipalities['jerusalem'];
 }
 
 var gushim;

@@ -2,8 +2,13 @@
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/'; 
 
+// get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
+// can't do cross-site with them we can't just use parent.location
+url = (window.location != window.parent.location) ? document.referrer: document.location.toString();
+url = url.replace('http://', '').replace('https://', '');
+
 // get the wanted municipality (the subsomain)
-var muni = municipalities[parent.location.host.substr(0, parent.location.host.indexOf('.'))];
+var muni = municipalities[url.substr(0, url.indexOf('.'))];
 if (muni == undefined) {
 	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
     muni = municipalities['jerusalem'];

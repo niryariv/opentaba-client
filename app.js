@@ -238,6 +238,12 @@ function initCity(city_name) {
 		$('.navbar-toggle').toggleClass('active');
 	});
     
+    // clear previous gushim map
+    if (gushimLayer) {
+        map.removeLayer(gushimLayer);
+        gushimLayer.clearLayers();
+    }
+    
     // load the new gushim map
     $.ajax({
         url: muni.file,

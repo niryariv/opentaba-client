@@ -2,17 +2,9 @@
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/'; 
 
-// get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
-// can't do cross-site with them we can't just use parent.location
-url = (window.location != window.parent.location) ? document.referrer: document.location.toString();
-url = url.replace('http://', '').replace('https://', '');
-
-// get the wanted municipality (the subsomain)
-var muni = municipalities[url.substr(0, url.indexOf('.'))];
-if (muni == undefined) {
-	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
-    muni = municipalities['jerusalem'];
-}
+// loaded municipality details
+var muni;
+var muni_name;
 
 var gushim;
 var gushimLayer;
@@ -21,6 +13,8 @@ leafletPip.bassackwards = true;
 // use delegation to allow the big gushim json to be loaded asynchronously while still supporting our #/gush/:gush_id address mapping
 var got_gushim_delegate;
 var got_gushim_delegate_param;
+
+var infoDiv;
 
 var DEFAULT_ZOOM = 13;
 
@@ -110,7 +104,7 @@ function get_gush(gush_id) {
 	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
 	clear_all_highlit();
 	highlight_gush(gush_id);
-	location.hash = "#/gush/" + gush_id;
+	//location.hash = "#/" + muni_name + "/gush/" + gush_id;
 	
 	$.getJSON(
 		API_URL + 'gush/' + gush_id + '/plans.json',
@@ -193,10 +187,10 @@ function get_gush_by_addr(addr) {
 
 function highlight_gush(id) {
 	gush = 'gush_' + id;
-	console.log("highlight_gush ", gush);
-	map.fitBounds(map._layers[gush].getBounds());
-	map._layers[gush].setStyle({opacity: 0.2 , color: "#0aa"});
-	highlit.push(id);
+    console.log("highlight_gush ", gush);
+    map.fitBounds(map._layers[gush].getBounds());
+    map._layers[gush].setStyle({opacity: 0.2 , color: "#0aa"});
+    highlit.push(id);
 }
 
 function clear_highlight(id) {
@@ -218,12 +212,61 @@ function onEachFeature(feature, layer) {
 				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#888" }) } },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
-					location.hash = "#/gush/" + feature.id;
+					location.hash = "#/" + muni_name + "/gush/" + feature.id;
 					get_gush(feature.id);
 				}
 			});
 	layer["gushid"] = feature.id;
 	layer._leaflet_id = 'gush_' + feature.id;
+}
+
+function initCity(city_name) {
+    // get the wanted municipality
+    muni = municipalities[city_name];
+    if (muni == undefined) {
+        // if not a valid municipality go to jerusalem
+        location.hash = "#/jerusalem";
+        return;
+    }
+
+    // append municipality's hebrew name
+	$('#muni-text').text('בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת או מספר גוש ב' + muni.display + ':');
+	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
+
+	$('[data-toggle=offcanvas]').click(function() {
+		$('.row-offcanvas').toggleClass('active');
+		$('.navbar-toggle').toggleClass('active');
+	});
+    
+    // load the new gushim map
+    $.ajax({
+        url: muni.file,
+        dataType: 'json'
+    }).done(function(res) {
+        gushim = topojson.feature(res, res.objects.gushim).features;
+	
+        gushimLayer = L.geoJson(gushim,
+            {
+                onEachFeature: onEachFeature,
+                style : {
+                    "color" : "#888",
+                    "weight": 1,
+                    "opacity": 0.7
+                }
+            }
+        ).addTo(map);
+	
+        map.setView(muni.center, DEFAULT_ZOOM);
+        infoDiv = $("#info").clone(true);
+        
+        // if the direct gush address mapping was used go ahead and jump to the wanted gush
+        if (got_gushim_delegate) {
+            got_gushim_delegate(got_gushim_delegate_param);
+            map._onResize();
+            
+            got_gushim_delegate = null;
+        }
+    });
 }
 
 // jQuery startup funcs
@@ -236,9 +279,15 @@ $(document).ready(function(){
 	});
 
 	// setup a path.js router to allow distinct URLs for each block
-	Path.map("#/gush/:gush_id").to(
+	Path.map("#/:city_name/gush/:gush_id").to(
 		function(){ 
 			$("#docModal").modal('hide');
+            
+            if (muni_name != this.params['city_name']) {
+                gushim = null;
+                muni_name = this.params['city_name'];
+                initCity(muni_name);
+            }
 			
 			if (gushim) {
 				get_gush(this.params['gush_id'].split('?')[0]); // remove '?params' if exists
@@ -249,15 +298,23 @@ $(document).ready(function(){
 			}
 		}
 	);
-
-	Path.map("").to(
-		function(){ 
-			$("#docModal").modal('hide');
-			$("#info").html("");
+    
+    Path.map("#/:city_name").to(
+        function(){
+            $("#docModal").modal('hide');
+            
+            if (infoDiv) {
+                // restore info div
+                $('#info').replaceWith(infoDiv);
+            }
+            
+            muni_name = this.params['city_name'];
+            initCity(muni_name);
 			clear_all_highlit();
-			map.setView(muni.center, DEFAULT_ZOOM);
-		}
-	);
+        }
+    );
+
+    Path.root("#/jerusalem");
 
 	Path.listen();
 
@@ -286,19 +343,10 @@ $(document).ready(function(){
 			return false;
 		}
 	);
-	
-	// append municipality's hebrew name
-	$('#muni-text').append(' ב' + muni.display + ':');
-	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
-
-	$('[data-toggle=offcanvas]').click(function() {
-		$('.row-offcanvas').toggleClass('active');
-		$('.navbar-toggle').toggleClass('active');
-	});
 });
 
 
-var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(muni.center, DEFAULT_ZOOM);
+var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
 
 // tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
 // tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
@@ -312,27 +360,3 @@ L.tileLayer(tile_url, {
 
 // add 'locate me' button
 L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
-
-$.ajax({
-	url: muni.file,
-	dataType: 'json'
-}).done(function(res) {
-	gushim = topojson.feature(res, res.objects.gushim).features;
-	
-	gushimLayer = L.geoJson(gushim,
-		{
-			onEachFeature: onEachFeature,
-			style : {
-				"color" : "#888",
-				"weight": 1,
-				"opacity": 0.7
-			}
-		}
-	).addTo(map);
-	
-	// if the direct gush address mapping was used go ahead and jump to the wanted gush
-	if (got_gushim_delegate) {
-		got_gushim_delegate(got_gushim_delegate_param);
-		map._onResize();
-	}
-});

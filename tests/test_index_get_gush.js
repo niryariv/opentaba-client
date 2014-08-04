@@ -30,7 +30,7 @@ casper.test.begin('Testing a specific gush plans display',10, function suite(tes
 
     });
 
-    var hashpath = '/gush/30338';
+    var hashpath = '/jerusalem/gush/30338';
     var gushurl = url +'#'+ hashpath;
     casper.thenOpen(gushurl).on('url.changed', initMock).wait(10000).
     then(function(){

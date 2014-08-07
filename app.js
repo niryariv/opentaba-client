@@ -8,9 +8,11 @@ url = (window.location != window.parent.location) ? document.referrer: document.
 url = url.replace('http://', '').replace('https://', '');
 
 // get the wanted municipality (the subsomain)
+var muni_name = url.substr(0, url.indexOf('.'));
 var muni = municipalities[url.substr(0, url.indexOf('.'))];
 if (muni == undefined) {
 	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
+    muni_name = 'jerusalem';
     muni = municipalities['jerusalem'];
 }
 
@@ -290,6 +292,19 @@ $(document).ready(function(){
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
+    
+    // set links
+    if (muni.fb_link) {
+        $('#fb-link').attr('href', muni.fb_link);
+    } else {
+        $('#fb-link').attr('href', 'javascript:fb_share();');
+        $('#fb-link').removeAttr('target');
+    }
+    if (muni.twitter_link)
+        $('#twitter-link').attr('href', muni.twitter_link);
+    else
+        $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
+    $('#rss-link').attr('href', API_URL + muni_name + '/plans.atom');
 
 	$('[data-toggle=offcanvas]').click(function() {
 		$('.row-offcanvas').toggleClass('active');

@@ -105,7 +105,7 @@ def delete_site(site_name, ignore_errors=False):
             repo = g.get_repo(repo_name)
             repo.delete()
         except:
-            if not ignore_erros:
+            if not ignore_errors:
                 abort('Failed to delete github repository...')
 
 

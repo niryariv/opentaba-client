@@ -75,7 +75,12 @@ function render_plans(plans, gid) {
 		for (j=0 ; j<p.files_link.length ; j++)
 			out += '<a href="http://mmi.gov.il' + p.files_link[j] + 
 					'" rel="tooltip" title="קבצי ממג"><i class="icon-download-alt"></i></a>';
-			
+        
+        // mavat link
+        if (p.mavat_code != '')
+            out += '<a href="' + API_URL + 'plan/' + p.plan_id + 
+                '/mavat" target="_blank" rel="tooltip" title="מבא&quot;ת"><i class="icon-link"></i></a>';
+        
 		out+='	</td>'  +
 			 '</tr>' 	+
 			 '<tr style="height: 10px"><td colspan="3">&nbsp;</td></tr>';

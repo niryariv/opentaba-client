@@ -8,7 +8,7 @@ from getpass import getpass
 
 @runs_once
 def _github_connect():
-    # connect to github only once per run
+    #  connect to github only once per run
     username = raw_input('Github user: ')
     password = getpass('Github password: ')
     

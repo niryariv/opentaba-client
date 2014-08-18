@@ -1,6 +1,6 @@
  // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-server.herokuapp.com/'; 
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/'; 
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location

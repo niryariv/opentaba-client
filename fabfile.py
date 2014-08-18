@@ -23,15 +23,22 @@ def _github_connect():
     
     return u
 
+
+@runs_once
+def _get_repo_name(site_name):
+    return 'opentaba-client-%s' % site_name
+
+
 @task
 def create_site(site_name):
     """Create a new sub-site for a new municipality"""
     
     g = _github_connect()
+    repo_name = _get_repo_name(site_name)
     
     # create a new repo for the new site
     try:
-        repo = g.create_repo(site_name, has_issues=False, has_wiki=False, has_downloads=False, auto_init=False)
+        repo = g.create_repo(repo_name, has_issues=False, has_wiki=False, has_downloads=False, auto_init=False)
     except:
         abort('Failed to create new github repository...')
 
@@ -51,9 +58,9 @@ def create_site(site_name):
     
     # clone new repo in another directory
     with lcd('../'):
-        local('git clone %s -b gh-pages tmp-%s' % (repo.clone_url, site_name))
+        local('git clone %s -b gh-pages tmp-%s' % (repo.clone_url, repo_name))
         
-        with lcd('tmp-%s' % site_name):
+        with lcd('tmp-%s' % repo_name):
             # add CNAME
             local('echo %s.opentaba.info > CNAME' % site_name)
     
@@ -63,7 +70,7 @@ def create_site(site_name):
             local('git push')
     
         # delete new repo folder
-        local('rm -rf tmp-%s' % site_name)
+        local('rm -rf tmp-%s' % repo_name)
     
     print '*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*'
     print 'Now you need to manually add the new hostname (subdomain)'
@@ -76,6 +83,7 @@ def delete_site(site_name, ignore_errors=False):
     """Delete a sub-site"""
     
     g = _github_connect()
+    repo_name = _get_repo_name(site_name)
     
     with settings(warn_only=True):
         # try to find the site's git url if it is a remote here
@@ -94,7 +102,7 @@ def delete_site(site_name, ignore_errors=False):
         
         # delete the github repository
         try:
-            repo = g.get_repo(site_name)
+            repo = g.get_repo(repo_name)
             repo.delete()
         except:
             if not ignore_erros:

@@ -29,6 +29,35 @@ def _get_repo_name(site_name):
     return 'opentaba-client-%s' % site_name
 
 
+def _get_sites():
+    # get the defined remotes' names, without 'origin' or 'all_sites'
+    sites = ''.join(local('git remote', capture=True)).split('\n')
+    if 'origin' in sites:
+        sites.remove('origin')
+    if 'all_sites' in sites:
+        sites.remove('all_sites')
+    
+    return sites
+
+
+def _add_cname(site_name, site_git):
+    # clone new repo in another directory
+    with lcd('../'):
+        local('git clone %s -b gh-pages tmp-%s' % (site_git, site_name))
+        
+        with lcd('tmp-%s' % site_name):
+            # add CNAME
+            local('echo %s.opentaba.info > CNAME' % site_name)
+    
+            # add, commit, push new CNAME
+            local('git add CNAME')
+            local('git commit -m "added CNAME - %s.opentaba.info"' % site_name)
+            local('git push')
+    
+        # delete new repo folder
+        local('rm -rf tmp-%s' % site_name)
+
+
 @task
 def create_site(site_name):
     """Create a new sub-site for a new municipality"""
@@ -54,23 +83,7 @@ def create_site(site_name):
                 abort('Could not add new remote to all_sites')
     
     # push to new remote
-    deploy(site_name)
-    
-    # clone new repo in another directory
-    with lcd('../'):
-        local('git clone %s -b gh-pages tmp-%s' % (repo.clone_url, repo_name))
-        
-        with lcd('tmp-%s' % repo_name):
-            # add CNAME
-            local('echo %s.opentaba.info > CNAME' % site_name)
-    
-            # add, commit, push new CNAME
-            local('git add CNAME')
-            local('git commit -m "added CNAME"')
-            local('git push')
-    
-        # delete new repo folder
-        local('rm -rf tmp-%s' % repo_name)
+    deploy(site_name, repo.clone_url)
     
     print '*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*'
     print 'Now you need to manually add the new hostname (subdomain)'
@@ -110,14 +123,25 @@ def delete_site(site_name, ignore_errors=False):
 
 
 @task
-def deploy(site_name):
+def deploy(site_name, site_git=''):
     """Deploy changes to a certain sub-site"""
     
-    local('git push %s master:gh-pages' % site_name)
+    # this will in fact run over all current content of the remote and 
+    # replace it with the active repo's master tree (--force), because 
+    # otherwise the local CNAME of the remote will stop the push
+    local('git push %s master:gh-pages --force' % site_name)
+    
+    if site_git == '':
+        site_git = ''.join(local('git remote -v | grep ^%s | grep \(push\)$ | awk \'{print $2}\'' % site_name, capture=True))
+    
+    # re-add the CNAME file to the site
+    _add_cname(site_name, site_git)
 
 
 @task
 def deploy_all():
     """Deploy changes to all sub-sites"""
     
-    local('git push all_sites master:gh-pages')
+    # go over the remotes and deploy them, thus making sure to update the CNAME after destroying their data
+    for site in _get_sites:
+        deploy(site)

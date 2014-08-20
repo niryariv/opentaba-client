@@ -161,11 +161,10 @@ def delete_site(site_name, ignore_errors=False):
 
 @task
 def add_gush_map(muni_name, display_name=''):
-    """Add an entry for a new municipality to the data/index.js file, and download its topojson gush map"""
+    """Add an entry for a new municipality to the data/index.js file with the required data"""
     
-    # download the online gush maps
+    # download the online gush map
     geojson_gush_map = _download_gush_map(muni_name)
-    topojson_gush_map = _download_gush_map(muni_name, topojson=True)
     
     # load the current municipalities' index dictionary
     with open(os.path.join('data', 'index.js')) as index_data:
@@ -187,16 +186,11 @@ def add_gush_map(muni_name, display_name=''):
     out.write('var municipalities = ' + dumps(index_json, sort_keys=True, indent=4, separators=(',', ': ')) + ';')
     out.close
     
-    # write the topojson map file
-    out = open(os.path.join('data', '%s.topojson' % muni_name), 'w')
-    out.write(dumps(topojson_gush_map))
-    out.close
-    
     print '*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*'
     print 'The new municipality data was added to data/index.js, and its topojson gushim '
-    print 'map was downloaded to data/%s.topojson, but both were not comitted.' % muni_name
+    print 'map will be loaded from the israel_gushim repository, but changes were not comitted.'
     print 'If more data needs to be in index.js, this is the time to add it (explanation '
-    print 'of valid fields in the index.js file can be found in the repository\'s README).'
+    print 'of valid fields in the index.js file can be found in the repository\'s DEPLOYMENT.md).'
     print 'Please give the changes a quick look-see and make sure they look fine, then '
     print 'commit the changes and deploy your new/exisiting site.'
     print '*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*'

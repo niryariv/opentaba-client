@@ -284,14 +284,10 @@ $(document).ready(function(){
 			if (!isNaN(search_val)) {
 				console.log('Trying to find gush #' + search_val);
 				var result = find_gush(parseInt(search_val));
-				if (result) {
+				if (result)
 					get_gush(parseInt(search_val));
-                    
-                    // show search note after a successful search
-                    $('#search-note-p').show();
-                } else {
+                else
 					$('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
-                }
 				
 				$('#scrobber').hide(); 
 			} else {

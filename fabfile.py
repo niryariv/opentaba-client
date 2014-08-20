@@ -5,6 +5,8 @@ fab file for managing opentaba-server heroku apps
 from github import Github, Repository
 from fabric.api import *
 from getpass import getpass
+from request import get
+from json import loads
 
 @runs_once
 def _github_connect():
@@ -36,6 +38,8 @@ def _get_sites():
         sites.remove('origin')
     if 'all_sites' in sites:
         sites.remove('all_sites')
+    if 'PhantomCSS' in sites:
+        sites.remove('PhantomCSS')
     
     return sites
 
@@ -56,6 +60,38 @@ def _add_cname(site_name, site_git):
     
         # delete new repo folder
         local('rm -rf tmp-%s' % site_name)
+
+
+def _download_gush_map(muni_name, topojson=False):
+    r = get('http://raw.githubusercontent.com/niryariv/israel_gushim/master/%s.%s' % (muni_name, 'topojson' if topojson else 'geojson'))
+    if r.status != 200:
+        abort('Failed to download gushim map')
+    
+    try:
+        res = loads(r.text)
+    except:
+        abort('Gushim map is an invalid JSON file')
+    
+    return res
+
+
+def _get_muni_center(features):
+    """
+    Get the center point for the municipality - average longtitude and latitude values
+    """
+    
+    sum_x = 0
+    sum_y = 0
+    count = 0
+    
+    for f in features:
+        for cgroup in f['geometry']['coordinates']:
+            for coord in cgroup:
+                sum_x += coord[0]
+                sum_y += coord[1]
+                count += 1
+
+    return [eval('{:.6f}'.format(sum_y / count)), eval('{:.6f}'.format(sum_x / count))]
 
 
 @task
@@ -123,6 +159,49 @@ def delete_site(site_name, ignore_errors=False):
 
 
 @task
+def add_gush_map(muni_name, display_name=''):
+    """Add an entry for a new municipality to the data/index.js file, and download its topojson gush map"""
+    
+    # download the online gush maps
+    geojson_gush_map = _download_gush_map(muni_name)
+    topojson_gush_map = _download_gush_map(muni_name, topojson=True)
+    
+    # load the current municipalities' index dictionary
+    with open(os.path.join('data', 'index.js')) as index_data:
+        index_json = json.loads(index_data.read().replace('var municipalities = ', '').rstrip('\n').rstrip(';'))
+    
+    # add a new entry if needed
+    if muni_name not in index_json.keys():
+        if display_name == '':
+            abort('For new municipalities display name must be provided')
+        
+        index_json[muni_name] = {'display':'', 'center':[]}
+    
+    # update the display name and center of the municipality's entry
+    index_json[muni_name]['display'] = display_name
+    index_json[muni_name]['center'] = _get_muni_center(geojson_gush_map['features'])
+    
+    # write back the index.js file
+    out = open(os.path.join('data', 'index.js'), 'w')
+    out.write('var municipalities = ' + json.dumps(index_json, sort_keys=True, indent=4, separators=(',', ': ')) + ';')
+    out.close
+    
+    # write the topojson map file
+    out = open(os.path.join('data', '%s.topojson' % muni_name), 'w')
+    out.write(json.dumps(topojson_gush_map))
+    out.close
+    
+    print '*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*'
+    print 'The new municipality data was added to data/index.js, and its topojson gushim '
+    print 'map was downloaded to data/%s.topojson, but both were not comitted.' % muni_name
+    print 'If more data needs to be in index.js, this is the time to add it (explanation '
+    print 'of valid fields in the index.js file can be found in the repository\'s README).'
+    print 'Please give the changes a quick look-see and make sure they look fine, then '
+    print 'commit the changes and deploy your new/exisiting site.'
+    print '*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*'
+
+
+@task
 def deploy(site_name, site_git=''):
     """Deploy changes to a certain sub-site"""
     
@@ -143,5 +222,5 @@ def deploy_all():
     """Deploy changes to all sub-sites"""
     
     # go over the remotes and deploy them, thus making sure to update the CNAME after destroying their data
-    for site in _get_sites:
+    for site in _get_sites():
         deploy(site)

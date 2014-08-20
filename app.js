@@ -335,10 +335,10 @@ L.tileLayer(tile_url, {
 L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
 
 $.ajax({
-	url: muni.file,
+	url: (muni.file == undefined) ? 'data/' + muni_name + '.topojson' : muni.file,
 	dataType: 'json'
 }).done(function(res) {
-	gushim = topojson.feature(res, res.objects.gushim).features;
+	gushim = topojson.feature(res, res.objects[muni_name]).features;
 	
 	gushimLayer = L.geoJson(gushim,
 		{

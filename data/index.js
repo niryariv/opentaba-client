@@ -6,7 +6,6 @@ var municipalities = {
         ],
         "display": "\u05d9\u05e8\u05d5\u05e9\u05dc\u05d9\u05dd",
         "fb_link": "https://www.facebook.com/opentaba.jerusalem",
-        "file": "data/jerusalem.json",
         "server": "http://opentaba-server.herokuapp.com/",
         "twitter_link": "https://twitter.com/opentaba_JLM"
     }

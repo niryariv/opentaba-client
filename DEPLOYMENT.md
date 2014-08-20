@@ -4,7 +4,7 @@ To deploy a website for a brand new municipality, follow these steps:
 municipality you are deploying)
   1. Make sure both the geojson and topojson files with the name of the municipality
      have been added to [this repository](http://github.com/niryariv/israel_gushim)
-  2. Add the data about the new municipality and the topojson gush map for it:
+  2. Add the data about the new municipality and its map to the repository:
      `fab add_gush_map:givataiim,גבעתיים`
   3. The changes will be made locally and not comitted so you can review them.
      If any more properties need to be added to data/index.js (in compliance
@@ -29,7 +29,10 @@ Optional fields:
 + "server" - the base url for the server that hosts this municipality's plans.
   If not defined it is "http://opentaba-server-<muni-name>.herokuapp.com/"
 + "file" - path in the repository to the municipality's gush map.
-  If not defined it is "data/<muni-name>.topojson"
+  If not defined it is "https://api.github.com/repos/niryariv/israel_gushim/contents/<muni_name>.topojson"
+  This file will be downloaded using Github's contents API, so it must not 
+  exceed 1MB in size. Files from other static hosts will probably be loaded fine
+  as long as the "Accept" header is ignored.
 + "fb_link" - link to the municipality's facebook page.
   If not defined the facebook icon will open a "share on facebook" window
 + "twitter_link" - link to the municipality's twitter page.

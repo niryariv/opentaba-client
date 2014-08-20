@@ -5,8 +5,9 @@ fab file for managing opentaba-server heroku apps
 from github import Github, Repository
 from fabric.api import *
 from getpass import getpass
-from request import get
-from json import loads
+from requests import get
+from json import loads, dumps
+import os
 
 @runs_once
 def _github_connect():
@@ -63,8 +64,8 @@ def _add_cname(site_name, site_git):
 
 
 def _download_gush_map(muni_name, topojson=False):
-    r = get('http://raw.githubusercontent.com/niryariv/israel_gushim/master/%s.%s' % (muni_name, 'topojson' if topojson else 'geojson'))
-    if r.status != 200:
+    r = get('https://raw.githubusercontent.com/niryariv/israel_gushim/master/%s.%s' % (muni_name, 'topojson' if topojson else 'geojson'))
+    if r.status_code != 200:
         abort('Failed to download gushim map')
     
     try:
@@ -168,7 +169,7 @@ def add_gush_map(muni_name, display_name=''):
     
     # load the current municipalities' index dictionary
     with open(os.path.join('data', 'index.js')) as index_data:
-        index_json = json.loads(index_data.read().replace('var municipalities = ', '').rstrip('\n').rstrip(';'))
+        index_json = loads(index_data.read().replace('var municipalities = ', '').rstrip('\n').rstrip(';'))
     
     # add a new entry if needed
     if muni_name not in index_json.keys():
@@ -183,12 +184,12 @@ def add_gush_map(muni_name, display_name=''):
     
     # write back the index.js file
     out = open(os.path.join('data', 'index.js'), 'w')
-    out.write('var municipalities = ' + json.dumps(index_json, sort_keys=True, indent=4, separators=(',', ': ')) + ';')
+    out.write('var municipalities = ' + dumps(index_json, sort_keys=True, indent=4, separators=(',', ': ')) + ';')
     out.close
     
     # write the topojson map file
     out = open(os.path.join('data', '%s.topojson' % muni_name), 'w')
-    out.write(json.dumps(topojson_gush_map))
+    out.write(dumps(topojson_gush_map))
     out.close
     
     print '*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*X*'

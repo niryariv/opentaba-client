@@ -26,7 +26,7 @@ casper.test.begin('Mobile index.html elements test',24, function suite(test){
 		//very tied to implentation should think about this
 		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
-		test.assertResourceExists('data/jerusalem.js');
+		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
 		

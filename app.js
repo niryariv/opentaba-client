@@ -177,6 +177,9 @@ function get_gush_by_addr(addr) {
 					if (gid && gid.length > 0) {
 						get_gush(gid[0].gushid);
 						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
+                        
+                        // show search note after a successful search
+                        $('#search-note-p').show();
 					} else {
 						$('#search-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
 					}
@@ -273,6 +276,7 @@ $(document).ready(function(){
 		function() {
 			$('#scrobber').show();
 			$('#search-error-p').html('');
+            $('#search-note-p').hide();
 			
 			var search_val = $('#search-text').val();
 			
@@ -282,7 +286,7 @@ $(document).ready(function(){
 				var result = find_gush(parseInt(search_val));
 				if (result)
 					get_gush(parseInt(search_val));
-				else
+                else
 					$('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
 				
 				$('#scrobber').hide(); 
@@ -335,10 +339,11 @@ L.tileLayer(tile_url, {
 L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
 
 $.ajax({
-	url: muni.file,
+	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,
+    headers: { Accept: 'application/vnd.github.raw' },
 	dataType: 'json'
 }).done(function(res) {
-	gushim = topojson.feature(res, res.objects.gushim).features;
+	gushim = topojson.feature(res, res.objects[muni_name]).features;
 	
 	gushimLayer = L.geoJson(gushim,
 		{

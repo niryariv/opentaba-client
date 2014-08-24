@@ -1,4 +1,11 @@
 var municipalities = {
+    "givataiim": {
+        "center": [
+            32.071151,
+            34.80989
+        ],
+        "display": "\u05d2\u05d1\u05e2\u05ea\u05d9\u05d9\u05dd"
+    },
     "jerusalem": {
         "center": [
             31.783476,

@@ -1,5 +1,6 @@
 body, html {
     height: 100%;
+    margin-right: 15px;
 }
 
 #map {
@@ -9,10 +10,18 @@ body, html {
 .ot-main {
     height: 100%;
     padding-left: 0px;
+    padding-right: 0px;
+}
+
+#info-div {
+    height: 100%;
+    overflow-y:scroll;
 }
 
 body{
-    background:url('lil_fiber.png') repeat; 
+    background:url('lil_fiber.png') repeat;
+    margin: 0;
+    padding: 0;
 }
 
 @font-face {
@@ -66,8 +75,72 @@ h1 {
     text-align: center;
 }
 
+#share_icons{
+    margin-top: 5px;
+}
+
 #share_icons a{
     margin-left: 10px;
-    margin-top: 5px;
     color: #999;
+}
+
+.row {
+    margin-left: 0;
+}
+
+.navbar-toggle {
+	position: fixed;
+	z-index: 999;
+	width: 10%;
+	background-color: white;
+	padding: 0 0;
+}
+
+@media screen and (max-width: 767px) {
+	.row-offcanvas {
+		position: relative;
+		-webkit-transition: all 0.25s ease-out;
+		-moz-transition: all 0.25s ease-out;
+		transition: all 0.25s ease-out;
+	}
+
+	.row-offcanvas-right
+	.sidebar-offcanvas {
+		right: -80%;
+	}
+
+	.row-offcanvas-left
+	.sidebar-offcanvas {
+		left: -80%;
+	}
+
+	.row-offcanvas-right.active {
+		right: 83.6%;
+	}
+
+	.row-offcanvas-left.active {
+		left: 80%;
+	}
+
+	.sidebar-offcanvas {
+		position: absolute;
+		top: 0;
+		width: 80%;
+	}
+
+	#sidebar {
+		padding-top:0;
+	}
+	
+	.navbar-toggle {
+		right: 0%;
+	}
+	
+	.navbar-toggle.active {
+		right: 80%;
+	}
+    
+    body, html {
+        margin-right: 1px;
+    }
 }

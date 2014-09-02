@@ -1,42 +1,29 @@
-// Get the wanted gushim (the subsomain)
-var city = cities[window.location.host.substr(0, window.location.host.indexOf('.'))];
-if (city == undefined) { city = cities['jerusalem']; }
-		
-var CITY_NAME = city.Display;
-var MAP_CENTER = city.Center;
-var CITY_API_URL = city.Heroku;
-var CITY_FILE = city.JsonFile;
+ // deprecating, replacing with serverless mode
+var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
 
-// deprecating, replacing with serverless mode
-var RUNNING_LOCAL = (document.location.host == 'localhost' || document.location.host == '127.0.0.1' || document.location.protocol == 'file:');
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : CITY_API_URL;
-var ADDR_DB_API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'https://opentaba-address-db.herokuapp.com/';
+// get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
+// can't do cross-site with them we can't just use parent.location
+url = (window.location != window.parent.location) ? document.referrer: document.location.toString();
+url = url.replace('http://', '').replace('https://', '');
 
-// Enable getScript cache
-$.ajaxSetup({
-	cache: true
-});
+// get the wanted municipality (the subsomain)
+var muni_name = url.substr(0, url.indexOf('.'));
+var muni = municipalities[url.substr(0, url.indexOf('.'))];
+if (muni == undefined) {
+	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
+    muni_name = 'jerusalem';
+    muni = municipalities['jerusalem'];
+}
 
-// Use delegation to allow the big gushim json to be loaded asynchronously
-var gotGushimDelegate = null;
-var gotGushimDelegateParam = null;
-		
-// Load the wanted gushim's json
-$.getScript(city.JsonFile, function(data, textStatus, jqxhr) {
-	L.geoJson(gushim,
-	{
-		onEachFeature: onEachFeature,
-		style : {
-			"color" : "#777",
-			"weight": 1,
-			"opacity": 0.9
-		}
-	}).addTo(map);
-	
-	if (gotGushimDelegate != null) {
-		gotGushimDelegate(gotGushimDelegateParam);
-	}
-});
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
+
+var gushim;
+var gushimLayer;
+leafletPip.bassackwards = true;
+
+// use delegation to allow the big gushim json to be loaded asynchronously while still supporting our #/gush/:gush_id address mapping
+var got_gushim_delegate;
+var got_gushim_delegate_param;
 
 var DEFAULT_ZOOM = 13;
 
@@ -70,7 +57,8 @@ function render_plans(plans, gid) {
 		var p = plans[i];
 
 		//plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
-		plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number);
+		//plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number);
+		plan_link = p.details_link;
 		
 		out+='<tr style="vertical-align:top" class="item">' +
 			 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
@@ -79,27 +67,29 @@ function render_plans(plans, gid) {
 			 '</tr>' +
 			 '<tr class="details">' +
 			 '	<td colspan="2">' +
-			 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי"><!-- i class="icon-share"></i -->'+
+			 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי">'+
 			 '		תוכנית ' + p.number + '</a>' +
 			 '	</td>' +
 			 '	<td>';
 		var j;
 		for (j=0 ; j<p.tasrit_link.length ; j++)
-			out += '<a onclick="show_data('+ "'" + p.tasrit_link[j] + "')" + 
-					'" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>';
+			out += '<a href="'+ p.tasrit_link[j] + '" target="_blank" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>';
 
 		for (j=0 ; j<p.takanon_link.length ; j++)
-			out += '<a onclick="show_data('+ "'" + p.takanon_link[j] + "')" + 
-					'" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>';
+			out += '<a href="'+ p.takanon_link[j] + '" target="_blank" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>';
 
 		for (j=0 ; j<p.nispahim_link.length ; j++)
-			out += '<a onclick="show_data('+ "'" + p.nispahim_link[j] + "')" + 
-					'" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>';
+			out += '<a href="'+ p.nispahim_link[j] + '" target="_blank" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>';
 
 		for (j=0 ; j<p.files_link.length ; j++)
 			out += '<a href="http://mmi.gov.il' + p.files_link[j] + 
 					'" rel="tooltip" title="קבצי ממג"><i class="icon-download-alt"></i></a>';
-			
+        
+        // mavat link
+        if (p.mavat_code != '')
+            out += '<a href="' + API_URL + 'plan/' + p.plan_id + 
+                '/mavat" target="_blank" rel="tooltip" title="מבא&quot;ת"><i class="icon-link"></i></a>';
+        
 		out+='	</td>'  +
 			 '</tr>' 	+
 			 '<tr style="height: 10px"><td colspan="3">&nbsp;</td></tr>';
@@ -131,12 +121,14 @@ function get_gush(gush_id) {
 	location.hash = "#/gush/" + gush_id;
 	
 	$.getJSON(
-		API_URL + 'gush/' + gush_id + '/plans',		
+		API_URL + 'gush/' + gush_id + '/plans.json',
 		function(d) { 
 			//console.log(d.length);
 			render_plans(d, gush_id);
 		}
-		);
+		).fail(function() {
+			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
+		});
 	
 	console.log('waiting for json');
 	
@@ -144,38 +136,67 @@ function get_gush(gush_id) {
 
 // find a rendered gush based on ID
 function find_gush(gush_id){
-	g = gushim.features.filter(
-		function(f){ return (f.properties.Name == gush_id); }
+	g = gushim.filter(
+		function(f){ return (f.id == gush_id); }
 	);
 	return g[0];
 }
 
 // get a gush by street address
 function get_gush_by_addr(addr) {
-	if (!addr.endsWith(" " + CITY_NAME)) { //TODO: change to regex with cityname
-		addr = addr + " " + CITY_NAME;
+	// add the city name if it is not in the search string
+	if (addr.indexOf(muni.display) == -1) {
+		addr = addr + " " + muni.display;
 	}
 	
 	console.log("get_gush_by_addr: " + addr);
+	
+	// Use Google api to find a gush by address
 	$.getJSON(
-		ADDR_DB_API_URL + 'locate/' + addr,
+		'https://maps.googleapis.com/maps/api/geocode/json?address='+addr+'&sensor=false',
 		function (r) {
 			$('#scrobber').hide();
-			var gid = r["gush_id"];var lat = r["lat"];var lon = r["lon"];
-			console.log('got gush id: ' + gid + ", lon: " + lon + ", lat: " + lat);
-			if (gid) {
-				get_gush(gid);
-				var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
-				$('#addr-error-p').html('');
-			} else {
-				$('#addr-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+
+			if (r['status'] == 'OK' && r['results'].length > 0) {
+				// Here we have a case when Google api returns without an actual place (even a street), 
+				// so it only has a city. This happens because it didn't find the address, but we 
+				// did append the name of the current city at the end, and Google apparently thinks  
+				// 'better something than nothing'. We're trying to ignore this (should test though)
+				if (r['results'][0]['types'].length == 2 && 
+					$.inArray('locality', r['results'][0]['types']) > -1 && 
+					$.inArray('political', r['results'][0]['types']) > -1) {
+					$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+				}
+				else {
+					var lat = r['results'][0]['geometry']['location']['lat'];
+					var lon = r['results'][0]['geometry']['location']['lng'];
+					console.log('got lon: ' + lon + ', lat: ' + lat);
+      
+					// Using leafletpip we try to find an object in the gushim layer with the coordinate we got
+					var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
+					if (gid && gid.length > 0) {
+						get_gush(gid[0].gushid);
+						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
+                        
+                        // show search note after a successful search
+                        $('#search-note-p').show();
+					} else {
+						$('#search-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
+					}
+				}
+			}
+			else if (r['status'] == 'ZERO_RESULTS') {
+				$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+			}
+			else {
+				$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
 			}
 		}
 	)
    .fail(
    		function(){
    			$('#scrobber').hide(); 
-   			$('#addr-error-p').html('לא נמצאו נתונים לכתובת "' + addr + '"'); 
+   			$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
    		}
    	);
 }
@@ -185,13 +206,13 @@ function highlight_gush(id) {
 	gush = 'gush_' + id;
 	console.log("highlight_gush ", gush);
 	map.fitBounds(map._layers[gush].getBounds());
-	map._layers[gush].setStyle({opacity: 0 	, color: "blue"});
+	map._layers[gush].setStyle({opacity: 0.2 , color: "#0aa"});
 	highlit.push(id);
 }
 
 function clear_highlight(id) {
 	gush = 'gush_' + id;
-	map._layers[gush].setStyle({opacity: 0.05 , color: "#777"});
+	map._layers[gush].setStyle({opacity: 0.05 , color: "#888"});
 	highlit.splice(highlit.indexOf(id), 1);
 }
 
@@ -205,15 +226,15 @@ function onEachFeature(feature, layer) {
 	// layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({
 				'mouseover'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0 	, color: "red" 	}) } } ,
-				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#777" }) } },
+				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#888" }) } },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
-					location.hash = "#/gush/" + feature.properties.Name;
-					get_gush(feature.properties.Name);
+					location.hash = "#/gush/" + feature.id;
+					get_gush(feature.id);
 				}
 			});
-	layer["gushid"] = feature.properties.Name;
-	layer._leaflet_id = 'gush_' + feature.properties.Name;
+	layer["gushid"] = feature.id;
+	layer._leaflet_id = 'gush_' + feature.id;
 }
 
 // jQuery startup funcs
@@ -230,9 +251,13 @@ $(document).ready(function(){
 		function(){ 
 			$("#docModal").modal('hide');
 			
-			// Use a delegate because this script will usually run before we finish loading the big gushim json
-			gotGushimDelegateParam = this.params['gush_id'].split('?')[0];
-			gotGushimDelegate = get_gush;
+			if (gushim) {
+				get_gush(this.params['gush_id'].split('?')[0]); // remove '?params' if exists
+			} else {
+				// use a delegate because this script will definetly run before we finish loading the big gushim json
+				got_gushim_delegate_param = this.params['gush_id'].split('?')[0];
+				got_gushim_delegate = get_gush;
+			}
 		}
 	);
 
@@ -241,67 +266,99 @@ $(document).ready(function(){
 			$("#docModal").modal('hide');
 			$("#info").html("");
 			clear_all_highlit();
-			map.setView(MAP_CENTER, DEFAULT_ZOOM);
+			map.setView(muni.center, DEFAULT_ZOOM);
 		}
 	);
 
 	Path.listen();
 
-	$('#addr-form').submit(
+	$('#search-form').submit(
 		function() {
-			var addr = $('#addr-text').val();
-			console.log('Getting gush for address "' + addr + '"');
 			$('#scrobber').show();
-			get_gush_by_addr(addr);
+			$('#search-error-p').html('');
+            $('#search-note-p').hide();
+			
+			var search_val = $('#search-text').val();
+			
+			// if it's a number search for a gush with that number, oterwise do address search
+			if (!isNaN(search_val)) {
+				console.log('Trying to find gush #' + search_val);
+				var result = find_gush(parseInt(search_val));
+				if (result)
+					get_gush(parseInt(search_val));
+                else
+					$('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
+				
+				$('#scrobber').hide(); 
+			} else {
+				console.log('Getting gush for address "' + search_val + '"');
+				get_gush_by_addr(search_val);
+			}
+			
 			return false;
 		}
 	);
 	
-	// Append city's hebrew name
-	$('#city-text').append('ב' + CITY_NAME + ':');
-	
-	// Populate the jump-to-city dropdown
-	var cityJump = $('#city-jump');
-	$.each(cities, function(i, item) {
-		cityJump.append($('<option />').val(i).text(item.Display));
-	});
-	
-	// When the jump-to-city selection changes...
-	cityJump.change(function() {
-		// Get the value, if it is not the dummy 'none'
-		var sel = $(this).val();
-		if (sel != 'none') {
-			// Split the location. If we are in a subdomain / 'www' replace it with that value, otherwise add the value
-			var sepUrl = window.location.host.split('.');
-			if (sepUrl[0] == 'www' || cities[sepUrl[0]] != undefined) {
-				sepUrl[0] = sel;
-			}
-			else {
-				sepUrl.splice(0, 0, sel);
-			}
-			
-			// Redirect to requested city
-			window.location = window.location.protocol + '//' + sepUrl.join('.');
-		}
+	// append municipality's hebrew name
+	$('#muni-text').append(' ב' + muni.display + ':');
+	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
+    
+    // set links
+    if (muni.fb_link) {
+        $('#fb-link').attr('href', muni.fb_link);
+    } else {
+        $('#fb-link').attr('href', 'javascript:fb_share();');
+        $('#fb-link').removeAttr('target');
+    }
+    if (muni.twitter_link)
+        $('#twitter-link').attr('href', muni.twitter_link);
+    else
+        $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
+    $('#rss-link').attr('href', API_URL + muni_name + '/plans.atom');
+
+	$('[data-toggle=offcanvas]').click(function() {
+		$('.row-offcanvas').toggleClass('active');
+		$('.navbar-toggle').toggleClass('active');
 	});
 });
 
 
-var map = L.map('map', { scrollWheelZoom: true }).setView(MAP_CENTER, DEFAULT_ZOOM);
+var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(muni.center, DEFAULT_ZOOM);
 
-tile_url = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
+// tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
+// tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
+// tile_url = "http://{s}.tiles.mapbox.com/v3/niryariv.i6e92njd/{z}/{x}/{y}.png";
+tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
+
 L.tileLayer(tile_url, {
 	maxZoom: 16,
 	minZoom: 13
 }).addTo(map);
 
-/*L.geoJson(gushim,
-	{
-		onEachFeature: onEachFeature,
-		style : {
-			"color" : "#777",
-			"weight": 1,
-			"opacity": 0.9
+// add 'locate me' button
+L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
+
+$.ajax({
+	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,
+    headers: { Accept: 'application/vnd.github.raw' },
+	dataType: 'json'
+}).done(function(res) {
+	gushim = topojson.feature(res, res.objects[muni_name]).features;
+	
+	gushimLayer = L.geoJson(gushim,
+		{
+			onEachFeature: onEachFeature,
+			style : {
+				"color" : "#888",
+				"weight": 1,
+				"opacity": 0.7
+			}
 		}
+	).addTo(map);
+	
+	// if the direct gush address mapping was used go ahead and jump to the wanted gush
+	if (got_gushim_delegate) {
+		got_gushim_delegate(got_gushim_delegate_param);
+		map._onResize();
 	}
-).addTo(map);*/
+});

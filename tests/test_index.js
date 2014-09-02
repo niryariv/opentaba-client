@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',30, function suite(test){
+casper.test.begin('Basic index.html elements test',33, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -21,7 +21,7 @@ casper.test.begin('Basic index.html elements test',30, function suite(test){
 
 		//casper.options.clientScripts.push('../testlibs/sinon-1.7.3.js');
 		test.assertTitle('תב"ע פתוחה',"The title is what we expected");
-		test.assertExists('form[id="addr-form"]', 'The Address form exists');
+		test.assertExists('form[id="search-form"]', 'The search form exists');
 		test.assertExists('#right-bar','The right bar exists');
 		test.assertVisible('#right-bar');
 		test.assertExists('#header', 'The header div exists');
@@ -30,18 +30,17 @@ casper.test.begin('Basic index.html elements test',30, function suite(test){
 		test.assertVisible('#info');
 		//this.wait(5000);
 		test.assertExists('#map.leaflet-container.leaflet-fade-anim','The map div exists with leaflet class');
-		test.assertExists('#docModal','The doc modal exists');
-		test.assertNotVisible('#docModal');
+		//test.assertExists('#docModal','The doc modal exists');
+		//test.assertNotVisible('#docModal');
 		test.assertExists('#faqModal','The faq modal exists');
 		test.assertNotVisible('#faqModal');
 		test.assertExists('.icon-twitter', 'The twitter icon exists');
 		test.assertVisible('.icon-twitter');
 		test.assertExists('.icon-facebook', 'The facebook icon exists');
 		//very tied to implentation should think about this
-		test.assertResourceExists('lib/pdfobject.js');
+		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
-		test.assertResourceExists('data/cities.js');
-		test.assertResourceExists('data/gushim/jerusalem.gush.js'); // The default city. need subdomains to load other ones
+		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
 		test.assertExists('#city-text');
@@ -50,6 +49,13 @@ casper.test.begin('Basic index.html elements test',30, function suite(test){
 		test.assertExists('#city-jump');
 		test.assertVisible('#city-jump');
 		test.assertElementCount('#city-jump option', 38, 'There are 34 loaded cities');
+		
+		// make sure the toggle button exists and is not visible
+		test.assertExists('#toggle-button', 'The toggle button exists');
+		test.assertNotVisible('#toggle-button', 'The toggle button is not visible');
+        
+        // search note should be hidden until a search is successfuly made
+        test.assertNotVisible('#search-note-p');
 		
 		//TODO: phantomcss check map rendering
 	});
@@ -67,6 +73,77 @@ casper.test.begin('Basic index.html elements test',30, function suite(test){
 
 	casper.then(function(){
 		test.assertNotVisible('faqModal');
+	});
+	
+	// Address search tests
+	casper.then(function(){
+		// make sure an invalid address returns an error
+		casper.waitFor(function check() {
+			this.fill("form#search-form", {
+				'search-value' : 'רחובשלאקיים'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(3000, function() {
+				test.assertSelectorHasText('#search-error-p', 'כתובת שגויה או שלא נמצאו נתונים', 'Search for an invalid address');
+                test.assertNotVisible('#search-note-p');
+			});
+		});
+
+		// make sure an address found in a different city (not in the current gushim file) displays the right message
+		casper.waitFor(function check() {
+			this.fill("form#search-form", {
+				'search-value' : 'שדרות מוריה חיפה'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(3000, function() {
+				test.assertSelectorHasText('#search-error-p', 'לא נמצא גוש התואם לכתובת', 'Search for an address in a differenct city (no gush will be found)');
+                test.assertNotVisible('#search-note-p');
+			});
+		});
+
+		// make sure we do find a good jerusalem address
+		casper.waitFor(function check() {
+			this.fill("form#search-form", {
+				'search-value' : 'ברנר 9'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(3000, function() {
+				test.assertSelectorDoesntHaveText('#search-error-p', 'כתובת', 'Search for a good address');
+                test.assertVisible('#search-note-p');
+			});
+		});
+	});
+	
+	// Gush number search test
+	casper.then(function(){
+		// make sure a non-existing gush number returns an error
+		casper.waitFor(function check() {
+			this.fill("form#search-form", {
+				'search-value' : '1'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(1000, function() {
+				test.assertSelectorHasText('#search-error-p', 'גוש מספר 1 לא נמצא במפה', 'Search for an invalid gush number');
+                test.assertNotVisible('#search-note-p');
+			});
+		});
+
+		// make sure we do find a good jerusalem address
+		casper.waitFor(function check() {
+			this.fill("form#search-form", {
+				'search-value' : '30035'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(1000, function() {
+				test.assertSelectorDoesntHaveText('#search-error-p', 'גוש', 'Search for a good gush number');
+                test.assertNotVisible('#search-note-p');
+			});
+		});
 	});
 
 	//TODO: basic form testing (needs sinon injections and mocking

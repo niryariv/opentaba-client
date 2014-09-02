@@ -26,11 +26,11 @@ body{
 
 @font-face {
     font-family: 'Alef';
-    src: url('font/Alef-bold.eot');
-    src: url('font/Alef-bold.eot?#iefix') format('embedded-opentype'),
-         url('font/Alef-bold.woff') format('woff'),
-         url('font/Alef-bold.ttf') format('truetype'),
-         url('font/Alef-bold.svg#alefbold') format('svg');
+    src: url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Bold.eot');
+    src: url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Bold.eot?#iefix') format('embedded-opentype'),
+         url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Bold.woff2') format('woff2'),
+         url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Bold.woff') format('woff'),
+         url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 
@@ -38,11 +38,11 @@ body{
 
 @font-face {
     font-family: 'Alef';
-    src: url('font/Alef-regular.eot');
-    src: url('font/Alef-regular.eot?#iefix') format('embedded-opentype'),
-         url('font/Alef-regular.woff') format('woff'),
-         url('font/Alef-regular.ttf') format('truetype'),
-         url('font/Alef-regular.svg#alefregular') format('svg');
+    src: url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Regular.eot');
+    src: url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Regular.eot?#iefix') format('embedded-opentype'),
+         url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Regular.woff2') format('woff2'),
+         url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Regular.woff') format('woff'),
+         url('//fonts.gstatic.com/ea/alefhebrew/v4/Alef-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 

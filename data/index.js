@@ -15,5 +15,12 @@ var municipalities = {
         "fb_link": "https://www.facebook.com/opentaba.jerusalem",
         "server": "http://opentaba-server.herokuapp.com/",
         "twitter_link": "https://twitter.com/opentaba_JLM"
+    },
+    "arabe": {
+        "center": [
+            32.854521,
+            35.353198
+        ],
+        "display": "\u05e2\u05e8\u05d0\u05d1\u05d4",
     }
 };

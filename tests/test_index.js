@@ -43,12 +43,6 @@ casper.test.begin('Basic index.html elements test',33, function suite(test){
 		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
-		test.assertExists('#city-text');
-		test.assertVisible('#city-text');
-		test.assertSelectorHasText('#city-text', 'בירושלים:', 'City name correctly displayed'); // Default city again
-		test.assertExists('#city-jump');
-		test.assertVisible('#city-jump');
-		test.assertElementCount('#city-jump option', 38, 'There are 34 loaded cities');
 		
 		// make sure the toggle button exists and is not visible
 		test.assertExists('#toggle-button', 'The toggle button exists');

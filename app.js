@@ -322,8 +322,7 @@ $(document).ready(function(){
 	});
 });
 
-
-var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(muni.center, DEFAULT_ZOOM);
+var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
 
 // tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
 // tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
@@ -355,6 +354,10 @@ $.ajax({
 			}
 		}
 	).addTo(map);
+    
+    // set center and boundaries as defined in the index.js file or according to the gushimLayer
+    map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
+    map.setMaxBounds((muni.bounds == undefined) ? gushimLayer.getBounds() : muni.bounds);
 	
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {

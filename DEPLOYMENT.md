@@ -4,11 +4,13 @@ information about each municipality.
 
 Mandatory fields:
 + "display" - the Hebrew (or whatever) display name for the municipality
-+ "center" - the center point of the municipality's gush map
 
 Optional fields:
 + "server" - the base url for the server that hosts this municipality's plans.
   If not defined it is "http://opentaba-server-<muni-name>.herokuapp.com/"
++ "center" - the center point of the municipality's gush map
++ "bounds" - the boundaries to the municipality. the user will not be able
+  to go past these.
 + "file" - path in the repository to the municipality's gush map.
   If not defined it is "https://api.github.com/repos/niryariv/israel_gushim/contents/<muni_name>.topojson"
   This file will be downloaded using Github's contents API, so it must not 

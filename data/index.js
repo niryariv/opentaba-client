@@ -16,6 +16,23 @@ var municipalities = {
         "server": "http://opentaba-server.herokuapp.com/",
         "twitter_link": "https://twitter.com/opentaba_JLM"
     },
+    "petach.tikva": {
+        "bounds": [
+            [
+                32.046416,
+                34.836386
+            ],
+            [
+                32.13224,
+                34.948608
+            ]
+        ],
+        "center": [
+            32.108091,
+            34.895347
+        ],
+        "display": "\u05e4\u05ea\u05d7 \u05ea\u05e7\u05d5\u05d5\u05d4"
+    },
     "rishon": {
         "bounds": [
             [

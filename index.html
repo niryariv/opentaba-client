@@ -15,9 +15,11 @@
 		<link href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.ie.css" rel="stylesheet" />
 	<![endif]-->
 
-	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
-	<link href="css/stylesheet.css" rel="stylesheet" media="screen">
+	<link href="http://florpor.github.io/opentaba-client/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" media="screen">
+	<link href="http://florpor.github.io/opentaba-client/css/stylesheet.css" rel="stylesheet" media="screen">
+    
+    <link href="muni.css" rel="stylesheet" media="screen">
 
 	<link rel="alternate" type="application/atom+xml" href="http://opentaba-server.herokuapp.com/plans.atom" title="פיד תוכניות בניה בירושלים">
 
@@ -35,7 +37,7 @@
 <body>
 	<div class="container-fluid ot-main">
 		<div class="row ot-main row-offcanvas row-offcanvas-right">
-			<img src="img/menu.png" class="navbar-toggle" id="toggle-button" data-toggle="offcanvas" data-target=".sidebar-offcanvas"></img>
+			<img src="http://florpor.github.io/opentaba-client/img/menu.png" class="navbar-toggle" id="toggle-button" data-toggle="offcanvas" data-target=".sidebar-offcanvas"></img>
 			<div class="col-xs-12 col-sm-8 ot-main">
 				<div id="map"></div>
 			</div>
@@ -58,7 +60,7 @@
 						<form id="search-form"> 
 							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת או מספר גוש:" style="width: 84%;"/>
 							<button type="submit" class="btn" style="width: 14%;">חפש</button>
-							<img src="css/ajax-loader.gif" id="scrobber" />
+							<img src="http://florpor.github.io/opentaba-client/css/ajax-loader.gif" id="scrobber" />
 							<p style="color: red" id="search-error-p"></p>
                             <p style="color: blue; display: none" id="search-note-p">שימו לב: מפות הגושים עשויות להכיל אי דיוקים, ולכן מומלץ לבדוק גם את המידע של הגושים הצמודים לתוצאה</p>
 						</form>
@@ -147,12 +149,12 @@
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
 	
-	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
-	<script src="lib/path.js"></script>
-	<script src="lib/leaflet-pip.min.js"></script>
+	<script src="http://florpor.github.io/opentaba-client/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="http://florpor.github.io/opentaba-client/lib/path.js"></script>
+	<script src="http://florpor.github.io/opentaba-client/lib/leaflet-pip.min.js"></script>
 
-	<script src="data/index.js"></script>	
-	<script src="app.js"></script>	
+	<script src="http://florpor.github.io/opentaba-client/data/index.js"></script>	
+	<script src="http://florpor.github.io/opentaba-client/app.js"></script>	
 	
 	<script type="text/javascript">
 		var _gaq = _gaq || [];

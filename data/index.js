@@ -1,4 +1,21 @@
 var municipalities = {
+    "eilat": {
+        "bounds": [
+            [
+                29.450531,
+                34.89551
+            ],
+            [
+                29.601724,
+                34.978215
+            ]
+        ],
+        "center": [
+            29.546787,
+            34.936768
+        ],
+        "display": "\u05d0\u05d9\u05dc\u05ea"
+    },
     "givataiim": {
         "center": [
             32.071151,

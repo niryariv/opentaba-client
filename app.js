@@ -7,8 +7,8 @@ url = (window.location != window.parent.location) ? document.referrer: document.
 url = url.replace('http://', '').replace('https://', '');
 
 // get the wanted municipality (the subsomain)
-var muni_name = url.substr(0, url.indexOf('.'));
-var muni = municipalities[url.substr(0, url.indexOf('.'))];
+var muni_name = url.substr(0, url.indexOf('opentaba.info') - 1);
+var muni = municipalities[muni_name];
 if (muni == undefined) {
 	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
     muni_name = 'jerusalem';

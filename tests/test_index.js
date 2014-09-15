@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',27, function suite(test){
+casper.test.begin('Basic index.html elements test',33, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -40,13 +40,16 @@ casper.test.begin('Basic index.html elements test',27, function suite(test){
 		//very tied to implentation should think about this
 		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
-		test.assertResourceExists('data/jerusalem.js');
+		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
 		
 		// make sure the toggle button exists and is not visible
 		test.assertExists('#toggle-button', 'The toggle button exists');
 		test.assertNotVisible('#toggle-button', 'The toggle button is not visible');
+
+        // search note should be hidden until a search is successfuly made
+        test.assertNotVisible('#search-note-p');
 		
 		//TODO: phantomcss check map rendering
 	});
@@ -77,6 +80,7 @@ casper.test.begin('Basic index.html elements test',27, function suite(test){
 		}, function then() {
 			this.wait(3000, function() {
 				test.assertSelectorHasText('#search-error-p', 'כתובת שגויה או שלא נמצאו נתונים', 'Search for an invalid address');
+                test.assertNotVisible('#search-note-p');
 			});
 		});
 
@@ -89,6 +93,7 @@ casper.test.begin('Basic index.html elements test',27, function suite(test){
 		}, function then() {
 			this.wait(3000, function() {
 				test.assertSelectorHasText('#search-error-p', 'לא נמצא גוש התואם לכתובת', 'Search for an address in a differenct city (no gush will be found)');
+                test.assertNotVisible('#search-note-p');
 			});
 		});
 
@@ -101,6 +106,7 @@ casper.test.begin('Basic index.html elements test',27, function suite(test){
 		}, function then() {
 			this.wait(3000, function() {
 				test.assertSelectorDoesntHaveText('#search-error-p', 'כתובת', 'Search for a good address');
+                test.assertVisible('#search-note-p');
 			});
 		});
 	});
@@ -116,6 +122,7 @@ casper.test.begin('Basic index.html elements test',27, function suite(test){
 		}, function then() {
 			this.wait(1000, function() {
 				test.assertSelectorHasText('#search-error-p', 'גוש מספר 1 לא נמצא במפה', 'Search for an invalid gush number');
+                test.assertNotVisible('#search-note-p');
 			});
 		});
 
@@ -128,6 +135,7 @@ casper.test.begin('Basic index.html elements test',27, function suite(test){
 		}, function then() {
 			this.wait(1000, function() {
 				test.assertSelectorDoesntHaveText('#search-error-p', 'גוש', 'Search for a good gush number');
+                test.assertNotVisible('#search-note-p');
 			});
 		});
 	});

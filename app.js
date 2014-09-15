@@ -1,6 +1,5 @@
  // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : 'http://opentaba-server.herokuapp.com/'; 
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location
@@ -8,13 +7,15 @@ url = (window.location != window.parent.location) ? document.referrer: document.
 url = url.replace('http://', '').replace('https://', '');
 
 // get the wanted municipality (the subsomain)
-var muni_name = url.substr(0, url.indexOf('.'));
-var muni = municipalities[url.substr(0, url.indexOf('.'))];
+var muni_name = url.substr(0, url.indexOf('opentaba.info') - 1);
+var muni = municipalities[muni_name];
 if (muni == undefined) {
 	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
     muni_name = 'jerusalem';
     muni = municipalities['jerusalem'];
 }
+
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
 
 var gushim;
 var gushimLayer;
@@ -176,6 +177,9 @@ function get_gush_by_addr(addr) {
 					if (gid && gid.length > 0) {
 						get_gush(gid[0].gushid);
 						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
+                        
+                        // show search note after a successful search
+                        $('#search-note-p').show();
 					} else {
 						$('#search-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
 					}
@@ -272,6 +276,7 @@ $(document).ready(function(){
 		function() {
 			$('#scrobber').show();
 			$('#search-error-p').html('');
+            $('#search-note-p').hide();
 			
 			var search_val = $('#search-text').val();
 			
@@ -281,7 +286,7 @@ $(document).ready(function(){
 				var result = find_gush(parseInt(search_val));
 				if (result)
 					get_gush(parseInt(search_val));
-				else
+                else
 					$('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
 				
 				$('#scrobber').hide(); 
@@ -317,8 +322,7 @@ $(document).ready(function(){
 	});
 });
 
-
-var map = L.map('map', { scrollWheelZoom: true, attributionControl: false }).setView(muni.center, DEFAULT_ZOOM);
+var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
 
 // tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
 // tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
@@ -334,10 +338,11 @@ L.tileLayer(tile_url, {
 L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
 
 $.ajax({
-	url: muni.file,
+	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,
+    headers: { Accept: 'application/vnd.github.raw' },
 	dataType: 'json'
 }).done(function(res) {
-	gushim = topojson.feature(res, res.objects.gushim).features;
+	gushim = topojson.feature(res, res.objects[muni_name]).features;
 	
 	gushimLayer = L.geoJson(gushim,
 		{
@@ -349,6 +354,10 @@ $.ajax({
 			}
 		}
 	).addTo(map);
+    
+    // set center and boundaries as defined in the index.js file or according to the gushimLayer
+    map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
+    map.setMaxBounds((muni.bounds == undefined) ? gushimLayer.getBounds() : muni.bounds);
 	
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {

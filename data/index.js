@@ -82,6 +82,6 @@ var municipalities = {
             32.786941,
             35.529917
         ],
-        "display": "\u05d8\u05d1\u05e8\u05d9\u05d4"
+        "display": ""
     }
 };

@@ -15,7 +15,7 @@ if (muni == undefined) {
     muni = municipalities['jerusalem'];
 }
 
-var API_URL = RUNNING_LOCAL ? 'http://localhost:8000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
 
 var gushim;
 var gushimLayer;

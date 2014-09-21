@@ -1,5 +1,5 @@
 ##Municipality Index File
-The municipality index file resides in "data/index.js", and has some needed
+The municipality index file resides in "munis.js", and has some needed
 information about each municipality.
 
 Mandatory fields:

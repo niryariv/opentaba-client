@@ -12,7 +12,7 @@ Optional fields:
 + "bounds" - the boundaries to the municipality. the user will not be able
   to go past these.
 + "file" - path in the repository to the municipality's gush map.
-  If not defined it is "https://api.github.com/repos/niryariv/israel_gushim/contents/<muni_name>.topojson"
+  If not defined it is "https://api.github.com/repos/niryariv/israel_gushim/contents/\<muni_name\>.topojson"
   This file will be downloaded using Github's contents API, so it must not 
   exceed 1MB in size. Files from other static hosts will probably be loaded fine
   as long as the "Accept" header is ignored.

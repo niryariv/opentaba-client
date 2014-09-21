@@ -317,12 +317,16 @@ $(document).ready(function(){
         $('#twitter-link').attr('href', muni.twitter_link);
     else
         $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
-    $('#rss-link').attr('href', API_URL + muni_name + '/plans.atom');
+    $('#rss-link').attr('href', API_URL + '/plans.atom');
 
 	$('[data-toggle=offcanvas]').click(function() {
 		$('.row-offcanvas').toggleClass('active');
 		$('.navbar-toggle').toggleClass('active');
 	});
+    
+    // load the municipality's unique css file if it was set
+    if (muni.css != undefined)
+        $("head").append($('<link rel="stylesheet" media="screen" />').attr('href', muni.css));
 });
 
 var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });

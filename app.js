@@ -317,7 +317,7 @@ $(document).ready(function(){
         $('#twitter-link').attr('href', muni.twitter_link);
     else
         $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
-    $('#rss-link').attr('href', API_URL + muni_name + '/plans.atom');
+    $('#rss-link').attr('href', API_URL + '/plans.atom');
 
 	$('[data-toggle=offcanvas]').click(function() {
 		$('.row-offcanvas').toggleClass('active');

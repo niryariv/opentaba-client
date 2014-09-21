@@ -21,4 +21,4 @@ Optional fields:
 + "twitter_link" - link to the municipality's twitter page.
   If not defined the twitter icon will open a "tweet" window
 + "css" - local path to css file for unique design of municipality's site.
-  An example file can be found in (css/municipalities/example.css)[https://github.com/niryariv/opentaba-client/blob/master/css/municipalities/example.css]
+  An example file can be found in [css/municipalities/example.css](https://github.com/niryariv/opentaba-client/blob/master/css/municipalities/example.css)

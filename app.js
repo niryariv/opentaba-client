@@ -132,6 +132,9 @@ function get_gush(gush_id) {
 	
 	console.log('waiting for json');
 	
+    // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
+    if ($('.row-offcanvas').css('position') == 'relative' && !$('.row-offcanvas').hasClass('active'))
+        $('[data-toggle=offcanvas]').click();
 }
 
 // find a rendered gush based on ID

@@ -132,6 +132,9 @@ function get_gush(gush_id) {
 	
 	console.log('waiting for json');
 	
+    // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
+    if ($('.row-offcanvas').css('position') == 'relative' && !$('.row-offcanvas').hasClass('active'))
+        $('[data-toggle=offcanvas]').click();
 }
 
 // find a rendered gush based on ID
@@ -335,7 +338,18 @@ L.tileLayer(tile_url, {
 }).addTo(map);
 
 // add 'locate me' button
-L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
+L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: {
+            color: '#136AEC',
+            fillColor: '#136AEC',
+            fillOpacity: 0.15,
+            weight: 2,
+            opacity: 0.5,
+            clickable: false
+        }, strings: {
+            title: "הראה אותי",
+            popup: "הנכם נמצאים בטווח של {distance} מטרים מנקודה זו",
+            outsideMapBoundsMsg: "נראה שהנכם מחוץ לתחום המפה"
+        }}).addTo(map);
 
 $.ajax({
 	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,

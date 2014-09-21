@@ -323,6 +323,10 @@ $(document).ready(function(){
 		$('.row-offcanvas').toggleClass('active');
 		$('.navbar-toggle').toggleClass('active');
 	});
+    
+    // load the municipality's unique css file if it was set
+    if (muni.css != undefined)
+        $("head").append($('<link rel="stylesheet" media="screen" />').attr('href', muni.css));
 });
 
 var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });

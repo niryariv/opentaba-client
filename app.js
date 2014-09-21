@@ -335,7 +335,18 @@ L.tileLayer(tile_url, {
 }).addTo(map);
 
 // add 'locate me' button
-L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
+L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: {
+            color: '#136AEC',
+            fillColor: '#136AEC',
+            fillOpacity: 0.15,
+            weight: 2,
+            opacity: 0.5,
+            clickable: false
+        }, strings: {
+            title: "הראה אותי",
+            popup: "הנכם נמצאים בטווח של {distance} מטרים מנקודה זו",
+            outsideMapBoundsMsg: "נראה שהנכם מחוץ לתחום המפה"
+        }}).addTo(map);
 
 $.ajax({
 	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,

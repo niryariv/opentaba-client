@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',33, function suite(test){
+casper.test.begin('Basic index.html elements test',34, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -40,6 +40,7 @@ casper.test.begin('Basic index.html elements test',33, function suite(test){
 		//very tied to implentation should think about this
 		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
+        test.assertResourceExists('munis.js');
 		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');

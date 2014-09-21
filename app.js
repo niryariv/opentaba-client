@@ -373,7 +373,7 @@ $.ajax({
 		}
 	).addTo(map);
     
-    // set center and boundaries as defined in the index.js file or according to the gushimLayer
+    // set center and boundaries as defined in the munis.js file or according to the gushimLayer
     map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
     map.setMaxBounds((muni.bounds == undefined) ? gushimLayer.getBounds() : muni.bounds);
 	

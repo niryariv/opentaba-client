@@ -33,6 +33,23 @@ var municipalities = {
         ],
         "display": "\u05d2\u05d1\u05e2\u05ea\u05d9\u05d9\u05dd"
     },
+    "holon": {
+        "bounds": [
+            [
+                31.988777,
+                34.749024
+            ],
+            [
+                32.041786,
+                34.813937
+            ]
+        ],
+        "center": [
+            32.012882,
+            34.781618
+        ],
+        "display": "\u05d7\u05d5\u05dc\u05d5\u05df"
+    },
     "jerusalem": {
         "bounds": [
             [

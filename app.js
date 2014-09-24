@@ -26,15 +26,14 @@ var got_gushim_delegate;
 var got_gushim_delegate_param;
 
 var DEFAULT_ZOOM = 13;
-
-// var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
-
 var highlit = [];
 
 // Utility endsWith function
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
+
+
 
 function show_data(url){
 	if (url.indexOf('.pdf', url.length - 4) !== -1) { // endsWith('.pdf')?
@@ -114,6 +113,7 @@ function render_plans(plans, gid) {
 
 }
 
+
 function get_gush(gush_id) {
 	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
 	clear_all_highlit();
@@ -130,12 +130,11 @@ function get_gush(gush_id) {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
 		});
 	
-	console.log('waiting for json');
-	
     // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
     if ($('.row-offcanvas').css('position') == 'relative' && !$('.row-offcanvas').hasClass('active'))
         $('[data-toggle=offcanvas]').click();
 }
+
 
 // find a rendered gush based on ID
 function find_gush(gush_id){
@@ -145,14 +144,13 @@ function find_gush(gush_id){
 	return g[0];
 }
 
+
 // get a gush by street address
 function get_gush_by_addr(addr) {
 	// add the city name if it is not in the search string
 	if (addr.indexOf(muni.display) == -1) {
 		addr = addr + " " + muni.display;
 	}
-	
-	console.log("get_gush_by_addr: " + addr);
 	
 	// Use Google api to find a gush by address
 	$.getJSON(
@@ -213,17 +211,20 @@ function highlight_gush(id) {
 	highlit.push(id);
 }
 
+
 function clear_highlight(id) {
 	gush = 'gush_' + id;
 	map._layers[gush].setStyle({opacity: 0.05 , color: "#888"});
 	highlit.splice(highlit.indexOf(id), 1);
 }
 
+
 function clear_all_highlit() {
 	while (highlit.length > 0) {
 		clear_highlight(highlit[0]);
 	}
 }
+
 
 function onEachFeature(feature, layer) {
 	// layer.bindPopup(feature.properties.Name + " גוש ");
@@ -240,7 +241,8 @@ function onEachFeature(feature, layer) {
 	layer._leaflet_id = 'gush_' + feature.id;
 }
 
-// jQuery startup funcs
+
+// START HERE
 $(document).ready(function(){
 
 	// wake up possibly-idling heroku dyno to make sure later requests aren't too slow

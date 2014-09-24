@@ -242,6 +242,23 @@ function onEachFeature(feature, layer) {
 }
 
 
+// add markers for other munis
+function mark_munis(){
+	console.log
+	var ms = municipalities;
+	delete ms[muni_name]; // don't label current muni
+
+	$.each(ms, function(k) {
+		m = ms[k];
+		var muni_icon = L.divIcon({
+			className: 'muni-marker'
+			,html: '<a href="//' + k + '.opentaba.info/">תב״ע פתוחה: ' + m.display + '</a>'
+			,iconSize: null
+		});
+		L.marker(m.center, {icon: muni_icon}).addTo(map);
+	});
+}
+
 // START HERE
 $(document).ready(function(){
 
@@ -398,6 +415,10 @@ $.ajax({
     );
 	
 	
+    // mark other supported municipalities on the map
+	mark_munis();
+
+
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {
 		got_gushim_delegate(got_gushim_delegate_param);

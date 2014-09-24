@@ -331,9 +331,6 @@ $(document).ready(function(){
 
 var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
 
-// tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
-// tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-// tile_url = "http://{s}.tiles.mapbox.com/v3/niryariv.i6e92njd/{z}/{x}/{y}.png";
 tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 
 L.tileLayer(tile_url, {

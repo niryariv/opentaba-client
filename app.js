@@ -327,31 +327,21 @@ $(document).ready(function(){
 	$('#rss-link').attr('href', API_URL + '/plans.atom');
 	$('#rss-link').css('visibility', 'visible');
 
-    // muni.fb_link 	?	$('#fb-link').attr('href', muni.fb_link) : $('#fb-link').hide();
-    // muni.twitter_link ?	$('#twitter-link').attr('href', muni.twitter_link) : $('#twitter-link').hide();
 
-    // if (muni.fb_link) {
-    //     $('#fb-link').attr('href', muni.fb_link);
-    // } else {
-    //     $('#fb-link').attr('href', 'javascript:fb_share();');
-    //     $('#fb-link').removeAttr('target');
-    // }
-    // if (muni.twitter_link)
-    //     $('#twitter-link').attr('href', muni.twitter_link);
-    // else
-    //     $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
-    $('#rss-link').attr('href', API_URL + '/plans.atom');
 
 	$('[data-toggle=offcanvas]').click(function() {
 		$('.row-offcanvas').toggleClass('active');
 		$('.navbar-toggle').toggleClass('active');
 	});
     
+
     // load the municipality's unique css file if it was set
     if (muni.css != undefined)
         $("head").append($('<link rel="stylesheet" media="screen" />').attr('href', muni.css));
 });
 
+
+// setup map
 var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
 
 tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
@@ -396,9 +386,15 @@ $.ajax({
 		}
 	).addTo(map);
     
+    
     // set center and boundaries as defined in the munis.js file or according to the gushimLayer
-    map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
-    map.setMaxBounds((muni.bounds == undefined) ? gushimLayer.getBounds() : muni.bounds);
+    map.setView(
+    	muni.center == undefined ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM
+    );
+    map.setMaxBounds(
+    	muni.bounds == undefined ? gushimLayer.getBounds() : muni.bounds
+    );
+	
 	
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {

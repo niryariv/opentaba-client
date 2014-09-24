@@ -243,12 +243,12 @@ function onEachFeature(feature, layer) {
 // jQuery startup funcs
 $(document).ready(function(){
 
-	// comment out for serverless
 	// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
 	$.getJSON( API_URL + "wakeup" , function(){
 		// do nothing 
 	});
 
+	
 	// setup a path.js router to allow distinct URLs for each block
 	Path.map("#/gush/:gush_id").to(
 		function(){ 
@@ -275,6 +275,8 @@ $(document).ready(function(){
 
 	Path.listen();
 
+
+	// setup search form
 	$('#search-form').submit(
 		function() {
 			$('#scrobber').show();
@@ -302,6 +304,7 @@ $(document).ready(function(){
 		}
 	);
 	
+	
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
@@ -309,17 +312,34 @@ $(document).ready(function(){
 	$("title").append(": " + muni.display)
 
     
-    // set links
-    if (muni.fb_link) {
-        $('#fb-link').attr('href', muni.fb_link);
-    } else {
-        $('#fb-link').attr('href', 'javascript:fb_share();');
-        $('#fb-link').removeAttr('target');
-    }
-    if (muni.twitter_link)
-        $('#twitter-link').attr('href', muni.twitter_link);
-    else
-        $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
+    // set links according to municipality
+
+	if (muni.fb_link) {
+		$('#fb-link').attr('href', muni.fb_link);
+		$('#fb-link').css('visibility', 'visible');
+	}
+
+	if (muni.twitter_link) {
+		$('#twitter-link').attr('href', muni.twitter_link);
+		$('#twitter-link').css('visibility', 'visible');
+	}
+
+	$('#rss-link').attr('href', API_URL + '/plans.atom');
+	$('#rss-link').css('visibility', 'visible');
+
+    // muni.fb_link 	?	$('#fb-link').attr('href', muni.fb_link) : $('#fb-link').hide();
+    // muni.twitter_link ?	$('#twitter-link').attr('href', muni.twitter_link) : $('#twitter-link').hide();
+
+    // if (muni.fb_link) {
+    //     $('#fb-link').attr('href', muni.fb_link);
+    // } else {
+    //     $('#fb-link').attr('href', 'javascript:fb_share();');
+    //     $('#fb-link').removeAttr('target');
+    // }
+    // if (muni.twitter_link)
+    //     $('#twitter-link').attr('href', muni.twitter_link);
+    // else
+    //     $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
     $('#rss-link').attr('href', API_URL + '/plans.atom');
 
 	$('[data-toggle=offcanvas]').click(function() {
@@ -341,6 +361,7 @@ L.tileLayer(tile_url, {
 	minZoom: 13
 }).addTo(map);
 
+
 // add 'locate me' button
 L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: {
             color: '#136AEC',
@@ -355,6 +376,8 @@ L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: 
             outsideMapBoundsMsg: "נראה שהנכם מחוץ לתחום המפה"
         }}).addTo(map);
 
+
+// load gushim topojson 
 $.ajax({
 	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,
     headers: { Accept: 'application/vnd.github.raw' },

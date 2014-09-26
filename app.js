@@ -10,9 +10,15 @@ url = url.replace('http://', '').replace('https://', '');
 var muni_name = url.substr(0, url.indexOf('opentaba.info') - 1);
 var muni = municipalities[muni_name];
 if (muni == undefined) {
-	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
-    muni_name = 'jerusalem';
-    muni = municipalities['jerusalem'];
+    if (RUNNING_LOCAL && location.hash == '#/holon-test') {
+        // this is so we are able to test another municipality besides jerusalem without running a web-server, messing with hosts and stuff
+        muni_name = 'holon';
+        muni = municipalities['holon'];
+    } else {
+        // we now have all subdomains linking here, so undefined muni means we either browsed www.opentaba.info or opentaba.info or an unknown municipality
+        muni_name = 'jerusalem';
+        muni = municipalities['jerusalem'];
+    }
 }
 
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;

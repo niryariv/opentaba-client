@@ -48,7 +48,7 @@ casper.test.begin('Basic index.html elements test',34, function suite(test){
 		// make sure the toggle button exists and is not visible
 		test.assertExists('#toggle-button', 'The toggle button exists');
 		test.assertNotVisible('#toggle-button', 'The toggle button is not visible');
-        
+
         // search note should be hidden until a search is successfuly made
         test.assertNotVisible('#search-note-p');
 		

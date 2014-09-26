@@ -373,10 +373,19 @@ $.ajax({
 		}
 	).addTo(map);
     
+
+    // set map bounds. We want them a little larger than the actual area bounds, so users can see labels for other areas
+	var bnds = L.latLngBounds(muni.bounds != undefined ? muni.bounds : gushimLayer.getBounds());
+	map.setMaxBounds([
+		[bnds.getSouth() - 0.05, bnds.getWest() - 0.05]
+		,[bnds.getNorth() + 0.05, bnds.getEast() + 0.05]
+	]);
+	
+
     // set center and boundaries as defined in the munis.js file or according to the gushimLayer
     map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
-    map.setMaxBounds((muni.bounds == undefined) ? gushimLayer.getBounds() : muni.bounds);
-	
+
+ 	
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {
 		got_gushim_delegate(got_gushim_delegate_param);

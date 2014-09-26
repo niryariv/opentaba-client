@@ -410,10 +410,19 @@ $.ajax({
     map.setView(
     	muni.center == undefined ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM
     );
-    map.setMaxBounds(
-    	muni.bounds == undefined ? gushimLayer.getBounds() : muni.bounds
-    );
-	
+    
+    if (muni.bounds != undefined) {
+        map.setMaxBounds(muni.bounds);
+    } else {
+        // extend the boundaries a bit so nearby municipalities can be seen
+        var bounds = gushimLayer.getBounds();
+        bounds._southWest.lat -= 0.2;
+        bounds._southWest.lng -= 0.2;
+        bounds._northEast.lat += 0.2;
+        bounds._northEast.lng += 0.2;
+        map.setMaxBounds(bounds);
+    }
+    
 	
     // mark other supported municipalities on the map
 	mark_munis();

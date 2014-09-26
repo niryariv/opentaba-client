@@ -5,10 +5,10 @@ casper.options.verbose = true;
 casper.options.viewportSize = {width:252, height:800}; // this produces a 480x800 resolution like my phone. why? who the fuck knows
 
 //Starting the tests
-casper.test.begin('Mobile index.html elements test',25, function suite(test){
+casper.test.begin('Mobile index.html elements test',27, function suite(test){
 
 	casper.start(url, function(){
-		test.assertTitle('תב"ע פתוחה',"The title is what we expected");
+		test.assertTitle('תב"ע פתוחה: ירושלים',"The title is what we expected");
 		test.assertExists('form[id="search-form"]', 'The search form exists');
 		test.assertExists('#right-bar','The right bar exists');
 		test.assertVisible('#right-bar');
@@ -23,6 +23,8 @@ casper.test.begin('Mobile index.html elements test',25, function suite(test){
 		test.assertVisible('.icon-twitter');
 		test.assertExists('.icon-facebook', 'The facebook icon exists');
 		test.assertVisible('.icon-facebook');
+        test.assertExists('.icon-rss', 'The rss icon exists');
+        test.assertVisible('.icon-rss');
 		//very tied to implentation should think about this
 		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');

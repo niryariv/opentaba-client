@@ -1,5 +1,5 @@
- // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
+var DOMAIN = 'opentaba.info';
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location
@@ -7,7 +7,7 @@ url = (window.location != window.parent.location) ? document.referrer: document.
 url = url.replace('http://', '').replace('https://', '');
 
 // get the wanted municipality (the subsomain)
-var muni_name = url.substr(0, url.indexOf('opentaba.info') - 1);
+var muni_name = url.substr(0, url.indexOf(DOMAIN) - 1);
 var muni = municipalities[muni_name];
 if (muni == undefined) {
     if (RUNNING_LOCAL && location.hash == '#/holon-test') {
@@ -248,20 +248,33 @@ function onEachFeature(feature, layer) {
 }
 
 
-// add markers for other munis
-function mark_munis(){
-	console.log
+// add markers for other munis to map and names to dropdown
+function setup_other_munis() {
 	var ms = municipalities;
 	delete ms[muni_name]; // don't label current muni
+    var jump_to_list = $('#jump-to-list');
 
 	$.each(ms, function(k) {
 		m = ms[k];
+        
+        // add marker to map
 		var muni_icon = L.divIcon({
 			className: 'muni-marker'
-			,html: '<a href="//' + k + '.opentaba.info/">תב״ע פתוחה: ' + m.display + '</a>'
+			,html: '<a href="//' + k + '.' + DOMAIN + '/">תב״ע פתוחה: ' + m.display + '</a>'
 			,iconSize: null
 		});
 		L.marker(m.center, {icon: muni_icon}).addTo(map);
+        
+        // add link to jump-to dropdown. need to sort munis by display name
+        jump_to_list.children('li').each(function() {
+            if (this.firstChild.text > m.display) {
+                $('<li role="presentation"><a role="menuitem" tabindex="-1" href="http://' + k + '.' + DOMAIN + '/">' + m.display + '</a></li>').insertBefore(this);
+                delete m;
+                return false;
+            }
+        });
+        if (typeof m !== 'undefined')
+            jump_to_list.append($('<li role="presentation"><a role="menuitem" tabindex="-1" href="http://' + k + '.' + DOMAIN + '/">' + m.display + '</a></li>'));
 	});
 }
 
@@ -338,7 +351,6 @@ $(document).ready(function(){
 
     
     // set links according to municipality
-
 	if (muni.fb_link) {
 		$('#fb-link').attr('href', muni.fb_link);
 		$('#fb-link').css('visibility', 'visible');
@@ -424,8 +436,8 @@ $.ajax({
     map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
 
  	
-    // mark other supported municipalities on the map
-	mark_munis();
+    // mark other supported municipalities on the map and add them to jump-to dropdown
+	setup_other_munis();
 	
 
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush

@@ -42,21 +42,18 @@
 			<div class="col-xs-12 col-sm-4 sidebar-offcanvas" id="info-div">
 				<div id="right-bar" >
 					
-                    <div class="row">
-                        <div id="jump-to" class="dropdown align-right col-xs-8">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="jump-to-menu" data-toggle="dropdown">קפוץ לעיר אחרת <span class="caret"></span></button>
-                            <ul id="jump-to-list" class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="jump-to-menu"></ul>
-                        </div>
-                        
-                        <div id="share_icons" class="align-right col-xs-4">
-                            <a id="rss-link" href="https://opentaba-server.herokuapp.com/jerusalem/plans.atom" target="_blank"><i class="icon-rss icon-2x"></i></a>
-                            <a id="fb-link" href="https://www.facebook.com/opentaba.jerusalem" target="_blank"><i class="icon-facebook icon-2x"></i></a>
-                            <a id="twitter-link" href="https://twitter.com/opentaba_JLM" target="_blank"><i class="icon-twitter icon-2x"></i></a>
-                        </div>
+                    <div id="share_icons" class="align-right">
+                        <a id="rss-link" href="https://opentaba-server.herokuapp.com/jerusalem/plans.atom" target="_blank"><i class="icon-rss icon-2x"></i></a>
+                        <a id="fb-link" href="https://www.facebook.com/opentaba.jerusalem" target="_blank"><i class="icon-facebook icon-2x"></i></a>
+                        <a id="twitter-link" href="https://twitter.com/opentaba_JLM" target="_blank"><i class="icon-twitter icon-2x"></i></a>
                     </div>
 					
-					<div id="header" class="align-right">
-						<a href="javascript: window.location=window.location.pathname;"><h1 id="top-title">תב"ע פתוחה</h1></a>
+					<div id="header" class="row align-right">
+                        <div id="jump-to" class="dropdown align-right col-xs-5">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="jump-to-menu" data-toggle="dropdown"><a><h1 id="jump-to-title"><span class="caret"></span></h1></a></button>
+                            <ul id="jump-to-list" class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="jump-to-menu"></ul>
+                        </div>
+                        <div id="jump-to-title-prefix" class="col-xs-7"><a><h1 id="top-title">תב"ע פתוחה: </h1></a></div>
 					</div>
 
 					<div class="align-right">

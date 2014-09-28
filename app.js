@@ -346,7 +346,7 @@ $(document).ready(function(){
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
-	$("#top-title").append(": " + muni.display);
+	$("#jump-to-title").prepend(muni.display + ' ');
 	$("title").append(": " + muni.display)
 
     

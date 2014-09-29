@@ -269,7 +269,7 @@ $(document).ready(function(){
 			map.setView(muni.center, DEFAULT_ZOOM);
             
 			// get the most recent plans to show on the homepage
-			$.getJSON(API_URL + 'recent', function(res){
+			$.getJSON(API_URL + 'recent.json', function(res){
 				render_plans(res, 'עדכונים אחרונים');
 			});
 		}

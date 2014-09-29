@@ -1,0 +1,14 @@
+/* Conditional stylesheet for IE. */
+@import url('css/showall-fa-ie7.css');
+
+.leaflet-control-showall {
+	border: 3px solid #999;
+}
+
+.leaflet-control-showall a {
+	background-color: #eee;
+}
+
+.leaflet-control-showall a:hover {
+	background-color: #fff;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "showall-fa",
+  "css_prefix_text": "icon-",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "6707ea950c24c5b01625f7ea73b2172e",
+      "css": "show-all",
+      "code": 59392,
+      "src": "elusive"
+    }
+  ]
+}

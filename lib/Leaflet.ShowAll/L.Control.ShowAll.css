@@ -1,0 +1,20 @@
+/* Compatible with Leaflet 0.7 */
+
+@import url('css/showall-fa.css');
+@import url('css/animation.css');
+
+.leaflet-control-showall a {
+	font-size: 1.4em;
+	margin-left: 1px;
+    color: #444;
+}
+
+.leaflet-control-showall.active a {
+	color: #2074B6;
+}
+
+.leaflet-touch .leaflet-control-showall {
+	box-shadow: none;
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+}

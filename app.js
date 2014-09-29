@@ -250,18 +250,20 @@ function onEachFeature(feature, layer) {
 
 // add markers for other munis
 function mark_munis(){
-	console.log
 	var ms = municipalities;
 	delete ms[muni_name]; // don't label current muni
+    var i = 0;
 
 	$.each(ms, function(k) {
 		m = ms[k];
 		var muni_icon = L.divIcon({
-			className: 'muni-marker'
-			,html: '<a href="//' + k + '.opentaba.info/">תב״ע פתוחה: ' + m.display + '</a>'
-			,iconSize: null
+			className: 'muni-marker',
+			html: '<a href="//' + k + '.opentaba.info/">תב״ע פתוחה: ' + m.display + '</a>',
+			iconSize: null,
+            iconAnchor: [(i % 4 < 2) ? 0 : 50, (i % 2 == 0) ? 50 : 0] // try to seperate the labels a bit by spreading the anchor points apart
 		});
 		L.marker(m.center, {icon: muni_icon}).addTo(map);
+        i++;
 	});
 }
 
@@ -373,7 +375,7 @@ tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 
 L.tileLayer(tile_url, {
 	maxZoom: 16,
-	minZoom: 13
+	minZoom: 8
 }).addTo(map);
 
 
@@ -390,6 +392,11 @@ L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: 
             popup: "הנכם נמצאים בטווח של {distance} מטרים מנקודה זו",
             outsideMapBoundsMsg: "נראה שהנכם מחוץ לתחום המפה"
         }}).addTo(map);
+
+
+// add 'show all' button
+L.control.showAll({bounds: L.latLngBounds(L.latLng(29.341057, 33.950224), L.latLng(33.345303, 36.092558)), 
+    position: 'bottomleft', title: 'הראה הכל'}).addTo(map);
 
 
 // load gushim topojson 
@@ -414,10 +421,7 @@ $.ajax({
 
     // set map bounds. We want them a little larger than the actual area bounds, so users can see labels for other areas
 	var bnds = L.latLngBounds(muni.bounds != undefined ? muni.bounds : gushimLayer.getBounds());
-	map.setMaxBounds([
-		[bnds.getSouth() - 0.05, bnds.getWest() - 0.05]
-		,[bnds.getNorth() + 0.05, bnds.getEast() + 0.05]
-	]);
+	map.setMaxBounds(bnds.pad(0.5)); // pad bounds by 50%
 	
 
     // set center and boundaries as defined in the munis.js file or according to the gushimLayer

@@ -13,14 +13,14 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',33, function suite(test){
+casper.test.begin('Basic index.html elements test',37, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
 	start(url, function(){
 
 		//casper.options.clientScripts.push('../testlibs/sinon-1.7.3.js');
-		test.assertTitle('תב"ע פתוחה',"The title is what we expected");
+		test.assertTitle('תב"ע פתוחה: ירושלים',"The title is what we expected");
 		test.assertExists('form[id="search-form"]', 'The search form exists');
 		test.assertExists('#right-bar','The right bar exists');
 		test.assertVisible('#right-bar');
@@ -37,9 +37,13 @@ casper.test.begin('Basic index.html elements test',33, function suite(test){
 		test.assertExists('.icon-twitter', 'The twitter icon exists');
 		test.assertVisible('.icon-twitter');
 		test.assertExists('.icon-facebook', 'The facebook icon exists');
+        test.assertVisible('.icon-facebook');
+        test.assertExists('.icon-rss', 'The rss icon exists');
+        test.assertVisible('.icon-rss');
 		//very tied to implentation should think about this
 		//test.assertResourceExists('lib/pdfobject.js');
 		test.assertResourceExists('lib/path.js');
+        test.assertResourceExists('munis.js');
 		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
@@ -47,7 +51,7 @@ casper.test.begin('Basic index.html elements test',33, function suite(test){
 		// make sure the toggle button exists and is not visible
 		test.assertExists('#toggle-button', 'The toggle button exists');
 		test.assertNotVisible('#toggle-button', 'The toggle button is not visible');
-        
+
         // search note should be hidden until a search is successfuly made
         test.assertNotVisible('#search-note-p');
 		
@@ -126,7 +130,7 @@ casper.test.begin('Basic index.html elements test',33, function suite(test){
 			});
 		});
 
-		// make sure we do find a good jerusalem address
+		// make sure we do find a good gush number
 		casper.waitFor(function check() {
 			this.fill("form#search-form", {
 				'search-value' : '30035'

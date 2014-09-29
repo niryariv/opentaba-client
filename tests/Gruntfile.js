@@ -8,7 +8,8 @@ module.exports = function(grunt){
 				['./test_index.js',
 				'./test_map_regression.js',
 				'./test_index_get_gush.js',
-				'./test_index_small_screen.js'] //TODO: Add the other testing files when ready
+				'./test_index_small_screen.js',
+                './test_holon.js'] //TODO: Add the other testing files when ready
 			
 		},
 		jshint:{

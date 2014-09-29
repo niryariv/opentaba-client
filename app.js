@@ -10,9 +10,15 @@ url = url.replace('http://', '').replace('https://', '');
 var muni_name = url.substr(0, url.indexOf('opentaba.info') - 1);
 var muni = municipalities[muni_name];
 if (muni == undefined) {
-	// since we won't have randm subdomains linking here, undefined muni just means we browsed www.opentaba.info or opentaba.info
-    muni_name = 'jerusalem';
-    muni = municipalities['jerusalem'];
+    if (RUNNING_LOCAL && location.hash == '#/holon-test') {
+        // this is so we are able to test another municipality besides jerusalem without running a web-server, messing with hosts and stuff
+        muni_name = 'holon';
+        muni = municipalities['holon'];
+    } else {
+        // we now have all subdomains linking here, so undefined muni means we either browsed www.opentaba.info or opentaba.info or an unknown municipality
+        muni_name = 'jerusalem';
+        muni = municipalities['jerusalem'];
+    }
 }
 
 var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
@@ -26,15 +32,14 @@ var got_gushim_delegate;
 var got_gushim_delegate_param;
 
 var DEFAULT_ZOOM = 13;
-
-// var API_URL = '/'; // serverless, bitches! just store the JSON in the directory and grab it from there.
-
 var highlit = [];
 
 // Utility endsWith function
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
+
+
 
 function show_data(url){
 	if (url.indexOf('.pdf', url.length - 4) !== -1) { // endsWith('.pdf')?
@@ -114,6 +119,7 @@ function render_plans(plans, title) {
 
 }
 
+
 function get_gush(gush_id) {
 	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
 	clear_all_highlit();
@@ -130,9 +136,11 @@ function get_gush(gush_id) {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
 		});
 	
-	console.log('waiting for json');
-	
+    // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
+    if ($('.row-offcanvas').css('position') == 'relative' && !$('.row-offcanvas').hasClass('active'))
+        $('[data-toggle=offcanvas]').click();
 }
+
 
 // find a rendered gush based on ID
 function find_gush(gush_id){
@@ -142,14 +150,13 @@ function find_gush(gush_id){
 	return g[0];
 }
 
+
 // get a gush by street address
 function get_gush_by_addr(addr) {
 	// add the city name if it is not in the search string
 	if (addr.indexOf(muni.display) == -1) {
 		addr = addr + " " + muni.display;
 	}
-	
-	console.log("get_gush_by_addr: " + addr);
 	
 	// Use Google api to find a gush by address
 	$.getJSON(
@@ -210,17 +217,20 @@ function highlight_gush(id) {
 	highlit.push(id);
 }
 
+
 function clear_highlight(id) {
 	gush = 'gush_' + id;
 	map._layers[gush].setStyle({opacity: 0.05 , color: "#888"});
 	highlit.splice(highlit.indexOf(id), 1);
 }
 
+
 function clear_all_highlit() {
 	while (highlit.length > 0) {
 		clear_highlight(highlit[0]);
 	}
 }
+
 
 function onEachFeature(feature, layer) {
 	// layer.bindPopup(feature.properties.Name + " גוש ");
@@ -237,15 +247,33 @@ function onEachFeature(feature, layer) {
 	layer._leaflet_id = 'gush_' + feature.id;
 }
 
-// jQuery startup funcs
+
+// add markers for other munis
+function mark_munis(){
+	console.log
+	var ms = municipalities;
+	delete ms[muni_name]; // don't label current muni
+
+	$.each(ms, function(k) {
+		m = ms[k];
+		var muni_icon = L.divIcon({
+			className: 'muni-marker'
+			,html: '<a href="//' + k + '.opentaba.info/">תב״ע פתוחה: ' + m.display + '</a>'
+			,iconSize: null
+		});
+		L.marker(m.center, {icon: muni_icon}).addTo(map);
+	});
+}
+
+// START HERE
 $(document).ready(function(){
 
-	// comment out for serverless
 	// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
 	$.getJSON( API_URL + "wakeup" , function(){
 		// do nothing 
 	});
 
+	
 	// setup a path.js router to allow distinct URLs for each block
 	Path.map("#/gush/:gush_id").to(
 		function(){ 
@@ -278,6 +306,8 @@ $(document).ready(function(){
 	Path.root("");
 	Path.listen();
 
+
+	// setup search form
 	$('#search-form').submit(
 		function() {
 			$('#scrobber').show();
@@ -305,34 +335,46 @@ $(document).ready(function(){
 		}
 	);
 	
+	
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
+	$("#top-title").append(": " + muni.display);
+	$("title").append(": " + muni.display)
+
     
-    // set links
-    if (muni.fb_link) {
-        $('#fb-link').attr('href', muni.fb_link);
-    } else {
-        $('#fb-link').attr('href', 'javascript:fb_share();');
-        $('#fb-link').removeAttr('target');
-    }
-    if (muni.twitter_link)
-        $('#twitter-link').attr('href', muni.twitter_link);
-    else
-        $('#twitter-link').attr('href', 'https://twitter.com/intent/tweet?text=תבע+פתוחה&url=http%3A%2F%2Fopentaba.info');
-    $('#rss-link').attr('href', API_URL + muni_name + '/plans.atom');
+    // set links according to municipality
+
+	if (muni.fb_link) {
+		$('#fb-link').attr('href', muni.fb_link);
+		$('#fb-link').css('visibility', 'visible');
+	}
+
+	if (muni.twitter_link) {
+		$('#twitter-link').attr('href', muni.twitter_link);
+		$('#twitter-link').css('visibility', 'visible');
+	}
+
+	$('#rss-link').attr('href', API_URL + '/plans.atom');
+	$('#rss-link').css('visibility', 'visible');
+
+
 
 	$('[data-toggle=offcanvas]').click(function() {
 		$('.row-offcanvas').toggleClass('active');
 		$('.navbar-toggle').toggleClass('active');
 	});
+    
+
+    // load the municipality's unique css file if it was set
+    if (muni.css != undefined)
+        $("head").append($('<link rel="stylesheet" media="screen" />').attr('href', muni.css));
 });
 
+
+// setup map
 var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
 
-// tile_url = 'http://{s}.tile.cloudmade.com/424caca899ea4a53b055c5e3078524ca/997/256/{z}/{x}/{y}.png';
-// tile_url = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';
-// tile_url = "http://{s}.tiles.mapbox.com/v3/niryariv.i6e92njd/{z}/{x}/{y}.png";
 tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 
 L.tileLayer(tile_url, {
@@ -340,9 +382,23 @@ L.tileLayer(tile_url, {
 	minZoom: 13
 }).addTo(map);
 
-// add 'locate me' button
-L.control.locate({position: 'topleft', keepCurrentZoomLevel: true}).addTo(map);
 
+// add 'locate me' button
+L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: {
+            color: '#136AEC',
+            fillColor: '#136AEC',
+            fillOpacity: 0.15,
+            weight: 2,
+            opacity: 0.5,
+            clickable: false
+        }, strings: {
+            title: "הראה אותי",
+            popup: "הנכם נמצאים בטווח של {distance} מטרים מנקודה זו",
+            outsideMapBoundsMsg: "נראה שהנכם מחוץ לתחום המפה"
+        }}).addTo(map);
+
+
+// load gushim topojson 
 $.ajax({
 	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,
     headers: { Accept: 'application/vnd.github.raw' },
@@ -361,10 +417,23 @@ $.ajax({
 		}
 	).addTo(map);
     
-    // set center and boundaries as defined in the index.js file or according to the gushimLayer
-    map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
-    map.setMaxBounds((muni.bounds == undefined) ? gushimLayer.getBounds() : muni.bounds);
+
+    // set map bounds. We want them a little larger than the actual area bounds, so users can see labels for other areas
+	var bnds = L.latLngBounds(muni.bounds != undefined ? muni.bounds : gushimLayer.getBounds());
+	map.setMaxBounds([
+		[bnds.getSouth() - 0.05, bnds.getWest() - 0.05]
+		,[bnds.getNorth() + 0.05, bnds.getEast() + 0.05]
+	]);
 	
+
+    // set center and boundaries as defined in the munis.js file or according to the gushimLayer
+    map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
+
+ 	
+    // mark other supported municipalities on the map
+	mark_munis();
+	
+
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {
 		got_gushim_delegate(got_gushim_delegate_param);

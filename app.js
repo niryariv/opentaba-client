@@ -52,10 +52,10 @@ function show_data(url){
 	$("#docModal").modal().css({ width: '90%', height: '80%', 'margin-left': function () { return -($(this).width() / 2); } });
 }
 
-function render_plans(plans, gid) {
+function render_plans(plans, title) {
 	//TODO: rewrite this DRY
-	var out = '<h3 style="color: grey;">גוש ' + gid + '</h3>';
-
+	// var out = '<h3 style="color: grey;">גוש ' + gid + '</h3>';
+	var out = '<h3 style="color: grey;">' + title + '</h3>';
 	// html brought to you courtsey of 1998
 	out += "<table>";
 	for (var i = 0 ; i<plans.length ; i++) {
@@ -130,7 +130,8 @@ function get_gush(gush_id) {
 		API_URL + 'gush/' + gush_id + '/plans.json',
 		function(d) { 
 			//console.log(d.length);
-			render_plans(d, gush_id);
+			// render_plans(d, gush_id);
+			render_plans(d, 'גוש ' + gush_id);
 		}
 		).fail(function() {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
@@ -292,12 +293,18 @@ $(document).ready(function(){
 	Path.map("").to(
 		function(){ 
 			$("#docModal").modal('hide');
-			$("#info").html("");
 			clear_all_highlit();
 			map.setView(muni.center, DEFAULT_ZOOM);
+
+			// // get the most recent plans to show on the homepage
+			// $("#info").html("");
+			// $.getJSON(API_URL + 'recent.json', function(res){
+			// 	render_plans(res, 'עדכונים אחרונים');
+			// });
 		}
 	);
 
+	Path.root("");
 	Path.listen();
 
 

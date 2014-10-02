@@ -104,23 +104,6 @@ var municipalities = {
         ],
         "display": "\u05e8\u05d0\u05e9\u05d5\u05df \u05dc\u05e6\u05d9\u05d5\u05df"
     },
-    "sderot": {
-        "bounds": [
-            [
-                31.511997,
-                34.580625
-            ],
-            [
-                31.560814,
-                34.630938
-            ]
-        ],
-        "center": [
-            31.52971,
-            34.597748
-        ],
-        "display": "\u05e9\u05d3\u05e8\u05d5\u05ea"
-    },
     "tveria": {
         "bounds": [
             [

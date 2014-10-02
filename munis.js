@@ -16,6 +16,23 @@ var municipalities = {
         ],
         "display": "\u05e2\u05e8\u05d0\u05d1\u05d4"
     },
+    "batyam": {
+        "bounds": [
+            [
+                31.993006,
+                34.733387
+            ],
+            [
+                32.033624,
+                34.761993
+            ]
+        ],
+        "center": [
+            32.018244,
+            34.7486
+        ],
+        "display": "\u05d1\u05ea \u05d9\u05dd"
+    },
     "eilat": {
         "bounds": [
             [

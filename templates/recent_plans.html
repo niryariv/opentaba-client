@@ -1,0 +1,37 @@
+<h3 style="color: grey;">עדכונים אחרונים</h3>
+<table>
+    <tbody>
+        {{#plans}}
+            <tr style="vertical-align:top" class="item">
+                <td><b>{{day}}/{{month}}/{{year}}</b></td>
+                <td>{{status}}</td>
+                <td><b>{{essence}}</b></td>
+            </tr>
+            <tr class="details">
+                <td colspan="2">
+                    <a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי">
+                        תוכנית {{number}}
+                    </a>
+                </td>
+                <td style="font-size:0px;"><!-- the font-size thing is a hack to get the links to stick close together while maintaining proper formatting here-->
+                    {{#each tasrit_link}}
+                        <a href="{{this}}" target="_blank" rel="tooltip" title="תשריט" style="font-size:14px;"><i class="icon-globe"></i></a>
+                    {{/each}}
+                    {{#each takanon_link}}
+                        <a href="{{this}}" target="_blank" rel="tooltip" title="תקנון" style="font-size:14px;"><i class="icon-file"></i></a>
+                    {{/each}}
+                    {{#each nispahim_link}}
+                        <a href="{{this}}" target="_blank" rel="tooltip" title="נספחים" style="font-size:14px;"><i class="icon-folder-open"></i></a>
+                    {{/each}}
+                    {{#each files_link}}
+                        <a href="http://mmi.gov.il{{this}}" rel="tooltip" title="קבצי ממג" style="font-size:14px;"><i class="icon-download-alt"></i></a>
+                    {{/each}}
+                    {{#if mavat_code}}
+                        <a href="{{../../base_api_url}}plan/{{plan_id}}/mavat" target="_blank" rel="tooltip" title="מבא&quot;ת" style="font-size:14px;"><i class="icon-link"></i></a>
+                    {{/if}}
+                </td>
+            </tr>
+            <tr style="height: 10px"><td colspan="3">&nbsp;</td></tr>
+        {{/plans}}
+    </tbody>
+</table>

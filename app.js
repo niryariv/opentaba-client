@@ -289,20 +289,22 @@ $(document).ready(function(){
 		}
 	);
 
-	Path.map("").to(
+	Path.map("#/").to(
 		function(){
 			$("#docModal").modal('hide');
 			clear_all_highlit();
 			map.setView(muni.center, DEFAULT_ZOOM);
-            
+
 			// get the most recent plans to show on the homepage
-			$.getJSON(API_URL + 'recent.json', function(res){
-				render_plans(res, 'עדכונים אחרונים');
+			$.getJSON((RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : API_URL) + 'recent.json', function(res){
+                // render template and set info div's content
+                var rendered_recents = render('recent_plans', {plans: res, base_api_url: API_URL});
+				$("#info").html(rendered_recents);
 			});
 		}
 	);
 
-	Path.root("");
+	Path.root("#/");
 	Path.listen();
 
 

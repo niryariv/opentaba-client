@@ -292,7 +292,6 @@ $(document).ready(function(){
 	Path.map("").to(
 		function(){
 			$("#docModal").modal('hide');
-			$("#info").html("");
 			clear_all_highlit();
 			map.setView(muni.center, DEFAULT_ZOOM);
             

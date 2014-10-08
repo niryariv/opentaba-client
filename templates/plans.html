@@ -1,7 +1,16 @@
-<h3 style="color: grey;">עדכונים אחרונים</h3>
+<h3 style="color: grey;">
+    {{#if gush_id}} {{! gush_id tells us we're in the context of a single gush, not recent plans for all}}
+        גוש {{gush_id}}
+    {{else}}
+        עדכונים אחרונים
+    {{/if}}
+</h3>
+
 <table>
     <tbody>
         {{#plans}}
+            {{#if ../gush_id}}
+            {{else}}
             <tr class="details">
                 <td colspan="3">גוש 
                     {{#each gushim}}
@@ -12,6 +21,7 @@
                     {{/each}}
                 </td>
             </tr>
+            {{/if}}
 
             <tr style="vertical-align:top" class="item">
                 <td><b>{{day}}/{{month}}/{{year}}</b>&nbsp;</td>
@@ -31,7 +41,8 @@
             </tr>
 
             <tr>
-                <td colspan="3" style="font-size:0px;"><!-- the font-size thing is a hack to get the links to stick close together while maintaining proper formatting here-->
+                <td colspan="3" style="font-size:0px;">
+                    {{! the font-size thing is a hack to get the links to stick close together while maintaining proper formatting here }}
                     {{#each tasrit_link}}
                         <a href="{{this}}" target="_blank" rel="tooltip" title="תשריט" style="font-size:14px;"><i class="icon-globe"></i></a>
                     {{/each}}

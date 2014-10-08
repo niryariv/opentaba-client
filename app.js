@@ -43,73 +43,6 @@ String.prototype.endsWith = function(suffix) {
 
 
 
-function render_plans(plans, title) {
-	//TODO: rewrite this DRY
-	var out = '<h3 style="color: grey;">' + title + '</h3>';
-
-	// html brought to you courtsey of 1998
-	out += "<table>";
-	for (var i = 0 ; i<plans.length ; i++) {
-		var p = plans[i];
-
-		//plan_link = 'http://www.mmi.gov.il/IturTabot/taba2.asp?Gush=' + p.gush_id + '&MisTochnit=' + escape(p.number)
-		//plan_link = 'http://mmi.gov.il/IturTabot/taba4.asp?kod=3000&MsTochnit=' + escape(p.number);
-		plan_link = p.details_link;
-		
-		out+='<tr style="vertical-align:top" class="item">' +
-			 '	<td><b>' + [p.day, p.month, p.year].join('/') + '</b></td>' +
-			 '	<td>' + p.status  + '</td>'+
-			 '	<td><b>' + p.essence + '</b></td>'+
-			 '</tr>' +
-			 '<tr class="details">' +
-			 '	<td colspan="2">' +
-			 '		<a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי">'+
-			 '		תוכנית ' + p.number + '</a>' +
-			 '	</td>' +
-			 '	<td>';
-		var j;
-		for (j=0 ; j<p.tasrit_link.length ; j++)
-			out += '<a href="'+ p.tasrit_link[j] + '" target="_blank" rel="tooltip" title="תשריט"><i class="icon-globe"></i></a>';
-
-		for (j=0 ; j<p.takanon_link.length ; j++)
-			out += '<a href="'+ p.takanon_link[j] + '" target="_blank" rel="tooltip" title="תקנון"><i class="icon-file"></i></a>';
-
-		for (j=0 ; j<p.nispahim_link.length ; j++)
-			out += '<a href="'+ p.nispahim_link[j] + '" target="_blank" rel="tooltip" title="נספחים"><i class="icon-folder-open"></i></a>';
-
-		for (j=0 ; j<p.files_link.length ; j++)
-			out += '<a href="http://mmi.gov.il' + p.files_link[j] + 
-					'" rel="tooltip" title="קבצי ממג"><i class="icon-download-alt"></i></a>';
-        
-        // mavat link
-        if (p.mavat_code != '')
-            out += '<a href="' + API_URL + 'plan/' + p.plan_id + 
-                '/mavat" target="_blank" rel="tooltip" title="מבא&quot;ת"><i class="icon-link"></i></a>';
-        
-		out+='	</td>'  +
-			 '</tr>' 	+
-			 '<tr style="height: 10px"><td colspan="3">&nbsp;</td></tr>';
-	}
-	out += '</table>';
-
-	$("#info").html(out);
-
-	// activate Boostrap tooltips on attachment icons
-	$("[rel='tooltip']").tooltip({'placement' : 'bottom'});
-
-
-	$(".item").hover(
-			function () { $(this).css("background","#fff"); $(this).next(".details").css("background","#fff"); }, //#f7f7f9
-			function () { $(this).css("background","")	  ; $(this).next(".details").css("background",""); }
-	);
-
-	$(".details").hover(
-			function () { $(this).css("background","#fff"); $(this).prev(".item").css("background","#fff"); },
-			function () { $(this).css("background","")	  ; $(this).prev(".item").css("background",""); }
-	);
-
-}
-
 
 function get_gush(gush_id) {
 	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
@@ -120,10 +53,9 @@ function get_gush(gush_id) {
 	$.getJSON(
 		API_URL + 'gush/' + gush_id + '/plans.json',
 		function(d) { 
-			//console.log(d.length);
-			render_plans(d, 'גוש ' + gush_id);
-		}
-		).fail(function() {
+			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id});
+			$("#info").html(rendered_gush);
+		}).fail(function() {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
 		});
 	
@@ -283,7 +215,7 @@ $(document).ready(function(){
 			// get the most recent plans to show on the homepage
 			$.getJSON(API_URL + 'recent.json', function(res){
                 // render template and set info div's content
-                var rendered_recents = render('recent_plans', {plans: res, base_api_url: API_URL});
+                var rendered_recents = render('plans', {plans: res, base_api_url: API_URL});
 				$("#info").html(rendered_recents);
 				
 				$.each(res, function(r) {

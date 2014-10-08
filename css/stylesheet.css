@@ -18,6 +18,11 @@ body, html {
     overflow-y:scroll;
 }
 
+#open-info-modal {
+    margin-bottom: 0px;
+    margin-top: 5px;
+}
+
 body{
     background:url('lil_fiber.png') repeat;
     margin: 0;

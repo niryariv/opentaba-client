@@ -42,11 +42,17 @@
 			<div class="col-xs-12 col-sm-4 sidebar-offcanvas" id="info-div">
 				<div id="right-bar" >
 					
-					<div id="share_icons" class="align-right">
-						<a id="rss-link" href="https://opentaba-server.herokuapp.com/jerusalem/plans.atom" target="_blank"><i class="icon-rss icon-2x"></i></a>
-						<a id="fb-link" href="https://www.facebook.com/opentaba.jerusalem" target="_blank"><i class="icon-facebook icon-2x"></i></a>
-						<a id="twitter-link" href="https://twitter.com/opentaba_JLM" target="_blank"><i class="icon-twitter icon-2x"></i></a>
-					</div>
+                    <div class="row">
+                        <div class="align-center col-xs-4">
+                            <h3 id="open-info-modal"><a href="#info-modal" data-toggle="modal">מה זה פה?</a></h3>
+                        </div>
+                        <div class="col-xs-4"></div>
+                        <div id="share_icons" class="align-right col-xs-4">
+                            <a id="rss-link" href="https://opentaba-server.herokuapp.com/jerusalem/plans.atom" target="_blank"><i class="icon-rss icon-2x"></i></a>
+                            <a id="fb-link" href="https://www.facebook.com/opentaba.jerusalem" target="_blank"><i class="icon-facebook icon-2x"></i></a>
+                            <a id="twitter-link" href="https://twitter.com/opentaba_JLM" target="_blank"><i class="icon-twitter icon-2x"></i></a>
+                        </div>
+                    </div>
 					
 					<div id="header" class="align-right">
 						<a href="javascript: window.location=window.location.pathname;"><h1 id="top-title">תב"ע פתוחה</h1></a>
@@ -65,41 +71,56 @@
 					</div>
 					
 					<div id="info" class="align-right">
-						<h4><p>ברוך בואך לתב"ע הפתוחה!</p></h4>
-
-						<p><b>עזרו לנו לשפר את תב״ע פתוחה -  <a href="https://docs.google.com/a/gizra.com/spreadsheet/viewform?formkey=dHJhZXozWXdGUFBBc01QSWlJVEM1c1E6MA" target="_blank">מלאו את השאלון</a></b></p>
+                        <p>טוען עדכונים אחרונים...</p>
+                    </div>
+                    
+                    <div id="info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="info-modal-label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="direction: rtl;">
+                                    <button id="close-info-modal" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h3 id="info-modal-label">ברוך בואך לתב"ע הפתוחה!</h3>
+                                </div>
+                                <div class="modal-body" style="direction: rtl;">
+                                    <p><b>עזרו לנו לשפר את תב״ע פתוחה -  <a href="https://docs.google.com/a/gizra.com/spreadsheet/viewform?formkey=dHJhZXozWXdGUFBBc01QSWlJVEM1c1E6MA" target="_blank">מלאו את השאלון</a></b></p>
 						
-						<p><b>מה זו תב"ע?</b></p>
-						<p>
-							תב"ע היא "תוכנית בנין עיר". לכל תוכנית בניה, משיפוץ בנין ועד הקמת עיר שלמה, יש תב"ע שמגדירה בדיוק מה יבוצע. תהליך אישור התב"ע מאפשר לאזרחים להיות מעורבים ולהשפיע על תוכניות בניה באיזור מגוריהם. <a href="#faqModal" data-toggle="modal">עוד על תב"ע.</a>
-						</p>
+                                    <p><b>מה זו תב"ע?</b></p>
+                                    <p>
+                                        תב"ע היא "תוכנית בנין עיר". לכל תוכנית בניה, משיפוץ בנין ועד הקמת עיר שלמה, יש תב"ע שמגדירה בדיוק מה יבוצע. תהליך אישור התב"ע מאפשר לאזרחים להיות מעורבים ולהשפיע על תוכניות בניה באיזור מגוריהם. <a href="#faqModal" data-toggle="modal">עוד על תב"ע.</a>
+                                    </p>
 
-						<p><b>מהי תב"ע פתוחה?</b></p>
-						<p>
-							תב"ע פתוחה מגישה ממשק נוח לאיתור תוכניות תב"ע באיזור מסוים (כרגע רק בירושלים), ומשם להגיע לפרטי התוכנית באתר רשות המקרקעין.
-						</p>
+                                    <p><b>מהי תב"ע פתוחה?</b></p>
+                                    <p>
+                                        תב"ע פתוחה מגישה ממשק נוח לאיתור תוכניות תב"ע באיזור מסוים (כרגע רק בירושלים), ומשם להגיע לפרטי התוכנית באתר רשות המקרקעין.
+                                    </p>
 
-						<p><b>הצטרפו אלינו!</b></p>
-						<p>
-							תב"ע פתוחה היא פרויקט של <a href="http://www.hasadna.org.il/">הסדנא לידע ציבורי</a> שמובל על ידי <a href="http://planning-jerusalem.blogspot.co.il/">יאיר אסף-שפירא</a> ו<a href="http://niryariv.wordpress.com/">ניר יריב</a>.
-							כל הקוד באתר פתוח לציבור. גם את ואתה יכולים לתרום, 
-							<a href="https://github.com/niryariv/opentaba-server">בצד השרת</a> או <a href="https://github.com/niryariv/opentaba-client">הממשק</a>. 
-						</p>
+                                    <p><b>הצטרפו אלינו!</b></p>
+                                    <p>
+                                        תב"ע פתוחה היא פרויקט של <a href="http://www.hasadna.org.il/">הסדנא לידע ציבורי</a> שמובל על ידי <a href="http://planning-jerusalem.blogspot.co.il/">יאיר אסף-שפירא</a> ו<a href="http://niryariv.wordpress.com/">ניר יריב</a>.
+                                        כל הקוד באתר פתוח לציבור. גם את ואתה יכולים לתרום, 
+                                        <a href="https://github.com/niryariv/opentaba-server">בצד השרת</a> או <a href="https://github.com/niryariv/opentaba-client">הממשק</a>. 
+                                    </p>
 						
-						<p><a href="mailto:niryariv@gmail.com">צרו איתנו קשר</a>
+                                    <p><a href="mailto:niryariv@gmail.com">צרו איתנו קשר</a>
 
-						<p>
-							<b>מסייעים לפרויקט:</b><br />
-							יובל אדמון<br />
-							גילעד גולדברג<br />
-							פינחס ליכטמן<br />
-							מעין אלכסנדר<br />
-							<a href="http://degeladom.wordpress.com/">אלון ניסר</a><br />
-							מור יריב<br />
-							<a href="http://arr.gr/">שחר עברון</a><br />
-							ניר וייסמן<br />
-							<a href="http://gizra.com/">גיזרה פתרונות אינטרנט</a><br />
-						</p>
+                                    <p>
+                                        <b>מסייעים לפרויקט:</b><br />
+                                        יובל אדמון<br />
+                                        גילעד גולדברג<br />
+                                        פינחס ליכטמן<br />
+                                        מעין אלכסנדר<br />
+                                        <a href="http://degeladom.wordpress.com/">אלון ניסר</a><br />
+                                        מור יריב<br />
+                                        <a href="http://arr.gr/">שחר עברון</a><br />
+                                        ניר וייסמן<br />
+                                        <a href="http://gizra.com/">גיזרה פתרונות אינטרנט</a><br />
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">סגור</button>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 
 				</div>
@@ -112,7 +133,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="direction: rtl;">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<button id="close-faq-modal" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					<h3 id="faqModalLabel">מה זו תב"ע</h3>
 				</div>
 				<div class="modal-body" style="direction: rtl;">
@@ -146,10 +167,12 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+    
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/path.js"></script>
 	<script src="lib/leaflet-pip.min.js"></script>
+    <script src="lib/template-renderer.js"></script>
 
 	<script src="munis.js"></script>	
 	<script src="app.js"></script>	

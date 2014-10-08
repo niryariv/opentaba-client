@@ -34,6 +34,8 @@ var got_gushim_delegate_param;
 var DEFAULT_ZOOM = 13;
 var highlit = [];
 
+var recently_active_gushim = []
+
 // Utility endsWith function
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -209,18 +211,20 @@ function get_gush_by_addr(addr) {
 }
 
 
+function color_gush(id, color, opacity) {
+	map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
+}
+
 function highlight_gush(id) {
-	gush = 'gush_' + id;
-	console.log("highlight_gush ", gush);
-	map.fitBounds(map._layers[gush].getBounds());
-	map._layers[gush].setStyle({opacity: 0.2 , color: "#0aa"});
+	map.fitBounds(map._layers['gush_' + id].getBounds());
+	color_gush(id, "#0aa", 0.2)
 	highlit.push(id);
 }
 
 
 function clear_highlight(id) {
 	gush = 'gush_' + id;
-	map._layers[gush].setStyle({opacity: 0.05 , color: "#888"});
+	color_gush(id, "#888", 0.05)
 	highlit.splice(highlit.indexOf(id), 1);
 }
 
@@ -235,8 +239,8 @@ function clear_all_highlit() {
 function onEachFeature(feature, layer) {
 	// layer.bindPopup(feature.properties.Name + " גוש ");
 	layer.on({
-				'mouseover'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0 	, color: "red" 	}) } } ,
-				'mouseout'	: function() { if (highlit.indexOf(this["gushid"]) < 0) { this.setStyle({ opacity: 0.95, color: "#888" }) } },
+				'mouseover'	: function() { this.setStyle({weight: 5}) },
+				'mouseout'	: function() { this.setStyle({weight: 1}) },
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
 					location.hash = "#/gush/" + feature.id;
@@ -300,6 +304,12 @@ $(document).ready(function(){
                 // render template and set info div's content
                 var rendered_recents = render('recent_plans', {plans: res, base_api_url: API_URL});
 				$("#info").html(rendered_recents);
+				
+				$.each(res, function(r) {
+					recently_active_gushim.push(res[r].gushim);
+				});
+				recently_active_gushim = [].concat.apply([], recently_active_gushim);
+
 			}).fail(function() {
                 $("#info").html("חלה שגיאה בהורדת עדכונים אחרונים. אנא בחרו בגוש על המפה כדי לראות תוכניות הרלוונטיות אליו");
             });
@@ -420,6 +430,9 @@ $.ajax({
 		}
 	).addTo(map);
     
+	$.each(recently_active_gushim, function(i){
+		color_gush(recently_active_gushim[i], "#f00", 0.5);
+	});
 
     // set map bounds. We want them a little larger than the actual area bounds, so users can see labels for other areas
 	var bnds = L.latLngBounds(muni.bounds != undefined ? muni.bounds : gushimLayer.getBounds());

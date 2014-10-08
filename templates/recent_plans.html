@@ -2,14 +2,25 @@
 <table>
     <tbody>
         {{#plans}}
+            <tr class="details">
+                <td colspan="2">גוש 
+                    {{#each gushim}}
+                        <a  href="/#/gush/{{this}}" 
+                            onmouseover="color_gush({{this}}, '#00f', 0.5);" 
+                            onmouseout="color_gush({{this}}, '#f00', 0.5);"
+                        >{{this}}</a>&nbsp;
+                    {{/each}}
+                </td>
+            </tr>
+
             <tr style="vertical-align:top" class="item">
-                <td><b>{{day}}/{{month}}/{{year}}</b></td>
+                <td><b>{{day}}/{{month}}/{{year}}</b>&nbsp;</td>
                 <td>{{status}}</td>
                 <td><b>{{essence}}</b></td>
             </tr>
             <tr class="details">
                 <td colspan="2">
-                    <a href="' + plan_link + '" target="_blank" rel="tooltip" title="פתח באתר ממי">
+                    <a href="{{details_link}}" target="_blank" rel="tooltip" title="פתח באתר ממי">
                         תוכנית {{number}}
                     </a>
                 </td>

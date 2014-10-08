@@ -43,17 +43,6 @@ String.prototype.endsWith = function(suffix) {
 
 
 
-function show_data(url){
-	if (url.indexOf('.pdf', url.length - 4) !== -1) { // endsWith('.pdf')?
-		new PDFObject({ url: url }).embed("modal-doc");
-	} else {
-		$("#modal-doc").html('<iframe src="' + url + '"></iframe>');
-	}
-
-	$("#doc_new_window").attr("href", url);
-	$("#docModal").modal().css({ width: '90%', height: '80%', 'margin-left': function () { return -($(this).width() / 2); } });
-}
-
 function render_plans(plans, title) {
 	//TODO: rewrite this DRY
 	var out = '<h3 style="color: grey;">' + title + '</h3>';
@@ -280,9 +269,7 @@ $(document).ready(function(){
 	
 	// setup a path.js router to allow distinct URLs for each block
 	Path.map("#/gush/:gush_id").to(
-		function(){ 
-			$("#docModal").modal('hide');
-			
+		function(){ 			
 			if (gushim) {
 				get_gush(this.params['gush_id'].split('?')[0]); // remove '?params' if exists
 			} else {
@@ -295,7 +282,6 @@ $(document).ready(function(){
 
 	Path.map("#/").to(
 		function(){
-			$("#docModal").modal('hide');
 			clear_all_highlit();
 			map.setView(muni.center, DEFAULT_ZOOM);
 

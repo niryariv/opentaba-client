@@ -296,11 +296,13 @@ $(document).ready(function(){
 			map.setView(muni.center, DEFAULT_ZOOM);
 
 			// get the most recent plans to show on the homepage
-			$.getJSON((RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : API_URL) + 'recent.json', function(res){
+			$.getJSON(API_URL + 'recent.json', function(res){
                 // render template and set info div's content
                 var rendered_recents = render('recent_plans', {plans: res, base_api_url: API_URL});
 				$("#info").html(rendered_recents);
-			});
+			}).fail(function() {
+                $("#info").html("חלה שגיאה בהורדת עדכונים אחרונים. אנא בחרו בגוש על המפה כדי לראות תוכניות הרלוונטיות אליו");
+            });
 		}
 	);
 

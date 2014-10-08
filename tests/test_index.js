@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',37, function suite(test){
+casper.test.begin('Basic index.html elements test',43, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -28,6 +28,8 @@ casper.test.begin('Basic index.html elements test',37, function suite(test){
 		test.assertVisible('#header');
 		test.assertExists('#info', 'The info div exists');
 		test.assertVisible('#info');
+        test.assertExists('#info-modal','The info modal exists');
+		test.assertNotVisible('#info-modal');
 		//this.wait(5000);
 		test.assertExists('#map.leaflet-container.leaflet-fade-anim','The map div exists with leaflet class');
 		//test.assertExists('#docModal','The doc modal exists');
@@ -47,6 +49,8 @@ casper.test.begin('Basic index.html elements test',37, function suite(test){
 		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
+        test.assertResourceExists('handlebars.min.js');
+        test.assertResourceExists('lib/template-renderer.js');
 		
 		// make sure the toggle button exists and is not visible
 		test.assertExists('#toggle-button', 'The toggle button exists');
@@ -57,6 +61,15 @@ casper.test.begin('Basic index.html elements test',37, function suite(test){
 		
 		//TODO: phantomcss check map rendering
 	});
+    
+    casper.thenClick('a[href="#info-modal"]',function(){
+		this.echo('clicked info-modal');
+		this.waitUntilVisible('#info-modal');
+	});
+    
+    casper.then(function(){
+        test.assertVisible('#info-modal');
+    });
 
 	casper.thenClick('a[href="#faqModal"]',function(){
 		this.echo('clicked faqModal');
@@ -65,12 +78,21 @@ casper.test.begin('Basic index.html elements test',37, function suite(test){
 
 	casper.then(function(){
 		test.assertVisible('#faqModal');
-		this.click('button[class="close"]');
+		this.click('button[id="close-faq-modal"]');
 		this.echo('clicked to close faqModal');
 	});
 
 	casper.then(function(){
 		test.assertNotVisible('faqModal');
+	});
+    
+    casper.then(function(){
+		this.click('button[id="close-info-modal"]');
+		this.echo('clicked to close info-modal');
+	});
+
+	casper.then(function(){
+		test.assertNotVisible('info-modal');
 	});
 	
 	// Address search tests

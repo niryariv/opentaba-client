@@ -258,14 +258,9 @@ function mark_munis(){
 	});
 }
 
+
 // START HERE
 $(document).ready(function(){
-
-	// wake up possibly-idling heroku dyno to make sure later requests aren't too slow
-	$.getJSON( API_URL + "wakeup" , function(){
-		// do nothing 
-	});
-
 	
 	// setup a path.js router to allow distinct URLs for each block
 	Path.map("#/gush/:gush_id").to(

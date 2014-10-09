@@ -6,6 +6,8 @@ var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || documen
 url = (window.location != window.parent.location) ? document.referrer: document.location.toString();
 url = url.replace('http://', '').replace('https://', '');
 
+var DEFAULT_MUNI = 'jerusalem';
+
 // get the wanted municipality (the subsomain)
 var muni_name = url.substr(0, url.indexOf('opentaba.info') - 1);
 var muni = municipalities[muni_name];
@@ -16,8 +18,8 @@ if (muni == undefined) {
         muni = municipalities['holon'];
     } else {
         // we now have all subdomains linking here, so undefined muni means we either browsed www.opentaba.info or opentaba.info or an unknown municipality
-        muni_name = 'jerusalem';
-        muni = municipalities['jerusalem'];
+        muni_name = DEFAULT_MUNI;
+        muni = municipalities[DEFAULT_MUNI];
     }
 }
 
@@ -33,15 +35,14 @@ var got_gushim_delegate_param;
 
 var DEFAULT_ZOOM = 13;
 var highlit = [];
-
 var recently_active_gushim = []
+var ACTIVE_GUSH_COLOR = '#900';
+
 
 // Utility endsWith function
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
-
-
 
 
 function get_gush(gush_id) {
@@ -170,6 +171,10 @@ function onEachFeature(feature, layer) {
 			});
 	layer["gushid"] = feature.id;
 	layer._leaflet_id = 'gush_' + feature.id;
+
+	if (recently_active_gushim.indexOf(feature.id) > -1) {
+		layer.options.color = ACTIVE_GUSH_COLOR;
+	}
 }
 
 
@@ -190,6 +195,9 @@ function mark_munis(){
 	});
 }
 
+function mark_active_gushim(){
+
+}
 
 // START HERE
 $(document).ready(function(){
@@ -222,6 +230,12 @@ $(document).ready(function(){
 					recently_active_gushim.push(res[r].gushim);
 				});
 				recently_active_gushim = [].concat.apply([], recently_active_gushim);
+				
+				if (map.hasLayer(gushimLayer)) { // gushim already loaded before the /recents - so paint them now
+					$.each(recently_active_gushim, function(i){
+						color_gush(recently_active_gushim[i], ACTIVE_GUSH_COLOR, 0.7);
+					});
+				}
 
 			}).fail(function() {
                 $("#info").html("חלה שגיאה בהורדת עדכונים אחרונים. אנא בחרו בגוש על המפה כדי לראות תוכניות הרלוונטיות אליו");
@@ -343,9 +357,6 @@ $.ajax({
 		}
 	).addTo(map);
     
-	$.each(recently_active_gushim, function(i){
-		color_gush(recently_active_gushim[i], "#f00", 0.5);
-	});
 
     // set map bounds. We want them a little larger than the actual area bounds, so users can see labels for other areas
 	var bnds = L.latLngBounds(muni.bounds != undefined ? muni.bounds : gushimLayer.getBounds());

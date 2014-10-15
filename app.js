@@ -3,7 +3,7 @@ var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || documen
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location
-url = (window.location != window.parent.location) ? document.referrer: document.location.toString();
+url = (window.location != window.parent.location) ? document.referrer : document.location.toString();
 url = url.replace('http://', '').replace('https://', '');
 
 var DEFAULT_MUNI = 'jerusalem';
@@ -36,7 +36,7 @@ var got_gushim_delegate_param;
 var DEFAULT_ZOOM = 13;
 var highlit = [];
 var recently_active_gushim = []
-var ACTIVE_GUSH_COLOR = '#900';
+var ACTIVE_GUSH_COLOR = '#d7191c';
 
 
 // Utility endsWith function
@@ -195,9 +195,6 @@ function mark_munis(){
 	});
 }
 
-function mark_active_gushim(){
-
-}
 
 // START HERE
 $(document).ready(function(){
@@ -350,9 +347,11 @@ $.ajax({
 		{
 			onEachFeature: onEachFeature,
 			style : {
-				"color" : "#888",
+				"color" : "#555",
 				"weight": 1,
-				"opacity": 0.7
+				"opacity": 0.5,
+				"fillOpacity": 0.2
+				// "fillColor": "#999"
 			}
 		}
 	).addTo(map);

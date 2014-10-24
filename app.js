@@ -36,6 +36,7 @@ var got_gushim_delegate_param;
 var DEFAULT_ZOOM = 13;
 var highlit = [];
 var recently_active_gushim = []
+var INACTIVE_GUSH_COLOR = '#555';
 var ACTIVE_GUSH_COLOR = '#d7191c';
 
 
@@ -146,7 +147,7 @@ function highlight_gush(id) {
 
 function clear_highlight(id) {
 	gush = 'gush_' + id;
-	color_gush(id, "#888", 0.05)
+    color_gush(id, (recently_active_gushim.indexOf(id) > -1) ? ACTIVE_GUSH_COLOR : INACTIVE_GUSH_COLOR, 0.5);
 	highlit.splice(highlit.indexOf(id), 1);
 }
 
@@ -359,7 +360,7 @@ $.ajax({
 		{
 			onEachFeature: onEachFeature,
 			style : {
-				"color" : "#555",
+				"color" : INACTIVE_GUSH_COLOR,
 				"weight": 1,
 				"opacity": 0.5,
 				"fillOpacity": 0.2

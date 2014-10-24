@@ -304,7 +304,7 @@ $(document).ready(function(){
 		$('#twitter-link').css('visibility', 'visible');
 	}
 
-	$('#rss-link').attr('href', API_URL + '/plans.atom');
+	$('#rss-link').attr('href', API_URL + 'plans.atom');
 	$('#rss-link').css('visibility', 'visible');
 
 

@@ -1,13 +1,15 @@
- // deprecating, replacing with serverless mode
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
+var DOMAIN = 'opentaba.info';
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location
-url = (window.location != window.parent.location) ? document.referrer: document.location.toString();
+url = (window.location != window.parent.location) ? document.referrer : document.location.toString();
 url = url.replace('http://', '').replace('https://', '');
 
+var DEFAULT_MUNI = 'jerusalem';
+
 // get the wanted municipality (the subsomain)
-var muni_name = url.substr(0, url.indexOf('opentaba.info') - 1);
+var muni_name = url.substr(0, url.indexOf(DOMAIN) - 1);
 var muni = municipalities[muni_name];
 if (muni == undefined) {
     if (RUNNING_LOCAL && location.hash == '#/holon-test') {
@@ -16,8 +18,8 @@ if (muni == undefined) {
         muni = municipalities['holon'];
     } else {
         // we now have all subdomains linking here, so undefined muni means we either browsed www.opentaba.info or opentaba.info or an unknown municipality
-        muni_name = 'jerusalem';
-        muni = municipalities['jerusalem'];
+        muni_name = DEFAULT_MUNI;
+        muni = municipalities[DEFAULT_MUNI];
     }
 }
 
@@ -33,15 +35,14 @@ var got_gushim_delegate_param;
 
 var DEFAULT_ZOOM = 13;
 var highlit = [];
-
 var recently_active_gushim = []
+var ACTIVE_GUSH_COLOR = '#d7191c';
+
 
 // Utility endsWith function
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
-
-
 
 
 function get_gush(gush_id) {
@@ -170,23 +171,40 @@ function onEachFeature(feature, layer) {
 			});
 	layer["gushid"] = feature.id;
 	layer._leaflet_id = 'gush_' + feature.id;
+
+	if (recently_active_gushim.indexOf(feature.id) > -1) {
+		layer.options.color = ACTIVE_GUSH_COLOR;
+	}
 }
 
 
-// add markers for other munis
-function mark_munis(){
-	console.log
+// add markers for other munis to map and names to dropdown
+function setup_other_munis() {
 	var ms = municipalities;
 	delete ms[muni_name]; // don't label current muni
+    var jump_to_list = $('#jump-to-list');
 
 	$.each(ms, function(k) {
 		m = ms[k];
+        
+        // add marker to map
 		var muni_icon = L.divIcon({
 			className: 'muni-marker'
-			,html: '<a href="//' + k + '.opentaba.info/">תב״ע פתוחה: ' + m.display + '</a>'
+			,html: '<a href="//' + k + '.' + DOMAIN + '/">תב״ע פתוחה: ' + m.display + '</a>'
 			,iconSize: null
 		});
 		L.marker(m.center, {icon: muni_icon}).addTo(map);
+        
+        // add link to jump-to dropdown. need to sort munis by display name
+        jump_to_list.children('li').each(function() {
+            if (this.firstChild.text > m.display) {
+                $('<li role="presentation"><a role="menuitem" tabindex="-1" href="http://' + k + '.' + DOMAIN + '/">' + m.display + '</a></li>').insertBefore(this);
+                delete m;
+                return false;
+            }
+        });
+        if (typeof m !== 'undefined')
+            jump_to_list.append($('<li role="presentation"><a role="menuitem" tabindex="-1" href="http://' + k + '.' + DOMAIN + '/">' + m.display + '</a></li>'));
 	});
 }
 
@@ -222,6 +240,12 @@ $(document).ready(function(){
 					recently_active_gushim.push(res[r].gushim);
 				});
 				recently_active_gushim = [].concat.apply([], recently_active_gushim);
+				
+				if (map.hasLayer(gushimLayer)) { // gushim already loaded before the /recents - so paint them now
+					$.each(recently_active_gushim, function(i){
+						color_gush(recently_active_gushim[i], ACTIVE_GUSH_COLOR, 0.7);
+					});
+				}
 
 			}).fail(function() {
                 $("#info").html("חלה שגיאה בהורדת עדכונים אחרונים. אנא בחרו בגוש על המפה כדי לראות תוכניות הרלוונטיות אליו");
@@ -265,12 +289,11 @@ $(document).ready(function(){
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
-	$("#top-title").append(": " + muni.display);
+	$("#jump-to-title").prepend(muni.display + ' ');
 	$("title").append(": " + muni.display)
 
     
     // set links according to municipality
-
 	if (muni.fb_link) {
 		$('#fb-link').attr('href', muni.fb_link);
 		$('#fb-link').css('visibility', 'visible');
@@ -336,16 +359,15 @@ $.ajax({
 		{
 			onEachFeature: onEachFeature,
 			style : {
-				"color" : "#888",
+				"color" : "#555",
 				"weight": 1,
-				"opacity": 0.7
+				"opacity": 0.5,
+				"fillOpacity": 0.2
+				// "fillColor": "#999"
 			}
 		}
 	).addTo(map);
     
-	$.each(recently_active_gushim, function(i){
-		color_gush(recently_active_gushim[i], "#f00", 0.5);
-	});
 
     // set map bounds. We want them a little larger than the actual area bounds, so users can see labels for other areas
 	var bnds = L.latLngBounds(muni.bounds != undefined ? muni.bounds : gushimLayer.getBounds());
@@ -359,8 +381,8 @@ $.ajax({
     map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
 
  	
-    // mark other supported municipalities on the map
-	mark_munis();
+    // mark other supported municipalities on the map and add them to jump-to dropdown
+	setup_other_munis();
 	
 
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush

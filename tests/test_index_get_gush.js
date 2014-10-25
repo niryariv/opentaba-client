@@ -27,18 +27,18 @@ casper.test.begin('Testing a specific gush plans display',10, function suite(tes
     casper.on('page.init',initMock).
     on('remote.message',log).
     start(url, function(){
-
+        
     });
 
     var hashpath = '/gush/30338';
     var gushurl = url +'#'+ hashpath;
-    casper.thenOpen(gushurl).on('url.changed', initMock).wait(10000).
+    casper.thenOpen(gushurl).on('url.changed', initMock).wait(3000).
     then(function(){
         test.assertExists('#info h3','the info h3 exists now');
         test.assertSelectorHasText('#info h3','גוש 30338');
         //casper.log('The info h3 contains the expected text');
         test.assertElementCount('div#info tr.item',31,"31 items exists in info div as expected");
-        test.assertElementCount('div#info a',116, "116 'a' links should exists in info div");
+        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
         test.assertSelectorHasText('div#info', 'תוספת גלריית עזרת נשים בבית כנסת קיים','Info div has some sampled expected text');
         test.assertSelectorHasText('div#info', 'קביעת הוראות לאיחוד חלוקה חדשה','Info div has some sampled expected text');
         test.assertSelectorHasText('div#info', 'אחוד וחלוקה מחדש במורדות צפון מזרח השכונה','Info div has some sampled expected text');
@@ -91,16 +91,34 @@ casper.test.begin('Testing a specific gush plans display',10, function suite(tes
 });
 
 function initMock(){
-    casper.evaluate(function(){
+    // load the plans' template from file
+    var fs = require('fs');
+    var template = '';
+    var f = null;
+    try {
+        f = fs.open('../templates/plans.html', 'r');
+        template = f.read();
+    } catch (e) {
+        console.log(e);
+    }
+    if (f) {
+        f.close();
+    }
+    
+    casper.evaluate(function(template){
         var server = sinon.fakeServer.create();
         server.autoRespond = true;
-        var answer = JSON.stringify(planFixture_30338);
+        
+        var gush_answer = JSON.stringify(planFixture_30338);
         server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans.json',
-            [200, {"content-type":"application/json"}, answer]);
+            [200, {'content-type':'application/json'}, gush_answer]);
+        server.respondWith('GET', '/templates/plans.html',
+            [200, {'content-type':'text/html'}, template]);
         server.respond();
+        
         console.log('injected sinon with test fixture');
 
-    });
+    }, { template: template });
     casper.log('injected sinon fakeserver now', 'debug');
 }
 

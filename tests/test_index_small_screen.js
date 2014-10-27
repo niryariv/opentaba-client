@@ -17,8 +17,6 @@ casper.test.begin('Mobile index.html elements test',27, function suite(test){
 		test.assertExists('#info', 'The info div exists');
 		test.assertVisible('#info');
 		test.assertExists('#map.leaflet-container.leaflet-fade-anim','The map div exists with leaflet class');
-		test.assertExists('#faqModal','The faq modal exists');
-		test.assertNotVisible('#faqModal');
 		test.assertExists('.icon-twitter', 'The twitter icon exists');
 		test.assertVisible('.icon-twitter');
 		test.assertExists('.icon-facebook', 'The facebook icon exists');
@@ -32,6 +30,8 @@ casper.test.begin('Mobile index.html elements test',27, function suite(test){
 		test.assertResourceExists('jerusalem.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
+        test.assertResourceExists('handlebars.min.js');
+        test.assertResourceExists('lib/template-renderer.js');
 		
 		// make sure the toggle button exists and is visible
 		test.assertExists('#toggle-button', 'The toggle button exists');

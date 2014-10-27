@@ -16,8 +16,6 @@ casper.test.begin('Different municipality index.html test (holon)',29, function 
 		test.assertExists('#info', 'The info div exists');
 		test.assertVisible('#info');
 		test.assertExists('#map.leaflet-container.leaflet-fade-anim','The map div exists with leaflet class');
-		test.assertExists('#faqModal','The faq modal exists');
-		test.assertNotVisible('#faqModal');
         
         // make sure the twitter and facebook links are not visible because holon (currently) doesn't have those pages
 		test.assertExists('.icon-twitter', 'The twitter icon exists');
@@ -32,6 +30,8 @@ casper.test.begin('Different municipality index.html test (holon)',29, function 
 		test.assertResourceExists('holon.topojson');
 		test.assertResourceExists('app.js');
 		test.assertResourceExists('lib/bootstrap/js/bootstrap.min.js');
+        test.assertResourceExists('handlebars.min.js');
+        test.assertResourceExists('lib/template-renderer.js');
 		
 		// make sure the toggle button exists and is not visible
 		test.assertExists('#toggle-button', 'The toggle button exists');

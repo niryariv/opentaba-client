@@ -13,7 +13,7 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',43, function suite(test){
+casper.test.begin('Basic index.html elements test',39, function suite(test){
 
 	casper.on('page.init',initMock).
 	on('remote.message',log).
@@ -32,10 +32,6 @@ casper.test.begin('Basic index.html elements test',43, function suite(test){
 		test.assertNotVisible('#info-modal');
 		//this.wait(5000);
 		test.assertExists('#map.leaflet-container.leaflet-fade-anim','The map div exists with leaflet class');
-		//test.assertExists('#docModal','The doc modal exists');
-		//test.assertNotVisible('#docModal');
-		test.assertExists('#faqModal','The faq modal exists');
-		test.assertNotVisible('#faqModal');
 		test.assertExists('.icon-twitter', 'The twitter icon exists');
 		test.assertVisible('.icon-twitter');
 		test.assertExists('.icon-facebook', 'The facebook icon exists');
@@ -70,21 +66,6 @@ casper.test.begin('Basic index.html elements test',43, function suite(test){
     casper.then(function(){
         test.assertVisible('#info-modal');
     });
-
-	casper.thenClick('a[href="#faqModal"]',function(){
-		this.echo('clicked faqModal');
-		this.waitUntilVisible('#faqModal');
-	});
-
-	casper.then(function(){
-		test.assertVisible('#faqModal');
-		this.click('button[id="close-faq-modal"]');
-		this.echo('clicked to close faqModal');
-	});
-
-	casper.then(function(){
-		test.assertNotVisible('faqModal');
-	});
     
     casper.then(function(){
 		this.click('button[id="close-info-modal"]');

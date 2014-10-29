@@ -104,6 +104,23 @@ var municipalities = {
         "server": "http://opentaba-server.herokuapp.com/",
         "twitter_link": "https://twitter.com/opentaba_JLM"
     },
+    "orakiva": {
+        "bounds": [
+            [
+                32.470011,
+                34.903818
+            ],
+            [
+                32.524125,
+                34.948585
+            ]
+        ],
+        "center": [
+            32.514695,
+            34.917293
+        ],
+        "display": "\u05d0\u05d5\u05e8 \u05e2\u05e7\u05d9\u05d1\u05d0"
+    },
     "ramathasharon": {
         "bounds": [
             [

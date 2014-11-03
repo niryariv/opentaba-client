@@ -140,6 +140,18 @@ h1 {
 	padding: 0 0;
 }
 
+.progress {
+    position: relative;
+}
+
+.progress span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: black;
+    text-align: center;
+ }
+
 @media screen and (max-width: 767px) {
 	.row-offcanvas {
 		position: relative;

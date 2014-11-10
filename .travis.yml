@@ -6,9 +6,9 @@ node_js:
 
 before_script:
    - sudo rm -rf /usr/local/phantomjs
-   - curl -L -O https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
-   - tar xjf phantomjs-1.9.7-linux-x86_64.tar.bz2
-   - sudo mv phantomjs-1.9.7-linux-x86_64 /usr/local/phantomjs
+   - curl -L -O https://florpor.github.com/pub_repo/phantomjs-1.9.8-patched-linux-x86_64.tar.bz2
+   - tar xjf phantomjs-1.9.8-patched-linux-x86_64.tar.bz2
+   - sudo mv phantomjs-1.9.8-patched-linux-x86_64 /usr/local/phantomjs
    - git clone -q git://github.com/n1k0/casperjs.git
    - cd casperjs; git checkout -q tags/1.1-beta1; cd ../
    - export PATH=$PATH:`pwd`/casperjs/bin  

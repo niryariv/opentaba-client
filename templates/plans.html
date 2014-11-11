@@ -60,14 +60,6 @@
                     {{/if}}
                 </td>
             </tr>
-            {{! doing this ugly bit because i can't seem to be able to pass an array }}
-            {{#ifContains "פרסום ההפקדה|פרסום בעיתונות להפקדה" status}}
-                <tr>
-                    <td colspan="5">
-                        {{progressbar day month year}}
-                    </td>
-                </tr>
-            {{/ifContains}}
             <tr style="height: 10px"><td colspan="3">&nbsp;</td></tr>
         {{/plans}}
     </tbody>

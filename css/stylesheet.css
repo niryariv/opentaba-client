@@ -140,17 +140,14 @@ h1 {
 	padding: 0 0;
 }
 
-.progress {
-    position: relative;
+.tooltip-inner {
+    white-space:pre-wrap;
 }
 
-.progress span {
-    position: absolute;
-    display: block;
-    width: 100%;
-    color: black;
-    text-align: center;
- }
+span.status {
+    padding-left: 3px;
+    padding-right: 3px;
+}
 
 @media screen and (max-width: 767px) {
 	.row-offcanvas {

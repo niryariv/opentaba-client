@@ -3,7 +3,7 @@ module.exports = function(grunt){
 	grunt.initConfig({
 		pkg:grunt.file.readJSON('package.json'),
 		casperjs:{
-			options:{'engine':engine},
+			options:{'engine':engine, 'websecurity':'false'},
 			files:
 				['./test_index.js',
 				'./test_map_regression.js',

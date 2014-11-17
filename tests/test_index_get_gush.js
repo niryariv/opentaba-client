@@ -37,7 +37,7 @@ casper.test.begin('Testing a specific gush plans display',10, function suite(tes
         test.assertExists('#info h3','the info h3 exists now');
         test.assertSelectorHasText('#info h3','גוש 30338');
         //casper.log('The info h3 contains the expected text');
-        test.assertElementCount('div#info tr.item',31,"31 items exists in info div as expected");
+        test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
         test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
         test.assertSelectorHasText('div#info', 'תוספת גלריית עזרת נשים בבית כנסת קיים','Info div has some sampled expected text');
         test.assertSelectorHasText('div#info', 'קביעת הוראות לאיחוד חלוקה חדשה','Info div has some sampled expected text');

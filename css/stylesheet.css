@@ -149,6 +149,14 @@ span.status {
     padding-right: 3px;
 }
 
+p.status {
+    margin-right: 10px;
+}
+
+#search-text {
+    width: 84%;
+}
+
 @media screen and (max-width: 767px) {
 	.row-offcanvas {
 		position: relative;
@@ -195,5 +203,33 @@ span.status {
     
     body, html {
         margin-right: 1px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    div.about-link {
+        padding-right: 0px;
+    }
+
+    #search-text {
+        width: 81%;
+    }
+    
+    h1 {
+        font-size: 25px;
+        margin-top: 5px;
+    }
+    
+    #jump-to {
+        margin-top: 5px;
+    }
+    
+    p.status {
+        margin-right: 0px;
+    }
+    
+    .plan-date {
+        float: right !important;
+        width: 150% !important;
     }
 }

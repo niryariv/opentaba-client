@@ -179,37 +179,6 @@ function onEachFeature(feature, layer) {
 }
 
 
-// add markers for other munis to map and names to dropdown
-function setup_other_munis() {
-	var ms = municipalities;
-	delete ms[muni_name]; // don't label current muni
-    var jump_to_list = $('#jump-to-list');
-
-	$.each(ms, function(k) {
-		m = ms[k];
-        
-        // add marker to map
-		var muni_icon = L.divIcon({
-			className: 'muni-marker'
-			,html: '<a href="//' + k + '.' + DOMAIN + '/">תב״ע פתוחה: ' + m.display + '</a>'
-			,iconSize: null
-		});
-		L.marker(m.center, {icon: muni_icon}).addTo(map);
-        
-        // add link to jump-to dropdown. need to sort munis by display name
-        jump_to_list.children('li').each(function() {
-            if (this.firstChild.text > m.display) {
-                $('<li role="presentation"><a role="menuitem" tabindex="-1" href="http://' + k + '.' + DOMAIN + '/">' + m.display + '</a></li>').insertBefore(this);
-                delete m;
-                return false;
-            }
-        });
-        if (typeof m !== 'undefined')
-            jump_to_list.append($('<li role="presentation"><a role="menuitem" tabindex="-1" href="http://' + k + '.' + DOMAIN + '/">' + m.display + '</a></li>'));
-	});
-}
-
-
 // START HERE
 $(document).ready(function(){
 	
@@ -348,6 +317,42 @@ L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: 
         }}).addTo(map);
 
 
+// add control for seeing other munis
+var legend = L.control({position: 'topright'});
+legend.onAdd = function (map) {
+
+	var div = L.DomUtil.create('div', 'more-munis legend');
+
+	div.innerHTML = '<h4 id="more-munis-header"><img src="/img/israel.svg" height="30px" />&nbsp;עוד רשויות</h4>';
+	
+	// sort munis by name
+	ms = Object.keys(municipalities).sort(function(a,b){return municipalities[a].display > municipalities[b].display})
+
+	mlist = '';
+	for (var i=0 ; i < ms.length ; i++) {
+		m = ms[i];
+	    mlist += '<a href="http://' + m + '.' + DOMAIN + '/">' + municipalities[m].display + '</a><br />';
+	}
+
+	div.innerHTML += '<div id="muni-list" style="display: none;">' + mlist + '</div>'
+	return div;
+};
+
+legend.addTo(map);
+$('#more-munis-header').click(function(){
+    $('#muni-list').slideToggle(300);
+});
+
+
+// // add muni markers to map
+// var muni_icon = L.divIcon({
+// 	className: 'muni-marker'
+// 	,html: '<a href="//' + k + '.' + DOMAIN + '/">תב״ע פתוחה: ' + m.display + '</a>'
+// 	,iconSize: null
+// });
+// L.marker(m.center, {icon: muni_icon}).addTo(map);
+
+
 // load gushim topojson 
 $.ajax({
 	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,
@@ -382,9 +387,6 @@ $.ajax({
     map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
 
  	
-    // mark other supported municipalities on the map and add them to jump-to dropdown
-	setup_other_munis();
-	
 
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {

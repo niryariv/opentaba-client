@@ -326,7 +326,7 @@ legend.onAdd = function (map) {
 	div.innerHTML = '<h4 id="more-munis-header"><img src="/img/israel.svg" height="30px" />&nbsp;עוד רשויות</h4>';
 	
 	// sort munis by name
-	ms = Object.keys(municipalities).sort(function(a,b){return municipalities[a].display > municipalities[b].display})
+	ms = Object.keys(municipalities).sort(function(a,b){ return (municipalities[a].display > municipalities[b].display) ? 1 : -1 })
 
 	mlist = '';
 	for (var i=0 ; i < ms.length ; i++) {

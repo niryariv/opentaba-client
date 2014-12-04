@@ -99,7 +99,7 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
         test.assertSelectorHasText('#search-error-p', 'לא נמצאה', 'got error for plan selection');
     });*/
     
-    casper.thenOpen(gushurl + '/plan/16000').on('url.changed', initMock).wait(3000).
+    casper.thenEvaluate(function(){ window.location.hash += '/plan/16000'; }).wait(3000).
     then(function(){
         // make sure the page still behaves the same data-wise
         test.assertExists('#info h3','the info h3 exists now');

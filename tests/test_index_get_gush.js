@@ -61,7 +61,7 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
         test.assertSelectorHasText('#search-error-p', 'לא נמצאה', 'got error for plan selection');
     });
     
-    casper.thenOpen(gushurl + '/plan/16000').on('url.changed', initMock).wait(10000)
+    casper.thenOpen(gushurl + '/plan/9457').on('url.changed', initMock).wait(10000)
     .then(function() {
         // make sure the page still behaves the same data-wise
         test.assertExists('#info h3','the info h3 exists now');

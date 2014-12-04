@@ -57,7 +57,7 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
         test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
         
         // make sure the plan was not found
-        test.assertElementCount('#selected-plan', 0, "no plan was selected");
+        test.assertDoesntExist('#selected-plan', "no plan was selected");
         test.assertSelectorHasText('#search-error-p', 'לא נמצאה', 'got error for plan selection');
     });
     
@@ -70,7 +70,7 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
         test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
     
         // make sure the plan was found
-        test.assertElementCount('#selected-plan', 1, "the plan was selected");
+        test.assertExists('#selected-plan', "the plan was selected");
         test.assertSelectorDoesntHaveText('#search-error-p', 'לא נמצאה', 'no error for plan selection');
     });
     

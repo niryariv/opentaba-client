@@ -318,7 +318,7 @@ L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: 
 
 
 // add control for seeing other munis
-var legend = L.control({position: 'topright'});
+var legend = L.control({position: $('#toggle-button').is(':visible') ? 'bottomright' : 'topright'});
 legend.onAdd = function (map) {
 
 	var div = L.DomUtil.create('div', 'more-munis legend');
@@ -339,7 +339,8 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
-$('#more-munis-header').click(function(){
+
+$('#more-munis-header').on('touchstart', function(){
     $('#muni-list').slideToggle(300);
 });
 

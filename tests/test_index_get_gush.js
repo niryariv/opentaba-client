@@ -48,6 +48,32 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
 
     });
 
+    casper.thenOpen(gushurl + '/plan/12345').on('url.changed', initMock).wait(10000)
+    .then(function() {
+        // make sure the page still behaves the same data-wise
+        test.assertExists('#info h3','the info h3 exists now');
+        test.assertSelectorHasText('#info h3','גוש 30338');
+        test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
+        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
+        
+        // make sure the plan was not found
+        test.assertElementCount('#selected-plan', 0, "no plan was selected");
+        test.assertSelectorHasText('#search-error-p', 'לא נמצאה', 'got error for plan selection');
+    });
+    
+    casper.thenOpen(gushurl + '/plan/16000').on('url.changed', initMock).wait(10000)
+    .then(function() {
+        // make sure the page still behaves the same data-wise
+        test.assertExists('#info h3','the info h3 exists now');
+        test.assertSelectorHasText('#info h3','גוש 30338');
+        test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
+        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
+    
+        // make sure the plan was found
+        test.assertElementCount('#selected-plan', 1, "the plan was selected");
+        test.assertSelectorDoesntHaveText('#search-error-p', 'לא נמצאה', 'no error for plan selection');
+    });
+    
     casper.then(function(){
         phantomcss.screenshot("#map.leaflet-container.leaflet-fade-anim","mapon_gush_30338.png");
     });
@@ -85,32 +111,6 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
     casper.then(function check_phantomcss_info_div(){
         test.assertEqual(phantomcss.getExitStatus(),0,'info div should look according to predefined picture');});
 */
-    /*casper.thenOpen(gushurl + '/plan/12345').on('url.changed', initMock).wait(3000).
-    then(function(){
-        this.capture('plan12345.png');
-        // make sure the page still behaves the same data-wise
-        test.assertExists('#info h3','the info h3 exists now');
-        test.assertSelectorHasText('#info h3','גוש 30338');
-        test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
-        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
-        
-        // make sure the plan was not found
-        test.assertElementCount('#selected-plan', 0, "no plan was selected");
-        test.assertSelectorHasText('#search-error-p', 'לא נמצאה', 'got error for plan selection');
-    });*/
-    
-    casper.thenEvaluate(function(){ window.location.hash += '/plan/16000'; }).wait(3000).
-    then(function(){
-        // make sure the page still behaves the same data-wise
-        test.assertExists('#info h3','the info h3 exists now');
-        test.assertSelectorHasText('#info h3','גוש 30338');
-        test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
-        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
-        
-        // make sure the plan was found
-        test.assertElementCount('#selected-plan', 1, "the plan was selected");
-        test.assertSelectorDoesntHaveText('#search-error-p', 'לא נמצאה', 'no error for plan selection');
-    });
     
     casper.run(function(){
         test.done();

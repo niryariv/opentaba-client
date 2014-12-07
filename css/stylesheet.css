@@ -177,6 +177,17 @@ p.status {
     cursor: pointer;
 }
 
+#selected-plan {
+    background-color: #FBFC89;
+    border: 2px solid;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+#selected-plan>div {
+    margin-right: 1px;
+}
+
 @media screen and (max-width: 767px) {
 	.row-offcanvas {
 		position: relative;

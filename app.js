@@ -60,21 +60,13 @@ function get_gush(gush_id, plan_id) {
             
             if (plan_id) {
                 if ($('#selected-plan').length == 1) {
-                    var selected_plan = $('#selected-plan');
-                    var offset;
-
-                    // calculate where we should scroll to so the plan will be in the middle of the screen
-                    if (selected_plan.height() < $(window).height()) {
-                        offset = selected_plan.offset().top - (($(window).height() / 2) - (selected_plan.height() / 2));
-                    } else {
-                        offset = selected_plan.offset().top;
-                    }
-
+                    // scroll to 30px above the plan plan
+                    $('#info-div').animate({ scrollTop: $('#selected-plan').offset().top - 30 }, 2000);
                     $('#search-error-p').html('');
-                    $('#info-div').animate({ scrollTop: offset }, 2000);
                 } else {
-                    $('#search-error-p').html('התוכנית המבוקשת לא נמצאה');
+                    // scroll back to the top and show the user an error
                     $('#info-div').animate({ scrollTop: 0 }, 1);
+                    $('#search-error-p').html('התוכנית המבוקשת לא נמצאה');
                 }
             }
 		}).fail(function() {

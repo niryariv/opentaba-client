@@ -178,10 +178,7 @@ p.status {
 }
 
 #selected-plan {
-    background-color: #FBFC89;
-    border: 2px solid;
-    border-radius: 5px;
-    box-shadow: 5px 5px 5px #888888;
+    background-color: #ffb;
 }
 
 #selected-plan>div {

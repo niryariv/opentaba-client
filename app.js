@@ -61,7 +61,7 @@ function get_gush(gush_id, plan_id) {
             if (plan_id) {
                 if ($('#selected-plan').length == 1) {
                     // scroll to 30px above the plan plan
-                    $('#info-div').animate({ scrollTop: $('#selected-plan').offset().top - 30 }, 2000);
+                    $('#info-div').animate({ scrollTop: $('#selected-plan').offset().top - 70 }, 2000);
                     $('#search-error-p').html('');
                 } else {
                     // scroll back to the top and show the user an error

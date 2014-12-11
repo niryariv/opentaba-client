@@ -185,6 +185,10 @@ p.status {
     margin-right: 1px;
 }
 
+#search-plan-suggestions a {
+  padding: 5px
+}
+
 @media screen and (max-width: 767px) {
 	.row-offcanvas {
 		position: relative;

@@ -59,14 +59,15 @@
 					</div>
 
 					<div class="align-right">
-						<p id="muni-text">בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת או מספר גוש</p>
+						<p id="muni-text">בחרו גוש במפה כדי לצפות בתוכניות הבניה, או הקישו כתובת, מספר גוש או סולמית ואחריה מספר תוכנית</p>
 						
 						<form id="search-form"> 
-							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת או מספר גוש:"/>
+							<input type="text" id="search-text" name="search-value" placeholder="הכניסו כתובת, מספר גוש או מספר תוכנית:"/>
 							<button type="submit" class="btn"><span class="glyphicon glyphicon-search"></span></button>
 							<img src="css/ajax-loader.gif" id="scrobber" />
 							<p style="color: red" id="search-error-p"></p>
                             <p style="color: blue; display: none" id="search-note-p">שימו לב: מפות הגושים עשויות להכיל אי דיוקים, ולכן מומלץ לבדוק גם את המידע של הגושים הצמודים לתוצאה</p>
+                            <div style="display: none" id="search-plan-suggestions" />
 						</form>
 					</div>
 					

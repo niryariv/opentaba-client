@@ -88,8 +88,8 @@ function find_gush(gush_id){
 }
 
 
-// get a gush by street address
-function get_gush_by_addr(addr) {
+// find a gush by street address
+function find_gush_by_addr(addr) {
 	// add the city name if it is not in the search string
 	if (addr.indexOf(muni.display) == -1) {
 		addr = addr + " " + muni.display;
@@ -141,6 +141,42 @@ function get_gush_by_addr(addr) {
    		function(){
    			$('#scrobber').hide(); 
    			$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
+   		}
+   	);
+}
+
+
+function find_plan(plan_name) {
+    // ask our server if he knows
+    console.log(API_URL + 'plans/search/' + plan_name);
+	$.getJSON(
+		API_URL + 'plans/search/' + plan_name,
+		function (res) {
+			$('#scrobber').hide();
+            
+            // if no results tell the user. if there's one result jump directly to it. if more than one
+            // show the user links for all 
+			if (res.length == 0) {
+                $('#search-error-p').html('התוכנית המבוקשת לא נמצאה');
+            } else if (res.length == 1) {
+                location.hash = "#/gush/" + res[0]['gushim'][0] + '/plan/' + encodeURIComponent(res[0]['number']);
+            } else {
+                var plan_suggestions = $('#search-plan-suggestions');
+                plan_suggestions.html('האם התכוונת ל: ');
+                
+                $.each(res, function(i) {
+					plan_suggestions.append($('<a href="/#/gush/' + res[i]['gushim'][0] + '/plan/' + 
+                        encodeURIComponent(res[i]['number']) + '">' + res[i]['number'] + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      "));
+				});
+                
+                plan_suggestions.show();
+            }
+		}
+	)
+   .fail(
+   		function(){
+   			$('#scrobber').hide(); 
+   			$('#search-error-p').html('חלה שגיאה בחיפוש התוכנית, אנא נסו שנית מאוחר יותר');
    		}
    	);
 }
@@ -246,22 +282,27 @@ $(document).ready(function(){
 			$('#scrobber').show();
 			$('#search-error-p').html('');
             $('#search-note-p').hide();
+            $('#search-plan-suggestions').hide();
 			
 			var search_val = $('#search-text').val();
 			
-			// if it's a number search for a gush with that number, oterwise do address search
+			// if it's a number search for a gush with that number, oterwise
+            // if it starts with a # search for plan, and if not do address search
 			if (!isNaN(search_val)) {
-				console.log('Trying to find gush #' + search_val);
-				var result = find_gush(parseInt(search_val));
-				if (result)
-					get_gush(parseInt(search_val));
+                console.log('Trying to find gush #' + search_val);
+                var result = find_gush(parseInt(search_val));
+                if (result)
+                    get_gush(parseInt(search_val));
                 else
-					$('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
-				
-				$('#scrobber').hide(); 
-			} else {
+                    $('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
+                
+                $('#scrobber').hide(); 
+			} else if (search_val.charAt(0) == '#') {
+                console.log('Trying to find plan ' + search_val);
+                find_plan(search_val.substring(1, search_val.length));
+            } else {
 				console.log('Getting gush for address "' + search_val + '"');
-				get_gush_by_addr(search_val);
+				find_gush_by_addr(search_val);
 			}
 			
 			return false;
@@ -271,7 +312,7 @@ $(document).ready(function(){
 	
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
-	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
+	$('#search-text').attr('placeholder', 'הכניסו כתובת, מספר גוש או מספר תוכנית ב' + muni.display);
 	$("#jump-to-title").prepend(muni.display + ' ');
 	$("title").append(": " + muni.display)
 

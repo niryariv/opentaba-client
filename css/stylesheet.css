@@ -157,6 +157,34 @@ p.status {
     width: 84%;
 }
 
+.more-munis {
+    font-family: 'Alef';
+    font-size: 14px;
+    padding: 8px 8px;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    text-align: right;
+    direction: rtl;
+    line-height: 1.5em;
+    
+}
+
+.more-munis h4 {
+    margin: 0;
+    color: #777;
+    cursor: pointer;
+}
+
+#selected-plan {
+    background-color: #ffb;
+}
+
+#selected-plan>div {
+    margin-right: 1px;
+}
+
 @media screen and (max-width: 767px) {
 	.row-offcanvas {
 		position: relative;
@@ -204,6 +232,10 @@ p.status {
     body, html {
         margin-right: 1px;
     }
+    
+    .leaflet-control.more-munis {
+        margin-right: 28px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -232,22 +264,4 @@ p.status {
         float: right !important;
         width: 150% !important;
     }
-}
-
-.more-munis {
-    font-family: 'Alef';
-    font-size: 14px;
-    padding: 8px 8px;
-    background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-    text-align: right;
-    direction: rtl;
-    line-height: 1.5em;
-}
-.more-munis h4 {
-    margin: 0;
-    color: #777;
-    cursor: pointer;
 }

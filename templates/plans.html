@@ -7,57 +7,63 @@
 </h3>
 
 {{#plans}}
-    <div class="row details">
-        <div class="col-xs-12">גוש 
-            {{#each gushim}}
-                <a  href="/#/gush/{{this}}" 
-                    onmouseover="color_gush({{this}}, '#00f', 0.5);" 
-                    onmouseout="clear_highlight(String({{this}}));"
-                >{{this}}</a>&nbsp;
-            {{/each}}
+    {{#ifEq ../plan_id number}}
+    <div id="selected-plan">
+    {{else}}
+    <div>
+    {{/ifEq}}
+        <div class="row details">
+            <div class="col-xs-12">גוש 
+                {{#each gushim}}
+                    <a href="/#/gush/{{this}}" 
+                        onmouseover="color_gush({{this}}, '#00f', 0.5);" 
+                        onmouseout="clear_highlight(String({{this}}));"
+                    >{{this}}</a>&nbsp;
+                {{/each}}
+            </div>
         </div>
-    </div>
-
-    <div style="vertical-align:top" class="row item">
+        
+        <div style="vertical-align:top" class="row item">
         <div class="col-xs-6 col-sm-7"><b>{{essence}}</b></div>
-        <div class="col-xs-3">{{statusWithTooltipAndBG status day month year}}</div>
-        <div class="col-xs-3 col-sm-2"><b class="plan-date">{{day}}/{{month}}/{{year}}</b></div>
-    </div>
+            <div class="col-xs-3">{{statusWithTooltipAndBG status day month year}}</div>
+            <div class="col-xs-3 col-sm-2"><b class="plan-date">{{day}}/{{month}}/{{year}}</b></div>
+        </div>
 
-    <div class="row details">
-        <div class="col-xs-7">
-            {{location_string}}
+        <div class="row details">
+            <div class="col-xs-7">
+                {{location_string}}
+            </div>
+            <div class="col-xs-5">
+                <a href="{{details_link}}" target="_blank" rel="tooltip" title="פתח באתר ממי">
+                            תוכנית {{number}}
+                </a>
+            </div>
         </div>
-        <div class="col-xs-5">
-            <a href="{{details_link}}" target="_blank" rel="tooltip" title="פתח באתר ממי">
-                        תוכנית {{number}}
-            </a>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-xs-12" style="font-size:0px;">
-        {{! <td > }}
-            {{! the font-size thing is a hack to get the links to stick close together while maintaining proper formatting here }}
-            {{#each tasrit_link}}
-                <a href="{{this}}" target="_blank" rel="tooltip" title="תשריט" style="font-size:14px;"><i class="icon-globe"></i></a>
-            {{/each}}
-            {{#each takanon_link}}
-                <a href="{{this}}" target="_blank" rel="tooltip" title="תקנון" style="font-size:14px;"><i class="icon-file"></i></a>
-            {{/each}}
-            {{#each nispahim_link}}
-                <a href="{{this}}" target="_blank" rel="tooltip" title="נספחים" style="font-size:14px;"><i class="icon-folder-open"></i></a>
-            {{/each}}
-            {{#each files_link}}
-                <a href="http://mmi.gov.il{{this}}" rel="tooltip" title="קבצי ממג" style="font-size:14px;"><i class="icon-download-alt"></i></a>
-            {{/each}}
-            {{#if mavat_code}}
-                <a href="{{../../base_api_url}}plan/{{plan_id}}/mavat" target="_blank" rel="tooltip" title="מבא&quot;ת" style="font-size:14px;"><i class="icon-link"></i></a>
-            {{/if}}
-        {{! </td> }}
+        <div class="row">
+            <div class="col-xs-12" style="font-size:0px;">
+            {{! <td > }}
+                {{! the font-size thing is a hack to get the links to stick close together while maintaining proper formatting here }}
+                {{#each tasrit_link}}
+                    <a href="{{this}}" target="_blank" rel="tooltip" title="תשריט" style="font-size:14px;"><i class="icon-globe"></i></a>
+                {{/each}}
+                {{#each takanon_link}}
+                    <a href="{{this}}" target="_blank" rel="tooltip" title="תקנון" style="font-size:14px;"><i class="icon-file"></i></a>
+                {{/each}}
+                {{#each nispahim_link}}
+                    <a href="{{this}}" target="_blank" rel="tooltip" title="נספחים" style="font-size:14px;"><i class="icon-folder-open"></i></a>
+                {{/each}}
+                {{#each files_link}}
+                    <a href="http://mmi.gov.il{{this}}" rel="tooltip" title="קבצי ממג" style="font-size:14px;"><i class="icon-download-alt"></i></a>
+                {{/each}}
+                {{#if mavat_code}}
+                    <a href="{{../../base_api_url}}plan/{{plan_id}}/mavat" target="_blank" rel="tooltip" title="מבא&quot;ת" style="font-size:14px;"><i class="icon-link"></i></a>
+                {{/if}}
+            {{! </td> }}
+            </div>
         </div>
+        <div class="row" style="height: 10px"><div class="col-xs-12">&nbsp;</div></div>
     </div>
-    <div class="row" style="height: 10px"><div class="col-xs-12">&nbsp;</div></div>
 {{/plans}}
 
 <script>

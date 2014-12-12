@@ -31,7 +31,8 @@ leafletPip.bassackwards = true;
 
 // use delegation to allow the big gushim json to be loaded asynchronously while still supporting our #/gush/:gush_id address mapping
 var got_gushim_delegate;
-var got_gushim_delegate_param;
+var got_gushim_delegate_gush_param;
+var got_gushim_delegate_plan_param;
 
 var DEFAULT_ZOOM = 13;
 var recently_active_gushim = [];
@@ -49,7 +50,7 @@ String.prototype.endsWith = function(suffix) {
 };
 
 
-function get_gush(gush_id) {
+function get_gush(gush_id, plan_id) {
 	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
 	clear_all_highlit();
 	highlight_gush(gush_id);
@@ -65,8 +66,20 @@ function get_gush(gush_id) {
 	$.getJSON(
 		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
 		function(d) { 
-			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id});
+			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
 			$("#info").html(rendered_gush);
+            
+            if (plan_id) {
+                if ($('#selected-plan').length == 1) {
+                    // scroll to 30px above the plan plan
+                    $('#info-div').animate({ scrollTop: $('#selected-plan').offset().top - 70 }, 2000);
+                    $('#search-error-p').html('');
+                } else {
+                    // scroll back to the top and show the user an error
+                    $('#info-div').animate({ scrollTop: 0 }, 1);
+                    $('#search-error-p').html('התוכנית המבוקשת לא נמצאה');
+                }
+            }
 		}).fail(function() {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
 		});
@@ -217,7 +230,6 @@ function onEachFeature(feature, layer) {
 				'click'		: function() { 
 					$("#info").html("עוד מעט..."); 
 					location.hash = "#/gush/" + feature.id;
-					get_gush(feature.id);
 				}
 			});
 	layer["gushid"] = feature.id;
@@ -231,15 +243,17 @@ function onEachFeature(feature, layer) {
 
 // START HERE
 $(document).ready(function(){
-	
+    
 	// setup a path.js router to allow distinct URLs for each block
-	Path.map("#/gush/:gush_id").to(
-		function(){ 			
+	Path.map("#/gush/:gush_id(/plan/:plan_id)").to(
+		function(){
 			if (gushim) {
-				get_gush(this.params['gush_id'].split('?')[0]); // remove '?params' if exists
+                // remove '?params' if exists
+				get_gush(this.params['gush_id'].split('?')[0], this.params['plan_id'] ? this.params['plan_id'].split('?')[0] : undefined);
 			} else {
 				// use a delegate because this script will definetly run before we finish loading the big gushim json
-				got_gushim_delegate_param = this.params['gush_id'].split('?')[0];
+				got_gushim_delegate_gush_param = this.params['gush_id'].split('?')[0];
+                got_gushim_delegate_plan_param = this.params['plan_id'] ? this.params['plan_id'].split('?')[0] : undefined;
 				got_gushim_delegate = get_gush;
 			}
 		}
@@ -368,7 +382,7 @@ L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: 
 
 
 // add control for seeing other munis
-var legend = L.control({position: 'topright'});
+var legend = L.control({position: $('#toggle-button').is(':visible') ? 'bottomright' : 'topright'});
 legend.onAdd = function (map) {
 
 	var div = L.DomUtil.create('div', 'more-munis legend');
@@ -389,7 +403,8 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
-$('#more-munis-header').click(function(){
+
+$('#more-munis-header').on('touchstart', function(){
     $('#muni-list').slideToggle(300);
 });
 
@@ -440,7 +455,7 @@ $.ajax({
 
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {
-		got_gushim_delegate(got_gushim_delegate_param);
+		got_gushim_delegate(got_gushim_delegate_gush_param, got_gushim_delegate_plan_param);
 		map._onResize();
 	}
 });

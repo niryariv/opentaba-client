@@ -51,7 +51,6 @@ String.prototype.endsWith = function(suffix) {
 
 
 function get_gush(gush_id, plan_id) {
-	location.hash = "#/gush/" + gush_id;
     selected_gush = gush_id;
     neighbour_gushim = find_neighbours(gush_id).map(function(g) { return g.id; });
     

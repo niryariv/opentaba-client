@@ -68,7 +68,6 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
         test.assertSelectorHasText('#info h3','גוש 30338');
         test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
         test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
-    
         // make sure the plan was found
         test.assertExists('#selected-plan', "the plan was selected");
         test.assertSelectorDoesntHaveText('#search-error-p', 'לא נמצאה', 'no error for plan selection');
@@ -135,14 +134,12 @@ function initMock(){
     casper.evaluate(function(template){
         var server = sinon.fakeServer.create();
         server.autoRespond = true;
-        
         var gush_answer = JSON.stringify(planFixture_30338);
-        server.respondWith('GET', 'http://0.0.0.0:5000/gush/30338/plans.json',
+        server.respondWith('GET', 'http://0.0.0.0:5000/gush/30154,30159,30163,30164,30166,30167,30337,30338,30340,30540,30868/plans.json',
             [200, {'content-type':'application/json'}, gush_answer]);
         server.respondWith('GET', '/templates/plans.html',
             [200, {'content-type':'text/html'}, template]);
         server.respond();
-        
         console.log('injected sinon with test fixture');
 
     }, { template: template });

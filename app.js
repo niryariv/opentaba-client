@@ -51,12 +51,15 @@ String.prototype.endsWith = function(suffix) {
 
 
 function get_gush(gush_id, plan_id) {
-	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
-	clear_all_highlit();
-	highlight_gush(gush_id);
 	location.hash = "#/gush/" + gush_id;
     selected_gush = gush_id;
     neighbour_gushim = find_neighbours(gush_id).map(function(g) { return g.id; });
+    
+    // clear current highlights and highlight the selected plan
+    clear_all_highlight();
+    highlight_gush(gush_id);
+    
+    // highlight neighbours
     $.each(neighbour_gushim, function(n) {
         // neighbours will contain the requested gush because it intersects with itself
         if (neighbour_gushim[n] != gush_id)
@@ -213,7 +216,7 @@ function clear_highlight(id) {
 }
 
 
-function clear_all_highlit() {
+function clear_all_highlight() {
     if (gushim) {
         $.each(gushim, function(g) {
             clear_highlight(gushim[g].id);
@@ -261,7 +264,7 @@ $(document).ready(function(){
 
 	Path.map("#/").to(
 		function(){
-			clear_all_highlit();
+			clear_all_highlight();
 			map.setView(muni.center, DEFAULT_ZOOM);
 
 			// get the most recent plans to show on the homepage

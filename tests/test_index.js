@@ -13,10 +13,9 @@ casper.options.viewportSize = {width:1024, height:768};
 //initializing phantomcss
 
 //Starting the tests
-casper.test.begin('Basic index.html elements test',39, function suite(test){
+casper.test.begin('Basic index.html elements test',48, function suite(test){
 
-	casper.on('page.init',initMock).
-	on('remote.message',log).
+	casper.on('remote.message',log).
 	start(url, function(){
 
 		//casper.options.clientScripts.push('../testlibs/sinon-1.7.3.js');
@@ -146,6 +145,57 @@ casper.test.begin('Basic index.html elements test',39, function suite(test){
 			});
 		});
 	});
+    
+    // Plan number search test
+	casper.then(function(){
+        initMock();
+        
+		// make sure a non-existing plan number returns an error
+		casper.waitFor(function check() {
+			//this.evaluate(function(){ server.respond(); });
+            this.fill("form#search-form", {
+				'search-value' : '#12345'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(1000, function() {
+                casper.capture('wtf.png');
+                test.assertVisible('#search-error-p');
+				test.assertSelectorHasText('#search-error-p', 'התוכנית המבוקשת לא נמצאה', 'Search for a non-existing plan number');
+                test.assertNotVisible('#search-plan-suggestions');
+			});
+		});
+
+		// make sure part of a number returns multiple suggestions
+		casper.waitFor(function check() {
+			this.fill("form#search-form", {
+				'search-value' : '#12'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(1000, function() {
+				test.assertNotVisible('#search-error-p');
+                test.assertVisible('#search-plan-suggestions');
+                test.assertSelectorHasText('#search-plan-suggestions', 'האם התכוונת ל:', 'Search for a partial plan number and get suggestions');
+			});
+		});
+        
+        // make sure an exact plan number takes us to it
+		casper.waitFor(function check() {
+			this.fill("form#search-form", {
+				'search-value' : '#12222'
+			}, true);
+			return true;
+		}, function then() {
+			this.wait(1000, function() {
+				test.assertNotVisible('#search-error-p');
+                test.assertNotVisible('#search-plan-suggestions');
+                test.assertEval(function() {
+                    return location.hash === '#/gush/28107/plan/12222';
+                });
+			});
+		});
+	});
 
 	//TODO: basic form testing (needs sinon injections and mocking
 	casper.run(function(){
@@ -156,19 +206,24 @@ casper.test.begin('Basic index.html elements test',39, function suite(test){
 
 function initMock(){
 	casper.evaluate(function(){
-		var server = sinon.fakeServer.create(); server.autoRespond = true;
-		console.log(planFixture_30338.length);
-		var answer = JSON.stringify(planFixture_30338);
-		var get_30338 = 'http://0.0.0.0:5000/gush/30338/plans';
+		var server = sinon.fakeServer.create();
+        server.autoRespond = true;
+
+        var answer_12345 = JSON.stringify(planSearchFixture_12345);
+        var answer_12 = JSON.stringify(planSearchFixture_12);
+        var answer_12222 = JSON.stringify(planSearchFixture_12222);
+        
 		var content = {"content-type":"application/json"};
 		//TODO: change the response for address locating
-		server.respondWith('GET',get_30338 ,
-			[200, content , answer]);
-		server.respond();
+		server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12345',
+			[200, {'content-type':'application/json'} , answer_12345]);
+        server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12',
+			[200, content , answer_12]);
+        server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12222',
+			[200, content , answer_12222]);
+        
+        server.respond();
 		console.log('injected sinon');
-		//console.log(server);
-		//return server;
-
 	});
 	casper.log('injected sinon fakeserver now', 'debug');
 }

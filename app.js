@@ -406,7 +406,8 @@ legend.onAdd = function (map) {
 
 legend.addTo(map);
 
-$('#more-munis-header').on('touchstart', function(){
+// catch touchstart if possible, because click behaves weird on touch screens
+$('#more-munis-header').on(('ontouchstart' in document.documentElement) ? 'touchstart' : 'click', function(){
     $('#muni-list').slideToggle(300);
 });
 

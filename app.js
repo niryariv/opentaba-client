@@ -152,7 +152,6 @@ function find_gush_by_addr(address) {
 function find_plan(plan_name) {
     var encoded_plan = encodeURIComponent(plan_name);
     // ask our server if he knows
-    console.log(API_URL + 'plans/search/' + encoded_plan);
 	$.getJSON(
 		API_URL + 'plans/search/' + encoded_plan,
 		function (res) {

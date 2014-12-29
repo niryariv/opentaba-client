@@ -74,6 +74,11 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
 	casper.then(function(){
 		test.assertNotVisible('info-modal');
 	});
+    
+    // init mocked data
+    casper.then(function(){
+        initMock();
+    });
 	
 	// Address search tests
 	casper.then(function(){
@@ -85,7 +90,7 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
 			return true;
 		}, function then() {
 			this.wait(3000, function() {
-				test.assertSelectorHasText('#search-error-p', 'כתובת שגויה או שלא נמצאו נתונים', 'Search for an invalid address');
+				test.assertSelectorHasText('#search-error-p', 'לא נמצאו תוצאות עבור השאילתה', 'Search for an invalid address');
                 test.assertNotVisible('#search-note-p');
 			});
 		});
@@ -98,7 +103,7 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
 			return true;
 		}, function then() {
 			this.wait(3000, function() {
-				test.assertSelectorHasText('#search-error-p', 'לא נמצא גוש התואם לכתובת', 'Search for an address in a differenct city (no gush will be found)');
+				test.assertSelectorHasText('#search-error-p', 'לא נמצאו תוצאות עבור השאילתה', 'Search for an address in a differenct city (no gush will be found)');
                 test.assertNotVisible('#search-note-p');
 			});
 		});
@@ -148,8 +153,6 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
     
     // Plan number search test
 	casper.then(function(){
-        initMock();
-        
 		// make sure a non-existing plan number returns an error
 		casper.waitFor(function check() {
             this.fill("form#search-form", {
@@ -206,13 +209,21 @@ function initMock(){
 	casper.evaluate(function(){
 		var server = sinon.fakeServer.create();
         server.autoRespond = true;
-
+        
+        // filter in only requests made to our server
+        server.xhr.useFilters = true;
+        server.xhr.addFilter(function(method, url) {
+            // if we return true the request will not faked
+            return !url.match(/0.0.0.0:5000/);
+        });
+        
         var answer_12345 = JSON.stringify(planSearchFixture_12345);
         var answer_12 = JSON.stringify(planSearchFixture_12);
         var answer_12222 = JSON.stringify(planSearchFixture_12222);
         
 		var content = {'content-type':'application/json'};
-		//TODO: change the response for address locating
+        
+        // good search feedbacks
 		server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12345',
 			[200, content, answer_12345]);
         server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12',

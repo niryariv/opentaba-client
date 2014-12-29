@@ -1,4 +1,6 @@
 var url = '../index.html#/holon-test';
+casper.options.clientScripts.push('./sinon-1.7.3.js');
+casper.options.clientScripts.push('./fixture.js');
 casper.options.logLevel = "debug";
 casper.options.verbose = true;
 casper.options.viewportSize = {width:1024, height:768};
@@ -40,6 +42,11 @@ casper.test.begin('Different municipality index.html test (holon)',29, function 
         // search note should be hidden until a search is successfuly made
         test.assertNotVisible('#search-note-p');
 	});
+    
+    // init mocked data
+    casper.then(function(){
+        initMock();
+    });
 	
 	// Address search tests
 	casper.then(function(){
@@ -51,7 +58,7 @@ casper.test.begin('Different municipality index.html test (holon)',29, function 
 			return true;
 		}, function then() {
 			this.wait(3000, function() {
-				test.assertSelectorHasText('#search-error-p', 'לא נמצא גוש התואם לכתובת', 'Search for an address in a differenct city (no gush will be found)');
+				test.assertSelectorHasText('#search-error-p', 'לא נמצאו תוצאות עבור השאילתה', 'Search for an address in a differenct city (no gush will be found)');
                 test.assertNotVisible('#search-note-p');
 			});
 		});
@@ -75,4 +82,26 @@ casper.test.begin('Different municipality index.html test (holon)',29, function 
 		test.done();
 	});
 });
+
+function initMock(){
+	casper.evaluate(function(){
+		var server = sinon.fakeServer.create();
+        server.autoRespond = true;
+        
+        // filter in only requests made to our server
+        server.xhr.useFilters = true;
+        server.xhr.addFilter(function(method, url) {
+            // if we return true the request will not faked
+            return !url.match(/0.0.0.0:5000/);
+        });
+        
+        // bad search feedback
+        server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/%D7%91%D7%A8%D7%A0%D7%A8%209%20%D7%99%D7%A8%D7%95%D7%A9%D7%9C%D7%99%D7%9D',
+            [200, {'content-type':'application/json'}, '[]']);
+        
+        server.respond();
+		console.log('injected sinon');
+	});
+	casper.log('injected sinon fakeserver now', 'debug');
+}
 

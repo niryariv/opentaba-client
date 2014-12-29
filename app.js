@@ -35,10 +35,13 @@ var got_gushim_delegate_gush_param;
 var got_gushim_delegate_plan_param;
 
 var DEFAULT_ZOOM = 13;
-var highlit = [];
-var recently_active_gushim = []
+var recently_active_gushim = [];
+var neighbour_gushim = [];
+var selected_gush;
 var INACTIVE_GUSH_COLOR = '#555';
 var ACTIVE_GUSH_COLOR = '#d7191c';
+var NEIGHBOUR_GUSH_COLOR = '#83a';
+var SELECTED_GUSH_COLOR = '#0aa';
 
 
 // Utility endsWith function
@@ -48,13 +51,23 @@ String.prototype.endsWith = function(suffix) {
 
 
 function get_gush(gush_id, plan_id) {
-	// console.log("get_gush: " + API_URL + 'gush/' + gush_id + '/plans')
-	clear_all_highlit();
-	highlight_gush(gush_id);
+    selected_gush = gush_id;
+    neighbour_gushim = find_neighbours(gush_id).map(function(g) { return g.id; });
+    
+    // clear current highlights and highlight the selected plan
+    clear_all_highlight();
+    highlight_gush(gush_id);
+    
+    // highlight neighbours
+    $.each(neighbour_gushim, function(n) {
+        // neighbours will contain the requested gush because it intersects with itself
+        if (neighbour_gushim[n] != gush_id)
+            color_gush(neighbour_gushim[n], NEIGHBOUR_GUSH_COLOR, 0.2);
+    });
 	
 	$.getJSON(
-		API_URL + 'gush/' + gush_id + '/plans.json',
-		function(d) {
+		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
+		function(d) { 
 			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
 			$("#info").html(rendered_gush);
             
@@ -185,6 +198,38 @@ function find_plan(plan_name) {
 }
 
 
+// get a list of neighbours for a gush
+function find_neighbours(gush_id) {    
+    var gushBounds = map._layers['gush_' + gush_id].getBounds();
+    
+    // can extend the bounds by either a flat 10% or by 0.0005 degree (about fifty meters) in every direction
+    //gushBounds = gushBounds.pad(0.1);
+    var p = gushBounds.getSouthWest();
+    p.lat = p.lat - 0.0005;
+    p.lng = p.lng - 0.0005;
+    gushBounds.extend(p);
+    p = gushBounds.getSouthEast();
+    p.lat = p.lat - 0.0005;
+    p.lng = p.lng + 0.0005;
+    gushBounds.extend(p);
+    p = gushBounds.getNorthWest();
+    p.lat = p.lat + 0.0005;
+    p.lng = p.lng - 0.0005;
+    gushBounds.extend(p);
+    p = gushBounds.getNorthEast();
+    p.lat = p.lat + 0.0005;
+    p.lng = p.lng + 0.0005;
+    gushBounds.extend(p);
+    
+    // filter the list of gushim to find intersecting ones with our enhanced bounds
+    var neighbours = gushim.filter(function(g) {
+        return (gushBounds.intersects(map._layers['gush_' + g.id].getBounds()));
+    });
+    
+    return neighbours;
+}
+
+
 function color_gush(id, color, opacity) {
 	map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
 }
@@ -192,21 +237,29 @@ function color_gush(id, color, opacity) {
 function highlight_gush(id) {
 	map.fitBounds(map._layers['gush_' + id].getBounds());
 	color_gush(id, "#0aa", 0.2)
-	highlit.push(id);
 }
 
 
 function clear_highlight(id) {
 	gush = 'gush_' + id;
-    color_gush(id, (recently_active_gushim.indexOf(id) > -1) ? ACTIVE_GUSH_COLOR : INACTIVE_GUSH_COLOR, 0.5);
-	highlit.splice(highlit.indexOf(id), 1);
+    
+    if (id == selected_gush)
+        color_gush(id, SELECTED_GUSH_COLOR, 0.5);
+    else if (neighbour_gushim.indexOf(id) > -1)
+        color_gush(id, NEIGHBOUR_GUSH_COLOR, 0.5);
+    else if (recently_active_gushim.indexOf(id) > -1)
+        color_gush(id, ACTIVE_GUSH_COLOR, 0.5);
+    else
+        color_gush(id, INACTIVE_GUSH_COLOR, 0.5);
 }
 
 
-function clear_all_highlit() {
-	while (highlit.length > 0) {
-		clear_highlight(highlit[0]);
-	}
+function clear_all_highlight() {
+    if (gushim) {
+        $.each(gushim, function(g) {
+            clear_highlight(gushim[g].id);
+        });
+    }
 }
 
 
@@ -249,7 +302,7 @@ $(document).ready(function(){
 
 	Path.map("#/").to(
 		function(){
-			clear_all_highlit();
+			clear_all_highlight();
 			map.setView(muni.center, DEFAULT_ZOOM);
 
 			// get the most recent plans to show on the homepage
@@ -394,7 +447,8 @@ legend.onAdd = function (map) {
 
 legend.addTo(map);
 
-$('#more-munis-header').on('touchstart', function(){
+// catch touchstart if possible, because click behaves weird on touch screens
+$('#more-munis-header').on(('ontouchstart' in document.documentElement) ? 'touchstart' : 'click', function(){
     $('#muni-list').slideToggle(300);
 });
 

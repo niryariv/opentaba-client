@@ -12,20 +12,17 @@
     {{else}}
     <div>
     {{/ifEq}}
-        {{#if ../gush_id}}
-        {{else}}
-            <div class="row details">
-                <div class="col-xs-12">גוש 
-                    {{#each gushim}}
-                        <a href="/#/gush/{{this}}" 
-                            onmouseover="color_gush({{this}}, '#00f', 0.5);" 
-                            onmouseout="color_gush({{this}}, '#f00', 0.5);"
-                        >{{this}}</a>&nbsp;
-                    {{/each}}
-                </div>
+        <div class="row details">
+            <div class="col-xs-12">גוש 
+                {{#each gushim}}
+                    <a href="/#/gush/{{this}}" 
+                        onmouseover="color_gush({{this}}, '#00f', 0.5);" 
+                        onmouseout="clear_highlight(String({{this}}));"
+                    >{{this}}</a>&nbsp;
+                {{/each}}
             </div>
-        {{/if}}
-
+        </div>
+        
         <div style="vertical-align:top" class="row item">
         <div class="col-xs-6 col-sm-7"><b>{{essence}}</b></div>
             <div class="col-xs-3">{{statusWithTooltipAndBG status day month year}}</div>

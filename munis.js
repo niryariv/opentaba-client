@@ -120,6 +120,24 @@ var municipalities = {
         ],
         "display": "\u05d0\u05d5\u05e8 \u05e2\u05e7\u05d9\u05d1\u05d0"
     },
+    "ramatgan": {
+        "bounds": [
+            [
+                32.033837,
+                34.790108
+            ],
+            [
+                32.106767,
+                34.855559
+            ]
+        ],
+        "center": [
+            32.076573,
+            34.818758
+        ],
+        "display": "\u05e8\u05de\u05ea \u05d2\u05df",
+        "fb_link": "https://www.facebook.com/opentaba.ramatgan"
+    },
     "ramathasharon": {
         "bounds": [
             [

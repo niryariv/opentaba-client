@@ -111,7 +111,7 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
 			return true;
 		}, function then() {
 			this.wait(3000, function() {
-				test.assertSelectorDoesntHaveText('#search-error-p', 'כתובת', 'Search for a good address');
+				test.assertNotVisible('#search-error-p', 'Search for a good address');
                 test.assertVisible('#search-note-p');
 			});
 		});
@@ -122,12 +122,12 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
 		// make sure a non-existing gush number returns an error
 		casper.waitFor(function check() {
 			this.fill("form#search-form", {
-				'search-value' : '1'
+				'search-value' : '11111'
 			}, true);
 			return true;
 		}, function then() {
 			this.wait(1000, function() {
-				test.assertSelectorHasText('#search-error-p', 'גוש מספר 1 לא נמצא במפה', 'Search for an invalid gush number');
+				test.assertSelectorHasText('#search-error-p', 'לא נמצאו תוצאות עבור השאילתה', 'Search for an invalid gush number');
                 test.assertNotVisible('#search-note-p');
 			});
 		});
@@ -152,16 +152,14 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
         
 		// make sure a non-existing plan number returns an error
 		casper.waitFor(function check() {
-			//this.evaluate(function(){ server.respond(); });
             this.fill("form#search-form", {
-				'search-value' : '#12345'
+				'search-value' : '12345'
 			}, true);
 			return true;
 		}, function then() {
 			this.wait(1000, function() {
-                casper.capture('wtf.png');
                 test.assertVisible('#search-error-p');
-				test.assertSelectorHasText('#search-error-p', 'התוכנית המבוקשת לא נמצאה', 'Search for a non-existing plan number');
+				test.assertSelectorHasText('#search-error-p', 'לא נמצאו תוצאות עבור השאילתה', 'Search for a non-existing plan number');
                 test.assertNotVisible('#search-plan-suggestions');
 			});
 		});
@@ -169,7 +167,7 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
 		// make sure part of a number returns multiple suggestions
 		casper.waitFor(function check() {
 			this.fill("form#search-form", {
-				'search-value' : '#12'
+				'search-value' : '12'
 			}, true);
 			return true;
 		}, function then() {
@@ -183,7 +181,7 @@ casper.test.begin('Basic index.html elements test',48, function suite(test){
         // make sure an exact plan number takes us to it
 		casper.waitFor(function check() {
 			this.fill("form#search-form", {
-				'search-value' : '#12222'
+				'search-value' : '12222'
 			}, true);
 			return true;
 		}, function then() {
@@ -213,14 +211,22 @@ function initMock(){
         var answer_12 = JSON.stringify(planSearchFixture_12);
         var answer_12222 = JSON.stringify(planSearchFixture_12222);
         
-		var content = {"content-type":"application/json"};
+		var content = {'content-type':'application/json'};
 		//TODO: change the response for address locating
 		server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12345',
-			[200, {'content-type':'application/json'} , answer_12345]);
+			[200, content, answer_12345]);
         server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12',
-			[200, content , answer_12]);
+			[200, content, answer_12]);
         server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/12222',
-			[200, content , answer_12222]);
+			[200, content, answer_12222]);
+        
+        // bad search feedbacks
+        server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/%D7%A8%D7%97%D7%95%D7%91%D7%A9%D7%9C%D7%90%D7%A7%D7%99%D7%99%D7%9D',
+            [200, content, '[]']);
+        server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/%D7%A9%D7%93%D7%A8%D7%95%D7%AA%20%D7%9E%D7%95%D7%A8%D7%99%D7%94%20%D7%97%D7%99%D7%A4%D7%94',
+            [200, content, '[]']);
+        server.respondWith('GET', 'http://0.0.0.0:5000/plans/search/11111',
+            [200, content, '[]']);
         
         server.respond();
 		console.log('injected sinon');

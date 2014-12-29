@@ -84,20 +84,23 @@ function find_gush(gush_id){
 	g = gushim.filter(
 		function(f){ return (f.id == gush_id); }
 	);
-	return g[0];
+    
+    return g[0];
 }
 
 
 // find a gush by street address
-function find_gush_by_addr(addr) {
+function find_gush_by_addr(address) {
+    var search_address = address;
+    
 	// add the city name if it is not in the search string
-	if (addr.indexOf(muni.display) == -1) {
-		addr = addr + " " + muni.display;
+	if (search_address.indexOf(muni.display) == -1) {
+		search_address = search_address + " " + muni.display;
 	}
 	
 	// Use Google api to find a gush by address
 	$.getJSON(
-		'https://maps.googleapis.com/maps/api/geocode/json?address='+addr+'&sensor=false',
+		'https://maps.googleapis.com/maps/api/geocode/json?address='+search_address+'&sensor=false',
 		function (r) {
 			$('#scrobber').hide();
 
@@ -109,7 +112,7 @@ function find_gush_by_addr(addr) {
 				if (r['results'][0]['types'].length == 2 && 
 					$.inArray('locality', r['results'][0]['types']) > -1 && 
 					$.inArray('political', r['results'][0]['types']) > -1) {
-					$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+					find_plan(address);
 				}
 				else {
 					var lat = r['results'][0]['geometry']['location']['lat'];
@@ -120,44 +123,45 @@ function find_gush_by_addr(addr) {
 					var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
 					if (gid && gid.length > 0) {
 						get_gush(gid[0].gushid);
-						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
+						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + search_address + '</b>').openOn(map);
                         
                         // show search note after a successful search
                         $('#search-note-p').show();
 					} else {
-						$('#search-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
+						find_plan(address);
 					}
 				}
 			}
 			else if (r['status'] == 'ZERO_RESULTS') {
-				$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
+				find_plan(address);
 			}
 			else {
-				$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
+				$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
 			}
 		}
 	)
    .fail(
    		function(){
    			$('#scrobber').hide(); 
-   			$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
+   			$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
    		}
    	);
 }
 
 
 function find_plan(plan_name) {
+    var encoded_plan = encodeURIComponent(plan_name);
     // ask our server if he knows
-    console.log(API_URL + 'plans/search/' + plan_name);
+    console.log(API_URL + 'plans/search/' + encoded_plan);
 	$.getJSON(
-		API_URL + 'plans/search/' + plan_name,
+		API_URL + 'plans/search/' + encoded_plan,
 		function (res) {
 			$('#scrobber').hide();
             
             // if no results tell the user. if there's one result jump directly to it. if more than one
             // show the user links for all 
 			if (res.length == 0) {
-                $('#search-error-p').html('התוכנית המבוקשת לא נמצאה');
+                $('#search-error-p').html('לא נמצאו תוצאות עבור השאילתה');
             } else if (res.length == 1) {
                 location.hash = "#/gush/" + res[0]['gushim'][0] + '/plan/' + encodeURIComponent(res[0]['number']);
             } else {
@@ -176,7 +180,7 @@ function find_plan(plan_name) {
    .fail(
    		function(){
    			$('#scrobber').hide(); 
-   			$('#search-error-p').html('חלה שגיאה בחיפוש התוכנית, אנא נסו שנית מאוחר יותר');
+   			$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
    		}
    	);
 }
@@ -294,12 +298,9 @@ $(document).ready(function(){
                 if (result)
                     get_gush(parseInt(search_val));
                 else
-                    $('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
+                    find_plan(search_val);
                 
-                $('#scrobber').hide(); 
-			} else if (search_val.charAt(0) == '#') {
-                console.log('Trying to find plan ' + search_val);
-                find_plan(search_val.substring(1, search_val.length));
+                $('#scrobber').hide();
             } else {
 				console.log('Getting gush for address "' + search_val + '"');
 				find_gush_by_addr(search_val);

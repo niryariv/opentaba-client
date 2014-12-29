@@ -103,6 +103,23 @@ var municipalities = {
         "fb_link": "https://www.facebook.com/opentaba.jerusalem",
         "twitter_link": "https://twitter.com/opentaba_JLM"
     },
+    "kiryatgat": {
+        "bounds": [
+            [
+                31.564365,
+                34.730762
+            ],
+            [
+                31.638779,
+                34.837773
+            ]
+        ],
+        "center": [
+            31.606284,
+            34.768293
+        ],
+        "display": "\u05e7\u05e8\u05d9\u05ea \u05d2\u05ea"
+    },
     "orakiva": {
         "bounds": [
             [

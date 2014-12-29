@@ -97,7 +97,104 @@ function find_gush(gush_id){
 	g = gushim.filter(
 		function(f){ return (f.id == gush_id); }
 	);
-	return g[0];
+    
+    return g[0];
+}
+
+
+// find a gush by street address
+function find_gush_by_addr(address) {
+    var search_address = address;
+    
+	// add the city name if it is not in the search string
+	if (search_address.indexOf(muni.display) == -1) {
+		search_address = search_address + " " + muni.display;
+	}
+	
+	// Use Google api to find a gush by address
+	$.getJSON(
+		'https://maps.googleapis.com/maps/api/geocode/json?address='+search_address+'&sensor=false',
+		function (r) {
+			$('#scrobber').hide();
+
+			if (r['status'] == 'OK' && r['results'].length > 0) {
+				// Here we have a case when Google api returns without an actual place (even a street), 
+				// so it only has a city. This happens because it didn't find the address, but we 
+				// did append the name of the current city at the end, and Google apparently thinks  
+				// 'better something than nothing'. We're trying to ignore this (should test though)
+				if (r['results'][0]['types'].length == 2 && 
+					$.inArray('locality', r['results'][0]['types']) > -1 && 
+					$.inArray('political', r['results'][0]['types']) > -1) {
+					find_plan(address);
+				}
+				else {
+					var lat = r['results'][0]['geometry']['location']['lat'];
+					var lon = r['results'][0]['geometry']['location']['lng'];
+					console.log('got lon: ' + lon + ', lat: ' + lat);
+      
+					// Using leafletpip we try to find an object in the gushim layer with the coordinate we got
+					var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
+					if (gid && gid.length > 0) {
+						get_gush(gid[0].gushid);
+						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + search_address + '</b>').openOn(map);
+                        
+                        // show search note after a successful search
+                        $('#search-note-p').show();
+					} else {
+						find_plan(address);
+					}
+				}
+			}
+			else if (r['status'] == 'ZERO_RESULTS') {
+				find_plan(address);
+			}
+			else {
+				$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
+			}
+		}
+	)
+   .fail(
+   		function(){
+   			$('#scrobber').hide(); 
+   			$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
+   		}
+   	);
+}
+
+
+function find_plan(plan_name) {
+    var encoded_plan = encodeURIComponent(plan_name);
+    // ask our server if he knows
+	$.getJSON(
+		API_URL + 'plans/search/' + encoded_plan,
+		function (res) {
+			$('#scrobber').hide();
+            
+            // if no results tell the user. if there's one result jump directly to it. if more than one
+            // show the user links for all 
+			if (res.length == 0) {
+                $('#search-error-p').html('לא נמצאו תוצאות עבור השאילתה');
+            } else if (res.length == 1) {
+                location.hash = "#/gush/" + res[0]['gushim'][0] + '/plan/' + encodeURIComponent(res[0]['number']);
+            } else {
+                var plan_suggestions = $('#search-plan-suggestions');
+                plan_suggestions.html('האם התכוונת ל: ');
+                
+                $.each(res, function(i) {
+					plan_suggestions.append($('<a href="/#/gush/' + res[i]['gushim'][0] + '/plan/' + 
+                        encodeURIComponent(res[i]['number']) + '">' + res[i]['number'] + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      "));
+				});
+                
+                plan_suggestions.show();
+            }
+		}
+	)
+   .fail(
+   		function(){
+   			$('#scrobber').hide(); 
+   			$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
+   		}
+   	);
 }
 
 
@@ -130,64 +227,6 @@ function find_neighbours(gush_id) {
     });
     
     return neighbours;
-}
-
-
-// get a gush by street address
-function get_gush_by_addr(addr) {
-	// add the city name if it is not in the search string
-	if (addr.indexOf(muni.display) == -1) {
-		addr = addr + " " + muni.display;
-	}
-	
-	// Use Google api to find a gush by address
-	$.getJSON(
-		'https://maps.googleapis.com/maps/api/geocode/json?address='+addr+'&sensor=false',
-		function (r) {
-			$('#scrobber').hide();
-
-			if (r['status'] == 'OK' && r['results'].length > 0) {
-				// Here we have a case when Google api returns without an actual place (even a street), 
-				// so it only has a city. This happens because it didn't find the address, but we 
-				// did append the name of the current city at the end, and Google apparently thinks  
-				// 'better something than nothing'. We're trying to ignore this (should test though)
-				if (r['results'][0]['types'].length == 2 && 
-					$.inArray('locality', r['results'][0]['types']) > -1 && 
-					$.inArray('political', r['results'][0]['types']) > -1) {
-					$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
-				}
-				else {
-					var lat = r['results'][0]['geometry']['location']['lat'];
-					var lon = r['results'][0]['geometry']['location']['lng'];
-					console.log('got lon: ' + lon + ', lat: ' + lat);
-      
-					// Using leafletpip we try to find an object in the gushim layer with the coordinate we got
-					var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
-					if (gid && gid.length > 0) {
-						get_gush(gid[0].gushid);
-						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + addr + '</b>').openOn(map);
-                        
-                        // show search note after a successful search
-                        $('#search-note-p').show();
-					} else {
-						$('#search-error-p').html('לא נמצא גוש התואם לכתובת'); // TODO: when enabling multiple cities change the message to point users to try a differenct city
-					}
-				}
-			}
-			else if (r['status'] == 'ZERO_RESULTS') {
-				$('#search-error-p').html('כתובת שגויה או שלא נמצאו נתונים');
-			}
-			else {
-				$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
-			}
-		}
-	)
-   .fail(
-   		function(){
-   			$('#scrobber').hide(); 
-   			$('#search-error-p').html('חלה שגיאה בחיפוש הכתובת, אנא נסו שנית מאוחר יותר');
-   		}
-   	);
 }
 
 
@@ -299,22 +338,24 @@ $(document).ready(function(){
 			$('#scrobber').show();
 			$('#search-error-p').html('');
             $('#search-note-p').hide();
+            $('#search-plan-suggestions').hide();
 			
 			var search_val = $('#search-text').val();
 			
-			// if it's a number search for a gush with that number, oterwise do address search
+			// if it's a number search for a gush with that number, oterwise
+            // if it starts with a # search for plan, and if not do address search
 			if (!isNaN(search_val)) {
-				console.log('Trying to find gush #' + search_val);
-				var result = find_gush(parseInt(search_val));
-				if (result)
-					get_gush(parseInt(search_val));
+                console.log('Trying to find gush #' + search_val);
+                var result = find_gush(parseInt(search_val));
+                if (result)
+                    get_gush(parseInt(search_val));
                 else
-					$('#search-error-p').html('גוש מספר ' + search_val + ' לא נמצא במפה');
-				
-				$('#scrobber').hide(); 
-			} else {
+                    find_plan(search_val);
+                
+                $('#scrobber').hide();
+            } else {
 				console.log('Getting gush for address "' + search_val + '"');
-				get_gush_by_addr(search_val);
+				find_gush_by_addr(search_val);
 			}
 			
 			return false;
@@ -324,7 +365,7 @@ $(document).ready(function(){
 	
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
-	$('#search-text').attr('placeholder', 'הכניסו כתובת או מספר גוש ב' + muni.display);
+	$('#search-text').attr('placeholder', 'הכניסו כתובת, מספר גוש או מספר תוכנית ב' + muni.display);
 	$("#jump-to-title").prepend(muni.display + ' ');
 	$("title").append(": " + muni.display)
 

@@ -153,6 +153,14 @@ p.status {
     margin-right: 10px;
 }
 
+.plan-date-normal {
+    display: block;
+}
+
+.plan-date-text {
+    display: none;
+}
+
 #search-text {
     width: 84%;
 }
@@ -226,11 +234,12 @@ p.status {
 	}
 	
 	.navbar-toggle {
-		right: 0%;
+		position: absolute;
+        right: 2%;
 	}
 	
 	.navbar-toggle.active {
-		right: 80%;
+		right: -2%;
 	}
     
     body, html {
@@ -256,16 +265,15 @@ p.status {
         margin-top: 5px;
     }
     
-    #jump-to {
-        margin-top: 5px;
-    }
-    
     p.status {
         margin-right: 0px;
     }
     
-    .plan-date {
-        float: right !important;
-        width: 150% !important;
+    .plan-date-normal {
+        display: none;
     }
+    
+    .plan-date-text {
+        display: block;
+     }
 }

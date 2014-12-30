@@ -67,6 +67,23 @@ var municipalities = {
         ],
         "display": "\u05d2\u05d1\u05e2\u05ea\u05d9\u05d9\u05dd"
     },
+    "herzliya": {
+        "bounds": [
+            [
+                32.141839,
+                34.791222
+            ],
+            [
+                32.205102,
+                34.872885
+            ]
+        ],
+        "center": [
+            32.170862,
+            34.827379
+        ],
+        "display": "\u05d4\u05e8\u05e6\u05dc\u05d9\u05d4"
+    },
     "holon": {
         "bounds": [
             [

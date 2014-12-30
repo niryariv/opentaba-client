@@ -82,7 +82,8 @@ var municipalities = {
             32.170862,
             34.827379
         ],
-        "display": "\u05d4\u05e8\u05e6\u05dc\u05d9\u05d4"
+        "display": "\u05d4\u05e8\u05e6\u05dc\u05d9\u05d4",
+        "hide": true
     },
     "holon": {
         "bounds": [

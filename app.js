@@ -438,7 +438,9 @@ legend.onAdd = function (map) {
 	mlist = '';
 	for (var i=0 ; i < ms.length ; i++) {
 		m = ms[i];
-	    mlist += '<a href="http://' + m + '.' + DOMAIN + '/">' + municipalities[m].display + '</a><br />';
+		if (!municipalities[m].hide) {
+	    	mlist += '<a href="http://' + m + '.' + DOMAIN + '/">' + municipalities[m].display + '</a><br />';
+	    }
 	}
 
 	div.innerHTML += '<div id="muni-list" style="display: none;">' + mlist + '</div>'

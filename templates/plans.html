@@ -26,7 +26,14 @@
         <div style="vertical-align:top" class="row item">
         <div class="col-xs-6 col-sm-7"><b>{{essence}}</b></div>
             <div class="col-xs-3">{{statusWithTooltipAndBG status day month year}}</div>
-            <div class="col-xs-3 col-sm-2"><b class="plan-date">{{day}}/{{month}}/{{year}}</b></div>
+            <div class="col-xs-3 col-sm-2">
+                <b class="plan-date-normal">{{day}}/{{month}}/{{year}}</b>
+                <b class="plan-date-text">
+                    <span>{{day}}</span>
+                    <span>ב{{monthName month}}</span>
+                    <span>{{year}}</span>
+                </b>
+            </div>
         </div>
 
         <div class="row details">

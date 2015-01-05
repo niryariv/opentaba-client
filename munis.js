@@ -14,7 +14,8 @@ var municipalities = {
             32.856993,
             35.351118
         ],
-        "display": "\u05e2\u05e8\u05d0\u05d1\u05d4"
+        "display": "\u05e2\u05e8\u05d0\u05d1\u05d4",
+        "hide": false
     },
     "batyam": {
         "bounds": [
@@ -82,8 +83,7 @@ var municipalities = {
             32.170862,
             34.827379
         ],
-        "display": "\u05d4\u05e8\u05e6\u05dc\u05d9\u05d4",
-        "hide": true
+        "display": "\u05d4\u05e8\u05e6\u05dc\u05d9\u05d4"
     },
     "holon": {
         "bounds": [

@@ -188,7 +188,8 @@ var municipalities = {
             32.128676,
             34.849191
         ],
-        "display": "\u05e8\u05de\u05ea \u05d4\u05e9\u05e8\u05d5\u05df"
+        "display": "\u05e8\u05de\u05ea \u05d4\u05e9\u05e8\u05d5\u05df",
+        "fb_link": "https://www.facebook.com/opentaba.ramathasharon",
     },
     "rishon": {
         "bounds": [

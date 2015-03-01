@@ -95,6 +95,7 @@ h1 {
 
 #jump-to {
     padding-right: 0px;
+    padding-left: 0px;
 }
 
 #jump-to-title-prefix {
@@ -197,6 +198,53 @@ p.status {
   padding: 5px
 }
 
+div.about-link {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+@media screen and (max-width: 1150px) {
+    #header h1 {
+        font-size: 34px;
+    }
+}
+
+@media screen and (max-width: 1093px) {
+    #header h1 {
+        font-size: 32px;
+    }
+}
+
+@media screen and (max-width: 1031px) {
+    #header h1 {
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 985px) {
+    #header h1 {
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 924px) {
+    #header h1 {
+        font-size: 26px;
+    }
+}
+
+@media screen and (max-width: 872px) {
+    #header h1 {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 816px) {
+    #header h1 {
+        font-size: 22px;
+    }
+}
+
 @media screen and (max-width: 767px) {
 	.row-offcanvas {
 		position: relative;
@@ -249,6 +297,10 @@ p.status {
     .leaflet-control.more-munis {
         margin-right: 28px;
     }
+    
+    #header h1 {
+        font-size: 36px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -260,7 +312,7 @@ p.status {
         width: 81%;
     }
     
-    h1 {
+    #header h1 {
         font-size: 25px;
         margin-top: 5px;
     }

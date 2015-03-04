@@ -476,7 +476,7 @@ if (muni.file != undefined)
     mapUrl = muni.file;
 else
     if ($('html').is('.ie-9') || $('html').is('.ie-8'))
-        mapUrl = 'http://' + DOMAIN + '/ie/' + muni_name + '.topojson';
+        mapUrl = 'http://' + DOMAIN + '/maps/' + muni_name + '.topojson';
     else
         mapUrl = 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson';
     

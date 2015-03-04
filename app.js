@@ -367,7 +367,7 @@ $(document).ready(function(){
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת, מספר גוש או מספר תוכנית ב' + muni.display);
 	$("#jump-to-title").prepend(muni.display + ' ');
-	$("title").append(": " + muni.display)
+	$(document).prop('title', 'תב"ע פתוחה: ' + muni.display);
 
     
     // set links according to municipality
@@ -425,12 +425,14 @@ L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: 
 
 
 // add control for seeing other munis
-var legend = L.control({position: $('#toggle-button').is(':visible') ? 'bottomright' : 'topright'});
+var legend = L.control({position: ($('html').is('.ie-8') || !$('#toggle-button').is(':visible')) ? 'topright' : 'bottomright'});
 legend.onAdd = function (map) {
 
 	var div = L.DomUtil.create('div', 'more-munis legend');
 
-	div.innerHTML = '<h4 id="more-munis-header"><img src="/img/israel.svg" height="30px" />&nbsp;עוד רשויות</h4>';
+	// ie compatability (< 9) doesn't support svg
+	var legendImage = $('html').is('.ie-8') ? '/img/israel.jpg' : '/img/israel.svg';
+	div.innerHTML = '<h4 id="more-munis-header"><img src="' + legendImage + '" height="30px" />&nbsp;עוד רשויות</h4>';
 	
 	// sort munis by name
 	ms = Object.keys(municipalities).sort(function(a,b){ return (municipalities[a].display > municipalities[b].display) ? 1 : -1 })
@@ -464,9 +466,22 @@ $('#more-munis-header').on(('ontouchstart' in document.documentElement) ? 'touch
 // L.marker(m.center, {icon: muni_icon}).addTo(map);
 
 
+// since github's api requires https and we don't run https, internet explorer up to and including version 9
+// won't be able to make this request (because of restrictions set in the XDomainRequest object, more details at:
+// http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx)
+// so in those cases, we proxy the request through our server and remove the need for https
+var mapUrl;
+if (muni.file != undefined)
+    mapUrl = muni.file;
+else
+    if ($('html').is('.ie-9') || $('html').is('.ie-8'))
+        mapUrl = 'http://' + DOMAIN + '/ie/' + muni_name + '.topojson';
+    else
+        mapUrl = 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson';
+    
 // load gushim topojson 
 $.ajax({
-	url: (muni.file == undefined) ? 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson' : muni.file,
+	url: mapUrl,
     headers: { Accept: 'application/vnd.github.raw' },
 	dataType: 'json'
 }).done(function(res) {

@@ -429,10 +429,11 @@ var legend = L.control({position: ($('html').is('.ie-8') || !$('#toggle-button')
 legend.onAdd = function (map) {
 
 	var div = L.DomUtil.create('div', 'more-munis legend');
+	div.id = 'more-munis-button';
 
 	// ie compatability (< 9) doesn't support svg
 	var legendImage = $('html').is('.ie-8') ? '/img/israel.jpg' : '/img/israel.svg';
-	div.innerHTML = '<h4 id="more-munis-header"><img src="' + legendImage + '" height="30px" />&nbsp;עוד רשויות</h4>';
+	div.innerHTML = '<h4><img src="' + legendImage + '" height="30px" />&nbsp;עוד רשויות</h4>';
 	
 	// sort munis by name
 	ms = Object.keys(municipalities).sort(function(a,b){ return (municipalities[a].display > municipalities[b].display) ? 1 : -1 })
@@ -452,7 +453,7 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 // catch touchstart if possible, because click behaves weird on touch screens
-$('#more-munis-header').on(('ontouchstart' in document.documentElement) ? 'touchstart' : 'click', function(){
+$('#more-munis-button').on(('ontouchstart' in document.documentElement) ? 'touchstart' : 'click', function(){
     $('#muni-list').slideToggle(300);
 });
 

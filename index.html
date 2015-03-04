@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<!--[if lt IE 9 ]><html class="ie-8"><![endif]-->
+<!--[if IE 9 ]><html class="ie-9"><![endif]-->
+<!--[if gt IE 9]><!--><html><!--<![endif]-->
 <head>
 	<title>תב"ע פתוחה</title>
 
@@ -17,6 +19,9 @@
 	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" media="screen">
 	<link href="css/stylesheet.css" rel="stylesheet" media="screen">
+	<!--[if gt IE 8]> <!-- -->
+		<link rel="stylesheet" type="text/css" media="all" href="css/sidebar.css"/>
+	<!-- <![endif]-->
 
 	<link rel="alternate" type="application/atom+xml" href="http://opentaba-server.herokuapp.com/plans.atom" title="פיד תוכניות בניה בירושלים">
 
@@ -29,20 +34,30 @@
 	<div class="container-fluid ot-main">
 		<div class="row ot-main row-offcanvas row-offcanvas-right">
 			<img src="img/menu.png" class="navbar-toggle" id="toggle-button" data-toggle="offcanvas" data-target=".sidebar-offcanvas"></img>
+			<!--[if lt IE 9]>
+			<div class="col-xs-8 ot-main">
+			<![endif]-->
+			<!--[if gt IE 8]> <!-- -->
 			<div class="col-xs-12 col-sm-8 ot-main">
+			<!-- <![endif]-->
 				<div id="map"></div>
 			</div>
+			<!--[if lt IE 9]>
+			<div class="col-xs-4 sidebar-offcanvas" id="info-div">
+			<![endif]-->
+			<!--[if gt IE 8]> <!-- -->
 			<div class="col-xs-12 col-sm-4 sidebar-offcanvas" id="info-div">
+			<!-- <![endif]-->
 				<div id="right-bar" >
 					
                     <div class="row">
                     	
-                        <div class="align-center col-xs-5 col-sm-4 about-link">
+                        <div class="align-center col-xs-5 col-md-4 about-link">
                             <h3 id="open-info-modal"><span class="pull-left"><a href="#info-modal" data-toggle="modal" style="color: #777">מי אנחנו</a></span></h3>
                         </div>
 
-                        <div class="hidden-xs col-sm-4"></div>
-                        <div id="share_icons" class="align-right col-xs-7 col-sm-4">
+                        <div class="hidden-xs hidden-sm col-md-2"></div>
+                        <div id="share_icons" class="align-right col-xs-7 col-md-6">
                             <a id="rss-link" href="https://opentaba-server.herokuapp.com/jerusalem/plans.atom" target="_blank"><i class="icon-rss icon-2x"></i></a>
                             <a id="fb-link" href="https://www.facebook.com/opentaba.jerusalem" target="_blank"><i class="icon-facebook icon-2x"></i></a>
                             <a id="twitter-link" href="https://twitter.com/opentaba_JLM" target="_blank"><i class="icon-twitter icon-2x"></i></a>
@@ -154,14 +169,17 @@
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
-    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
+	<script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
     
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="lib/path.js"></script>
 	<script src="lib/leaflet-pip.min.js"></script>
-    <script src="lib/template-renderer.js"></script>
-    <script src="lib/handlebars-helpers.js"></script>
+	<script src="lib/template-renderer.js"></script>
+	<script src="lib/handlebars-helpers.js"></script>
+    
+	<script src="lib/ie8-compat.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.2/jquery.xdomainrequest.min.js"></script>
 
 	<script src="munis.js"></script>	
 	<script src="app.js"></script>	

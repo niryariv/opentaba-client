@@ -95,6 +95,7 @@ h1 {
 
 #jump-to {
     padding-right: 0px;
+    padding-left: 0px;
 }
 
 #jump-to-title-prefix {
@@ -197,83 +198,7 @@ p.status {
   padding: 5px
 }
 
-@media screen and (max-width: 767px) {
-	.row-offcanvas {
-		position: relative;
-		-webkit-transition: all 0.25s ease-out;
-		-moz-transition: all 0.25s ease-out;
-		transition: all 0.25s ease-out;
-	}
-
-	.row-offcanvas-right
-	.sidebar-offcanvas {
-		right: -80%;
-	}
-
-	.row-offcanvas-left
-	.sidebar-offcanvas {
-		left: -80%;
-	}
-
-	.row-offcanvas-right.active {
-		right: 83.6%;
-	}
-
-	.row-offcanvas-left.active {
-		left: 80%;
-	}
-
-	.sidebar-offcanvas {
-		position: absolute;
-		top: 0;
-		width: 80%;
-	}
-
-	#sidebar {
-		padding-top:0;
-	}
-	
-	.navbar-toggle {
-		position: absolute;
-        right: 2%;
-	}
-	
-	.navbar-toggle.active {
-		right: -2%;
-	}
-    
-    body, html {
-        margin-right: 1px;
-    }
-    
-    .leaflet-control.more-munis {
-        margin-right: 28px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    div.about-link {
-        padding-right: 0px;
-    }
-
-    #search-text {
-        width: 81%;
-    }
-    
-    h1 {
-        font-size: 25px;
-        margin-top: 5px;
-    }
-    
-    p.status {
-        margin-right: 0px;
-    }
-    
-    .plan-date-normal {
-        display: none;
-    }
-    
-    .plan-date-text {
-        display: block;
-     }
+div.about-link {
+    padding-right: 5px;
+    padding-left: 5px;
 }

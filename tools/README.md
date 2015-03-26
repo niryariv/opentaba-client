@@ -1,53 +1,26 @@
-Tools and scripts for OpenTABA
-==============================
+Tools and scripts for OpenTABA client
+=====================================
 
-add_muni.py
------------
-Script for adding a new municipality to the website
+setup_proxy_server.sh
+---------------------
+Script for setting up a new server to proxy communications to our
+opentaba-client site, in order to support any subdomain while hosting
+the site on Github pages. The server will also proxy map requests to
+Github's API, so that IE < 10 is supported, because of CORS problems
+with their XDomainRequest (replaced in IE 10 with the normal
+XMLHttpRequest).
+This script is intended for auto-configuring a new Google Cloud server,
+and was only tested under those conditions.
 
-Steps:
+Requirements:
 
-+ Get a GeoJSON file representing the gushim map of the new municipality
-+ Run the add_muni.py script like so:
++ A debian-based server (the script uses apt-get for installing stuff)
++ Perl to be installed on the server
++ Curl on the client for testing the results
++ SSH admission to the server with sudo privileges
+
+Usage:
+
 ```
-Usage: add_muni.py [options]
-
-Options:
-  -h, --help            show this help message and exit
-  -c CLIENT_DIR         Mandatory, path to the opentaba client directory, eg.
-						"../../opentaba-client"
-  -g GUSHIM_FILE        Mandatory, local path to the new gushim file in the
-						opentaba client directory, eg.
-						"data/gushim/jerusalem.gush.js"
-  -s SERVER_DIR         Mandatory, path to the opentaba server directory, eg.
-						"../../opentaba-server"
-  -n MUNI_NAME          Mandatory, name of the municipality without special
-						symbols (for subdomain), eg. "batyam"
-  -d MUNI_DISPLAY_NAME  Mandatory, display name for municipality (if having
-						Hebrew problems just replace in index file after
-						script), eg. "בת-ים"
-  -i INDEX_FILE         Local path to the municipality index file in the
-						opentaba client directory, default="data/index.js"
-  -t TOPO_OUTPUT_DIR    Local path to the output topojson file directory,
-						default="data"
-  -f TOPO_FILE_NAME     File name for the output topojson file, default
-						="[geojson-file-name].json"
-  -v                    Print verbose debugging information
+./setup_proxy_server.sh <username> <server>
 ```
- (eg. ./add_muni.py -c ../ -g data/geojson/jerusalem.gush.js -s ../../opentaba-server -n jerusalem -d ירושלים -f jerusalem.json)
- 
- > **The script will do the following:**
- > - Calculate the center point for the new municipality
- > - Add the new municipality to the index.js file
- > - Convert the GeoJSON file to TopoJSON
- > - Add the gush numbers to the tools/gushim.py file in the server repository
- > - Update the test_scrape.py test file with the new number of gushim
- 
-+ Make sure the changes made locally are good and tests are succeeding, commit and push to client and server master branches, then:
-  1. For Server
-    1. Push changes to heroku remote
-    2. Enter bash environment on heroku dyno and run `python tools/update_db.py --force` so the new gushim would be added to mongo
-    3. If you want - run `python scrape.py` and `python worker.py` to start scraping now, or wait for the scheduled scraping
-  2. For Client
-    1. Register a virtual sub-domain with the MUNI_NAME you supplied the script
-    2. Merge changes to gh-pages branch 

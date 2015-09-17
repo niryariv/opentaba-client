@@ -17,6 +17,23 @@ var municipalities = {
         "display": "\u05e2\u05e8\u05d0\u05d1\u05d4",
         "hide": false
     },
+    "arad": {
+        "bounds": [
+            [
+                31.173238,
+                35.092826
+            ],
+            [
+                31.358151,
+                35.391446
+            ]
+        ],
+        "center": [
+            31.270454,
+            35.226882
+        ],
+        "display": "\u05e2\u05e8\u05d3"
+    },
     "batyam": {
         "bounds": [
             [

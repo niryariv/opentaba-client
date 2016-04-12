@@ -400,7 +400,7 @@ $(document).ready(function(){
 
 // setup map
 var map = L.map('map', { scrollWheelZoom: true, attribution: {} });
-map.attributionControl.setPrefix('Map data © OpenStreetMap');
+map.attributionControl.setPrefix('Map Data: OpenStreetMap, Survey of Israel');
 
 tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 

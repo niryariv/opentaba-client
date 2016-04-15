@@ -393,7 +393,7 @@ $(document).ready(function(){
 	$('#rss-link').attr('href', API_URL + 'plans.atom');
 	$('#rss-link').css('visibility', 'visible');
 
-
+	$('#forum-link').css('visibility', 'visible');
 
 
 

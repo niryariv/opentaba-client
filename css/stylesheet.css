@@ -89,7 +89,7 @@ h1 {
     color: #999;
 }
 
-#twitter-link, #fb-link, #rss-link, #notifier-link{
+#twitter-link, #fb-link, #rss-link, #notifier-link, #forum-link{
     visibility: hidden;
 }
 

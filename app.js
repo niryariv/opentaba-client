@@ -1,4 +1,4 @@
-var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
+var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
 var DOMAIN = 'opentaba.info';
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
@@ -58,9 +58,9 @@ function get_gush(gush_id, plan_id) {
     clear_all_highlight();
     highlight_gush(gush_id);
 
-    // set notifier-link
-    $('#notifier-link').attr('href', '127.0.0.1:5000/addfeed/'+ API_URL + '/'+ selected_gush + '/plans.atom');
-    $('#notifier-link').css('visibility', 'visible');
+    // set notifier-links
+//    $('#notifier-general-link').attr('href', 'http://82.196.4.213/addfeed/'+ API_URL + '/plans.atom');
+//    $('#notifier-general-link').css('visibility', 'visible');
 
     // highlight neighbours
     $.each(neighbour_gushim, function(n) {
@@ -90,9 +90,9 @@ function get_gush(gush_id, plan_id) {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
 		});
 
-    // set the notifier-link href:
-    var notifier = document.getElementById('notifier-link');
-    notifier.a = "127.0.0.1:500/addfeed/"+ API_URL + "/"+ selected_gush + "/plans.atom";
+    // set the notifier-specific-link href:
+    var notifier_specific = document.getElementById('notifier-link');
+    notifier_specific.a = "127.0.0.1:500/addfeed/"+ API_URL + "/"+ selected_gush + "/plans.atom";
 
 
     // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
@@ -209,6 +209,7 @@ function find_plan(plan_name) {
 
 // get a list of neighbours for a gush
 function find_neighbours(gush_id) {
+  try {
     var gushBounds = map._layers['gush_' + gush_id].getBounds();
 
     // can extend the bounds by either a flat 10% or by 0.0005 degree (about fifty meters) in every direction
@@ -230,16 +231,28 @@ function find_neighbours(gush_id) {
     p.lng = p.lng + 0.0005;
     gushBounds.extend(p);
 
+    }
+
+    catch (e) {
+    console.log("find_neigbours errpr:",e.message);
+    }
+
     // filter the list of gushim to find intersecting ones with our enhanced bounds
+    try {
     var neighbours = gushim.filter(function(g) {
         return (gushBounds.intersects(map._layers['gush_' + g.id].getBounds()));
     });
+    }
+    finally {
+      var neighbours;
+    }
 
     return neighbours;
 }
 
 
 function color_gush(id, color, opacity) {
+  
 	map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
 }
 
@@ -392,6 +405,11 @@ $(document).ready(function(){
 
 	$('#rss-link').attr('href', API_URL + 'plans.atom');
 	$('#rss-link').css('visibility', 'visible');
+
+  // set notifier-general-link
+  $('#notifier-general-link').attr('href', 'http://82.196.4.213/addfeed/'+ API_URL + '/plans.atom');
+  $('#notifier-general-link').css('visibility', 'visible');
+
 
 	$('#forum-link').css('visibility', 'visible');
 

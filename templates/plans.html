@@ -1,28 +1,34 @@
 <h3 style="color: grey;">
-    {{#if gush_id}} {{! gush_id tells us we're in the context of a single gush, not recent plans for all}}
+    {{#if gush_id}} {{! gush_id tells us we are in the context of a single gush, not recent plans for all}}
         גוש {{gush_id}}
     {{else}}
         עדכונים אחרונים
     {{/if}}
 </h3>
 
-{{#plans}}
+{{#plans }}
     {{#ifEq ../plan_id number}}
     <div id="selected-plan">
     {{else}}
     <div>
     {{/ifEq}}
         <div class="row details">
-            <div class="col-xs-12">גוש 
+            <div class="col-xs-12">גוש
                 {{#each gushim}}
-                    <a href="/#/gush/{{this}}" 
-                        onmouseover="color_gush({{this}}, '#00f', 0.5);" 
+                    <a href="/#/gush/{{this}}"
+                        onmouseover="color_gush({{this}}, '#00f', 0.5);"
                         onmouseout="clear_highlight(String({{this}}));"
                     >{{this}}</a>&nbsp;
                 {{/each}}
+
+                <span style="float:left">
+                <a data= "{{#each gushim}}{{this}},{{/each}}/plans.atom" class="notifier_specific_link" rel="tooltip" title="התראות במייל לאזור זה" style="font-size:8px;" target="_blank">
+                    <i class="fa icon-envelope icon-2x" aria-hidden="true"></i>
+                </a>
+              </span>
             </div>
         </div>
-        
+
         <div style="vertical-align:top" class="row item">
         <div class="col-xs-6 col-sm-7"><b>{{essence}}</b></div>
             <div class="col-xs-3">{{statusWithTooltipAndBG status day month year}}</div>

@@ -1,5 +1,6 @@
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
 var DOMAIN = 'opentaba.info';
+var NOTIFIER_URL = "82.196.4.213";
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location
@@ -23,8 +24,7 @@ if (muni == undefined) {
     }
 }
 
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
-
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : ('muni.server == undefined') ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
 var gushim;
 var gushimLayer;
 leafletPip.bassackwards = true;
@@ -58,10 +58,6 @@ function get_gush(gush_id, plan_id) {
     clear_all_highlight();
     highlight_gush(gush_id);
 
-    // set notifier-links
-//    $('#notifier-general-link').attr('href', 'http://82.196.4.213/addfeed/'+ API_URL + '/plans.atom');
-//    $('#notifier-general-link').css('visibility', 'visible');
-
     // highlight neighbours
     $.each(neighbour_gushim, function(n) {
         // neighbours will contain the requested gush because it intersects with itself
@@ -72,9 +68,9 @@ function get_gush(gush_id, plan_id) {
 	$.getJSON(
 		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
 		function(d) {
-			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
-			$("#info").html(rendered_gush);
 
+			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id), notifier_url: NOTIFIER_URL});
+			$("#info").html(rendered_gush);
             if (plan_id) {
                 if ($('#selected-plan').length == 1) {
                     // scroll to 30px above the plan plan
@@ -90,14 +86,10 @@ function get_gush(gush_id, plan_id) {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
 		});
 
-    // set the notifier-specific-link href:
-    var notifier_specific = document.getElementById('notifier-link');
-    notifier_specific.a = "127.0.0.1:500/addfeed/"+ API_URL + "/"+ selected_gush + "/plans.atom";
-
-
     // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
     if ($('.row-offcanvas').css('position') == 'relative' && !$('.row-offcanvas').hasClass('active'))
         $('[data-toggle=offcanvas]').click();
+
 }
 
 
@@ -209,7 +201,6 @@ function find_plan(plan_name) {
 
 // get a list of neighbours for a gush
 function find_neighbours(gush_id) {
-  try {
     var gushBounds = map._layers['gush_' + gush_id].getBounds();
 
     // can extend the bounds by either a flat 10% or by 0.0005 degree (about fifty meters) in every direction
@@ -231,28 +222,16 @@ function find_neighbours(gush_id) {
     p.lng = p.lng + 0.0005;
     gushBounds.extend(p);
 
-    }
-
-    catch (e) {
-    console.log("find_neigbours errpr:",e.message);
-    }
-
     // filter the list of gushim to find intersecting ones with our enhanced bounds
-    try {
     var neighbours = gushim.filter(function(g) {
         return (gushBounds.intersects(map._layers['gush_' + g.id].getBounds()));
     });
-    }
-    finally {
-      var neighbours;
-    }
 
     return neighbours;
 }
 
 
 function color_gush(id, color, opacity) {
-  
 	map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
 }
 
@@ -330,7 +309,7 @@ $(document).ready(function(){
 			// get the most recent plans to show on the homepage
 			$.getJSON(API_URL + 'recent.json', function(res){
                 // render template and set info div's content
-                var rendered_recents = render('plans', {plans: res, base_api_url: API_URL});
+                var rendered_recents = render('plans', {plans: res, base_api_url: API_URL, notifier_url: NOTIFIER_URL});
 				$("#info").html(rendered_recents);
 
 				$.each(res, function(r) {
@@ -407,9 +386,8 @@ $(document).ready(function(){
 	$('#rss-link').css('visibility', 'visible');
 
   // set notifier-general-link
-  $('#notifier-general-link').attr('href', 'http://82.196.4.213/addfeed/'+ API_URL + '/plans.atom');
+  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/addfeed/'+ API_URL + '/plans.atom');
   $('#notifier-general-link').css('visibility', 'visible');
-
 
 	$('#forum-link').css('visibility', 'visible');
 
@@ -549,4 +527,9 @@ $.ajax({
 		got_gushim_delegate(got_gushim_delegate_gush_param, got_gushim_delegate_plan_param);
 		map._onResize();
 	}
+
+  $('.notifier_specific_link').each(function(){
+    $(this).attr('href','http://'+NOTIFIER_URL+'/addfeed/'+ API_URL + 'gush/' + $(this).attr('data'));
+  });
+
 });

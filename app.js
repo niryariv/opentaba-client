@@ -232,8 +232,13 @@ function find_neighbours(gush_id) {
 
 
 function color_gush(id, color, opacity) {
-	map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
-}
+    try{
+	    map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
+    }
+    catch(err){
+    console.log("color_gush error: ",err);
+    }
+    }
 
 function highlight_gush(id) {
 	map.fitBounds(map._layers['gush_' + id].getBounds());
@@ -386,7 +391,7 @@ $(document).ready(function(){
 	$('#rss-link').css('visibility', 'visible');
 
   // set notifier-general-link
-  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/addfeed/'+ API_URL + '/plans.atom');
+  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/addfeed/'+muni.display +'/'+API_URL + '/plans.atom');
   $('#notifier-general-link').css('visibility', 'visible');
 
 	$('#forum-link').css('visibility', 'visible');
@@ -529,7 +534,7 @@ $.ajax({
 	}
 
   $('.notifier_specific_link').each(function(){
-    $(this).attr('href','http://'+NOTIFIER_URL+'/addfeed/'+ API_URL + 'gush/' + $(this).attr('data'));
+    $(this).attr('href','http://'+NOTIFIER_URL+'/addfeed/'+ muni.display +'/'+API_URL + 'gush/' + $(this).attr('data'));
   });
 
 });

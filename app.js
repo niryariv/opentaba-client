@@ -391,7 +391,7 @@ $(document).ready(function(){
 	$('#rss-link').css('visibility', 'visible');
 
   // set notifier-general-link
-  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/addfeed/opentaba/'+muni.display +'/'+API_URL + '/plans.atom');
+  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/addfeed/opentaba?city='+muni.display +'&url='+API_URL + '/plans.atom');
   $('#notifier-general-link').css('visibility', 'visible');
 
 	$('#forum-link').css('visibility', 'visible');
@@ -534,7 +534,7 @@ $.ajax({
 	}
 
   $('.notifier_specific_link').each(function(){
-    $(this).attr('href','http://'+NOTIFIER_URL+'/addfeed/opentaba/'+ muni.display +'/'+API_URL + 'gush/' + $(this).attr('data'));
+    $(this).attr('href','http://'+NOTIFIER_URL+'/addfeed/opentaba?city='+ muni.display +'&url='+API_URL + 'gush/' + $(this).attr('data'));
   });
 
 });

@@ -89,7 +89,7 @@ h1 {
     color: #999;
 }
 
-#twitter-link, #fb-link, #rss-link {
+#twitter-link, #fb-link, #rss-link, #notifier-link, #forum-link{
     visibility: hidden;
 }
 
@@ -177,7 +177,7 @@ p.status {
     text-align: right;
     direction: rtl;
     line-height: 1.5em;
-    
+
 }
 
 .more-munis h4 {

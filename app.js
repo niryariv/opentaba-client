@@ -24,7 +24,7 @@ if (muni == undefined) {
     }
 }
 
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : ('muni.server == undefined') ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
+var API_URL = 'http://opentaba-server-' + muni_name + '.herokuapp.com/';
 var gushim;
 var gushimLayer;
 leafletPip.bassackwards = true;
@@ -71,6 +71,10 @@ function get_gush(gush_id, plan_id) {
 
 			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id), notifier_url: NOTIFIER_URL});
 			$("#info").html(rendered_gush);
+
+          var specific_api_url = 'http://'+NOTIFIER_URL+'/addfeed/opentaba?city='+ muni.display +'&link='+API_URL + 'gush/' + gush_id + '/plans.atom';
+          $("#notifier_specific_link").attr("href",specific_api_url);
+
             if (plan_id) {
                 if ($('#selected-plan').length == 1) {
                     // scroll to 30px above the plan plan
@@ -89,7 +93,6 @@ function get_gush(gush_id, plan_id) {
     // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
     if ($('.row-offcanvas').css('position') == 'relative' && !$('.row-offcanvas').hasClass('active'))
         $('[data-toggle=offcanvas]').click();
-
 }
 
 
@@ -169,6 +172,7 @@ function find_plan(plan_name) {
 	$.getJSON(
 		API_URL + 'plans/search/' + encoded_plan,
 		function (res) {
+
 			$('#scrobber').hide();
 
             // if no results tell the user. if there's one result jump directly to it. if more than one
@@ -189,7 +193,8 @@ function find_plan(plan_name) {
                 plan_suggestions.show();
             }
 		}
-	)
+
+  )
    .fail(
    		function(){
    			$('#scrobber').hide();
@@ -336,7 +341,6 @@ $(document).ready(function(){
 
 	Path.root("#/");
 	Path.listen();
-
 
 	// setup search form
 	$('#search-form').submit(
@@ -532,9 +536,5 @@ $.ajax({
 		got_gushim_delegate(got_gushim_delegate_gush_param, got_gushim_delegate_plan_param);
 		map._onResize();
 	}
-
-  $('.notifier_specific_link').each(function(){
-    $(this).attr('href','http://'+NOTIFIER_URL+'/addfeed/opentaba?city='+ muni.display +'&link='+API_URL + 'gush' + $(this).attr('data'));
-  });
 
 });

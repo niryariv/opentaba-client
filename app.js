@@ -53,24 +53,24 @@ String.prototype.endsWith = function(suffix) {
 function get_gush(gush_id, plan_id) {
     selected_gush = gush_id;
     neighbour_gushim = find_neighbours(gush_id).map(function(g) { return g.id; });
-    
+
     // clear current highlights and highlight the selected plan
     clear_all_highlight();
     highlight_gush(gush_id);
-    
+
     // highlight neighbours
     $.each(neighbour_gushim, function(n) {
         // neighbours will contain the requested gush because it intersects with itself
         if (neighbour_gushim[n] != gush_id)
             color_gush(neighbour_gushim[n], NEIGHBOUR_GUSH_COLOR, 0.2);
     });
-	
+
 	$.getJSON(
 		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
-		function(d) { 
+		function(d) {
 			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
 			$("#info").html(rendered_gush);
-            
+
             if (plan_id) {
                 if ($('#selected-plan').length == 1) {
                     // scroll to 30px above the plan plan
@@ -85,7 +85,7 @@ function get_gush(gush_id, plan_id) {
 		}).fail(function() {
 			$("#info").html("לא נמצאו תוכניות בגוש או שחלה שגיאה בשרת");
 		});
-	
+
     // if this is mobile-view and it's not open, automatically open the "side-menu" for plan details
     if ($('.row-offcanvas').css('position') == 'relative' && !$('.row-offcanvas').hasClass('active'))
         $('[data-toggle=offcanvas]').click();
@@ -97,7 +97,7 @@ function find_gush(gush_id){
 	g = gushim.filter(
 		function(f){ return (f.id == gush_id); }
 	);
-    
+
     return g[0];
 }
 
@@ -105,12 +105,12 @@ function find_gush(gush_id){
 // find a gush by street address
 function find_gush_by_addr(address) {
     var search_address = address;
-    
+
 	// add the city name if it is not in the search string
 	if (search_address.indexOf(muni.display) == -1) {
 		search_address = search_address + " " + muni.display;
 	}
-	
+
 	// Use Google api to find a gush by address
 	$.getJSON(
 		'https://maps.googleapis.com/maps/api/geocode/json?address='+search_address+'&sensor=false',
@@ -118,12 +118,12 @@ function find_gush_by_addr(address) {
 			$('#scrobber').hide();
 
 			if (r['status'] == 'OK' && r['results'].length > 0) {
-				// Here we have a case when Google api returns without an actual place (even a street), 
-				// so it only has a city. This happens because it didn't find the address, but we 
-				// did append the name of the current city at the end, and Google apparently thinks  
+				// Here we have a case when Google api returns without an actual place (even a street),
+				// so it only has a city. This happens because it didn't find the address, but we
+				// did append the name of the current city at the end, and Google apparently thinks
 				// 'better something than nothing'. We're trying to ignore this (should test though)
-				if (r['results'][0]['types'].length == 2 && 
-					$.inArray('locality', r['results'][0]['types']) > -1 && 
+				if (r['results'][0]['types'].length == 2 &&
+					$.inArray('locality', r['results'][0]['types']) > -1 &&
 					$.inArray('political', r['results'][0]['types']) > -1) {
 					find_plan(address);
 				}
@@ -131,13 +131,13 @@ function find_gush_by_addr(address) {
 					var lat = r['results'][0]['geometry']['location']['lat'];
 					var lon = r['results'][0]['geometry']['location']['lng'];
 					console.log('got lon: ' + lon + ', lat: ' + lat);
-      
+
 					// Using leafletpip we try to find an object in the gushim layer with the coordinate we got
 					var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
 					if (gid && gid.length > 0) {
 						get_gush(gid[0].gushid);
 						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + search_address + '</b>').openOn(map);
-                        
+
                         // show search note after a successful search
                         $('#search-note-p').show();
 					} else {
@@ -155,7 +155,7 @@ function find_gush_by_addr(address) {
 	)
    .fail(
    		function(){
-   			$('#scrobber').hide(); 
+   			$('#scrobber').hide();
    			$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
    		}
    	);
@@ -169,9 +169,9 @@ function find_plan(plan_name) {
 		API_URL + 'plans/search/' + encoded_plan,
 		function (res) {
 			$('#scrobber').hide();
-            
+
             // if no results tell the user. if there's one result jump directly to it. if more than one
-            // show the user links for all 
+            // show the user links for all
 			if (res.length == 0) {
                 $('#search-error-p').html('לא נמצאו תוצאות עבור השאילתה');
             } else if (res.length == 1) {
@@ -179,19 +179,19 @@ function find_plan(plan_name) {
             } else {
                 var plan_suggestions = $('#search-plan-suggestions');
                 plan_suggestions.html('האם התכוונת ל: ');
-                
+
                 $.each(res, function(i) {
-					plan_suggestions.append($('<a href="/#/gush/' + res[i]['gushim'][0] + '/plan/' + 
+					plan_suggestions.append($('<a href="/#/gush/' + res[i]['gushim'][0] + '/plan/' +
                         encodeURIComponent(res[i]['number']) + '">' + res[i]['number'] + "</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      "));
 				});
-                
+
                 plan_suggestions.show();
             }
 		}
 	)
    .fail(
    		function(){
-   			$('#scrobber').hide(); 
+   			$('#scrobber').hide();
    			$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
    		}
    	);
@@ -199,9 +199,9 @@ function find_plan(plan_name) {
 
 
 // get a list of neighbours for a gush
-function find_neighbours(gush_id) {    
+function find_neighbours(gush_id) {
     var gushBounds = map._layers['gush_' + gush_id].getBounds();
-    
+
     // can extend the bounds by either a flat 10% or by 0.0005 degree (about fifty meters) in every direction
     //gushBounds = gushBounds.pad(0.1);
     var p = gushBounds.getSouthWest();
@@ -220,12 +220,12 @@ function find_neighbours(gush_id) {
     p.lat = p.lat + 0.0005;
     p.lng = p.lng + 0.0005;
     gushBounds.extend(p);
-    
+
     // filter the list of gushim to find intersecting ones with our enhanced bounds
     var neighbours = gushim.filter(function(g) {
         return (gushBounds.intersects(map._layers['gush_' + g.id].getBounds()));
     });
-    
+
     return neighbours;
 }
 
@@ -242,7 +242,7 @@ function highlight_gush(id) {
 
 function clear_highlight(id) {
 	gush = 'gush_' + id;
-    
+
     if (id == selected_gush)
         color_gush(id, SELECTED_GUSH_COLOR, 0.5);
     else if (neighbour_gushim.indexOf(id) > -1)
@@ -268,8 +268,8 @@ function onEachFeature(feature, layer) {
 	layer.on({
 				'mouseover'	: function() { this.setStyle({weight: 5}) },
 				'mouseout'	: function() { this.setStyle({weight: 1}) },
-				'click'		: function() { 
-					$("#info").html("עוד מעט..."); 
+				'click'		: function() {
+					$("#info").html("עוד מעט...");
 					location.hash = "#/gush/" + feature.id;
 				}
 			});
@@ -284,7 +284,7 @@ function onEachFeature(feature, layer) {
 
 // START HERE
 $(document).ready(function(){
-    
+
 	// setup a path.js router to allow distinct URLs for each block
 	Path.map("#/gush/:gush_id(/plan/:plan_id)").to(
 		function(){
@@ -310,12 +310,12 @@ $(document).ready(function(){
                 // render template and set info div's content
                 var rendered_recents = render('plans', {plans: res, base_api_url: API_URL});
 				$("#info").html(rendered_recents);
-				
+
 				$.each(res, function(r) {
 					recently_active_gushim.push(res[r].gushim);
 				});
 				recently_active_gushim = [].concat.apply([], recently_active_gushim);
-				
+
 				if (map.hasLayer(gushimLayer)) { // gushim already loaded before the /recents - so paint them now
 					$.each(recently_active_gushim, function(i){
 						color_gush(recently_active_gushim[i], ACTIVE_GUSH_COLOR, 0.7);
@@ -339,9 +339,9 @@ $(document).ready(function(){
 			$('#search-error-p').html('');
             $('#search-note-p').hide();
             $('#search-plan-suggestions').hide();
-			
+
 			var search_val = $('#search-text').val();
-			
+
 			// if it's a number search for a gush with that number, oterwise
             // if it starts with a # search for plan, and if not do address search
 			if (!isNaN(search_val)) {
@@ -351,25 +351,25 @@ $(document).ready(function(){
                     get_gush(parseInt(search_val));
                 else
                     find_plan(search_val);
-                
+
                 $('#scrobber').hide();
             } else {
 				console.log('Getting gush for address "' + search_val + '"');
 				find_gush_by_addr(search_val);
 			}
-			
+
 			return false;
 		}
 	);
-	
-	
+
+
 	// append municipality's hebrew name
 	$('#muni-text').append(' ב' + muni.display + ':');
 	$('#search-text').attr('placeholder', 'הכניסו כתובת, מספר גוש או מספר תוכנית ב' + muni.display);
 	$("#jump-to-title").prepend(muni.display + ' ');
 	$(document).prop('title', 'תב"ע פתוחה: ' + muni.display);
 
-    
+
     // set links according to municipality
 	if (muni.fb_link) {
 		$('#fb-link').attr('href', muni.fb_link);
@@ -390,7 +390,7 @@ $(document).ready(function(){
 		$('.row-offcanvas').toggleClass('active');
 		$('.navbar-toggle').toggleClass('active');
 	});
-    
+
 
     // load the municipality's unique css file if it was set
     if (muni.css != undefined)
@@ -399,7 +399,8 @@ $(document).ready(function(){
 
 
 // setup map
-var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
+var map = L.map('map', { scrollWheelZoom: true, attribution: {} });
+map.attributionControl.setPrefix('Map Data: <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, Survey of Israel');
 
 tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 
@@ -434,7 +435,7 @@ legend.onAdd = function (map) {
 	// ie compatability (< 9) doesn't support svg
 	var legendImage = $('html').is('.ie-8') ? '/img/israel.jpg' : '/img/israel.svg';
 	div.innerHTML = '<h4><img src="' + legendImage + '" height="30px" />&nbsp;עוד רשויות</h4>';
-	
+
 	// sort munis by name
 	ms = Object.keys(municipalities).sort(function(a,b){ return (municipalities[a].display > municipalities[b].display) ? 1 : -1 })
 
@@ -479,15 +480,15 @@ else
         mapUrl = 'http://' + DOMAIN + '/maps/' + muni_name + '.topojson';
     else
         mapUrl = 'https://api.github.com/repos/niryariv/israel_gushim/contents/' + muni_name + '.topojson';
-    
-// load gushim topojson 
+
+// load gushim topojson
 $.ajax({
 	url: mapUrl,
     headers: { Accept: 'application/vnd.github.raw' },
 	dataType: 'json'
 }).done(function(res) {
 	gushim = topojson.feature(res, res.objects[muni_name]).features;
-	
+
 	gushimLayer = L.geoJson(gushim,
 		{
 			onEachFeature: onEachFeature,
@@ -500,7 +501,7 @@ $.ajax({
 			}
 		}
 	).addTo(map);
-    
+
 
     // set map bounds. We want them a little larger than the actual area bounds, so users can see labels for other areas
 	var bnds = L.latLngBounds(muni.bounds != undefined ? muni.bounds : gushimLayer.getBounds());
@@ -508,12 +509,12 @@ $.ajax({
 		[bnds.getSouth() - 0.05, bnds.getWest() - 0.05]
 		,[bnds.getNorth() + 0.05, bnds.getEast() + 0.05]
 	]);
-	
+
 
     // set center and boundaries as defined in the munis.js file or according to the gushimLayer
     map.setView((muni.center == undefined) ? gushimLayer.getBounds().getCenter() : muni.center, DEFAULT_ZOOM);
 
- 	
+
 
 	// if the direct gush address mapping was used go ahead and jump to the wanted gush
 	if (got_gushim_delegate) {

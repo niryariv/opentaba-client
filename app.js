@@ -24,7 +24,7 @@ if (muni == undefined) {
     }
 }
 
-var API_URL = 'http://opentaba-server-' + muni_name + '.herokuapp.com/';
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : ('muni.server == undefined') ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
 var gushim;
 var gushimLayer;
 leafletPip.bassackwards = true;
@@ -68,19 +68,10 @@ function get_gush(gush_id, plan_id) {
 	$.getJSON(
 		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
 		function(d) {
-<<<<<<< HEAD
 
-			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id), notifier_url: NOTIFIER_URL});
-			$("#info").html(rendered_gush);
-
-          var specific_api_url = 'http://'+NOTIFIER_URL+'/addfeed/opentaba?city='+ muni.display +'&link='+API_URL + 'gush/' + gush_id + '/plans.atom';
-          $("#notifier_specific_link").attr("href",specific_api_url);
-
-=======
 			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
 			$("#info").html(rendered_gush);
 
->>>>>>> 2ab19575e28d4677c7d1d2bca30be925d44564c2
             if (plan_id) {
                 if ($('#selected-plan').length == 1) {
                     // scroll to 30px above the plan plan

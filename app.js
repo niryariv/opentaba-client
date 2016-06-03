@@ -69,7 +69,7 @@ function get_gush(gush_id, plan_id) {
 		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
 		function(d) {
 
-			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
+			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, city_name: muni.display, gush_id: gush_id, notifier_url: NOTIFIER_URL, plan_id: decodeURIComponent(plan_id)});
 			$("#info").html(rendered_gush);
 
             if (plan_id) {
@@ -394,7 +394,6 @@ $(document).ready(function(){
   // set notifier-general-link
   $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/addfeed/opentaba?city='+muni.display +'&link='+API_URL + 'plans.atom');
   $('#notifier-general-link').css('visibility', 'visible');
-
 	$('#forum-link').css('visibility', 'visible');
 
 

@@ -1,11 +1,11 @@
-<h3 style="color: grey;">
+<h3 style="color: grey;" class="gush_title" id="{{gush_id}}">
     {{#if gush_id}} {{! gush_id tells us we are in the context of a single gush, not recent plans for all}}
         גוש {{gush_id}}
     {{else}}
         עדכונים אחרונים
     {{/if}}
     <span style="float:left">
-    <a href="" class="notifier" id="notifier_specific_link" rel="tooltip" title="התראות במייל לאזור זה" style="font-size:8px;" target="_blank">
+    <a href="http://{{notifier_url}}/addfeed/opentaba?city={{city_name}}&link={{base_api_url}}gush/{{gush_id}}/plans.atom" class="notifier" id="notifier_specific_link" rel="tooltip" title="התראות במייל לאזור זה" style="font-size:8px;" target="_blank">
         <i class="fa icon-bell icon-2x" aria-hidden="true"></i>
     </a>
   </span>

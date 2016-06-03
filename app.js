@@ -68,6 +68,7 @@ function get_gush(gush_id, plan_id) {
 	$.getJSON(
 		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
 		function(d) {
+<<<<<<< HEAD
 
 			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id), notifier_url: NOTIFIER_URL});
 			$("#info").html(rendered_gush);
@@ -75,6 +76,11 @@ function get_gush(gush_id, plan_id) {
           var specific_api_url = 'http://'+NOTIFIER_URL+'/addfeed/opentaba?city='+ muni.display +'&link='+API_URL + 'gush/' + gush_id + '/plans.atom';
           $("#notifier_specific_link").attr("href",specific_api_url);
 
+=======
+			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
+			$("#info").html(rendered_gush);
+
+>>>>>>> 2ab19575e28d4677c7d1d2bca30be925d44564c2
             if (plan_id) {
                 if ($('#selected-plan').length == 1) {
                     // scroll to 30px above the plan plan
@@ -415,7 +421,8 @@ $(document).ready(function(){
 
 
 // setup map
-var map = L.map('map', { scrollWheelZoom: true, attributionControl: false });
+var map = L.map('map', { scrollWheelZoom: true, attribution: {} });
+map.attributionControl.setPrefix('Map Data: <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, Survey of Israel');
 
 tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 

@@ -392,7 +392,7 @@ $(document).ready(function(){
 	$('#rss-link').css('visibility', 'visible');
 
   // set notifier-general-link
-  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/addfeed/opentaba?city='+muni.display +'&link='+API_URL + 'plans.atom');
+  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/add/opentaba?city='+muni.display +'&link='+API_URL + 'plans.atom');
   $('#notifier-general-link').css('visibility', 'visible');
 	$('#forum-link').css('visibility', 'visible');
 

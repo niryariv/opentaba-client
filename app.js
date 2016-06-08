@@ -1,6 +1,6 @@
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
 var DOMAIN = 'opentaba.info';
-var NOTIFIER_URL = "82.196.4.213";
+var NOTIFIER_URL = "notifier.hasadna.org.il";
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location

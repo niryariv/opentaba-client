@@ -1,6 +1,6 @@
 /*global casper:false */
-/*functional testing for the basic functionality of opentaba home page - The part displayed when showing specific plan 
- 
+/*functional testing for the basic functionality of opentaba home page - The part displayed when showing specific plan
+
  Runs with casperjs test filename (or casperjs.bat on windows)
 */
 
@@ -27,7 +27,7 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
     casper.on('page.init',initMock).
     on('remote.message',log).
     start(url, function(){
-        
+
     });
 
     var hashpath = '/gush/30338';
@@ -38,7 +38,7 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
         test.assertSelectorHasText('#info h3','גוש 30338');
         //casper.log('The info h3 contains the expected text');
         test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
-        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
+        test.assertElementCount('div#info a',87, "87 'a' links should exists in info div");
         test.assertSelectorHasText('div#info', 'תוספת גלריית עזרת נשים בבית כנסת קיים','Info div has some sampled expected text');
         test.assertSelectorHasText('div#info', 'קביעת הוראות לאיחוד חלוקה חדשה','Info div has some sampled expected text');
         test.assertSelectorHasText('div#info', 'אחוד וחלוקה מחדש במורדות צפון מזרח השכונה','Info div has some sampled expected text');
@@ -54,25 +54,25 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
         test.assertExists('#info h3','the info h3 exists now');
         test.assertSelectorHasText('#info h3','גוש 30338');
         test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
-        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
-        
+        test.assertElementCount('div#info a',87, "87 'a' links should exists in info div");
+
         // make sure the plan was not found
         test.assertDoesntExist('#selected-plan', "no plan was selected");
         test.assertSelectorHasText('#search-error-p', 'לא נמצאה', 'got error for plan selection');
     });
-    
+
     casper.thenOpen(gushurl + '/plan/9457').on('url.changed', initMock).wait(10000)
     .then(function() {
         // make sure the page still behaves the same data-wise
         test.assertExists('#info h3','the info h3 exists now');
         test.assertSelectorHasText('#info h3','גוש 30338');
         test.assertElementCount('div#info div.item',31,"31 items exists in info div as expected");
-        test.assertElementCount('div#info a',85, "85 'a' links should exists in info div");
+        test.assertElementCount('div#info a',87, "87 'a' links should exists in info div");
         // make sure the plan was found
         test.assertExists('#selected-plan', "the plan was selected");
         test.assertSelectorDoesntHaveText('#search-error-p', 'לא נמצאה', 'no error for plan selection');
     });
-    
+
     casper.then(function(){
         phantomcss.screenshot("#map.leaflet-container.leaflet-fade-anim","mapon_gush_30338.png");
     });
@@ -110,7 +110,7 @@ casper.test.begin('Testing a specific gush plans display',22, function suite(tes
     casper.then(function check_phantomcss_info_div(){
         test.assertEqual(phantomcss.getExitStatus(),0,'info div should look according to predefined picture');});
 */
-    
+
     casper.run(function(){
         test.done();
     });
@@ -130,7 +130,7 @@ function initMock(){
     if (f) {
         f.close();
     }
-    
+
     casper.evaluate(function(template){
         var server = sinon.fakeServer.create();
         server.autoRespond = true;
@@ -149,4 +149,3 @@ function initMock(){
 function log(msg){
     console.log(msg);
 }
-

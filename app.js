@@ -1,5 +1,7 @@
-var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('127.0.0.1') > -1 || document.location.protocol == 'file:');
+var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
 var DOMAIN = 'opentaba.info';
+<<<<<<< HEAD
+var NOTIFIER_URL = "notifier.hasadna.org.il";
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we
 // can't do cross-site with them we can't just use parent.location
@@ -23,8 +25,7 @@ if (muni == undefined) {
     }
 }
 
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : (muni.server == undefined) ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
-
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : ('muni.server == undefined') ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
 var gushim;
 var gushimLayer;
 leafletPip.bassackwards = true;
@@ -68,7 +69,8 @@ function get_gush(gush_id, plan_id) {
 	$.getJSON(
 		API_URL + 'gush/' + neighbour_gushim.join() + '/plans.json',
 		function(d) {
-			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, gush_id: gush_id, plan_id: decodeURIComponent(plan_id)});
+
+			var rendered_gush = render('plans', {plans: d, base_api_url: API_URL, city_name: muni.display, gush_id: gush_id, notifier_url: NOTIFIER_URL, plan_id: decodeURIComponent(plan_id)});
 			$("#info").html(rendered_gush);
 
             if (plan_id) {
@@ -168,6 +170,7 @@ function find_plan(plan_name) {
 	$.getJSON(
 		API_URL + 'plans/search/' + encoded_plan,
 		function (res) {
+
 			$('#scrobber').hide();
 
             // if no results tell the user. if there's one result jump directly to it. if more than one
@@ -188,7 +191,8 @@ function find_plan(plan_name) {
                 plan_suggestions.show();
             }
 		}
-	)
+
+  )
    .fail(
    		function(){
    			$('#scrobber').hide();
@@ -231,8 +235,13 @@ function find_neighbours(gush_id) {
 
 
 function color_gush(id, color, opacity) {
-	map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
-}
+    try{
+	    map._layers['gush_' + id].setStyle({opacity: opacity , color: color});
+    }
+    catch(err){
+    console.log("color_gush error: ",err);
+    }
+    }
 
 function highlight_gush(id) {
 	map.fitBounds(map._layers['gush_' + id].getBounds());
@@ -308,7 +317,7 @@ $(document).ready(function(){
 			// get the most recent plans to show on the homepage
 			$.getJSON(API_URL + 'recent.json', function(res){
                 // render template and set info div's content
-                var rendered_recents = render('plans', {plans: res, base_api_url: API_URL});
+                var rendered_recents = render('plans', {plans: res, base_api_url: API_URL, notifier_url: NOTIFIER_URL});
 				$("#info").html(rendered_recents);
 
 				$.each(res, function(r) {
@@ -330,7 +339,6 @@ $(document).ready(function(){
 
 	Path.root("#/");
 	Path.listen();
-
 
 	// setup search form
 	$('#search-form').submit(
@@ -383,6 +391,11 @@ $(document).ready(function(){
 
 	$('#rss-link').attr('href', API_URL + 'plans.atom');
 	$('#rss-link').css('visibility', 'visible');
+
+  // set notifier-general-link
+  $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/add/opentaba?city='+muni.display +'&link='+API_URL + 'plans.atom');
+  $('#notifier-general-link').css('visibility', 'visible');
+	$('#forum-link').css('visibility', 'visible');
 
 
 
@@ -521,4 +534,5 @@ $.ajax({
 		got_gushim_delegate(got_gushim_delegate_gush_param, got_gushim_delegate_plan_param);
 		map._onResize();
 	}
+
 });

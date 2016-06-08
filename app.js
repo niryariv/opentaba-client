@@ -1,5 +1,5 @@
 
-var RUNNING_LOCAL =(document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
+var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
 var DOMAIN = 'opentaba.info';
 var NOTIFIER_URL = "notifier.hasadna.org.il";
 

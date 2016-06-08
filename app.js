@@ -1,5 +1,6 @@
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
 var DOMAIN = 'opentaba.info';
+<<<<<<< HEAD
 var NOTIFIER_URL = "notifier.hasadna.org.il";
 
 // get the requested url. we do this because the subdomains will just be frames redirecting to the main domain, and since we

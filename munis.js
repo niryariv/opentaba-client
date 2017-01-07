@@ -225,6 +225,23 @@ var municipalities = {
         ],
         "display": "\u05e8\u05d0\u05e9\u05d5\u05df \u05dc\u05e6\u05d9\u05d5\u05df"
     },
+    "roshhaayin": {
+        "bounds": [
+            [
+                32.06307,
+                34.919886
+            ],
+            [
+                32.118478,
+                34.993819
+            ]
+        ],
+        "center": [
+            32.08936,
+            34.97043
+        ],
+        "display": "\u05e8\u05d0\u05e9 \u05d4\u05e2\u05d9\u05df"
+    },
     "sderot": {
         "bounds": [
             [

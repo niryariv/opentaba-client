@@ -155,6 +155,23 @@ var municipalities = {
         ],
         "display": "\u05e7\u05e8\u05d9\u05ea \u05d2\u05ea"
     },
+    "lod": {
+        "bounds": [
+            [
+                31.925428,
+                34.854155
+            ],
+            [
+                31.976468,
+                34.921088
+            ]
+        ],
+        "center": [
+            31.948527,
+            34.890289
+        ],
+        "display": "\u05dc\u05d5\u05d3"
+    },
     "orakiva": {
         "bounds": [
             [

@@ -208,6 +208,23 @@ var municipalities = {
         "display": "\u05e8\u05de\u05ea \u05d4\u05e9\u05e8\u05d5\u05df",
         "fb_link": "https://www.facebook.com/opentaba.ramathasharon"
     },
+    "ramla": {
+        "bounds": [
+            [
+                31.899581,
+                34.818965
+            ],
+            [
+                31.947027,
+                34.911151
+            ]
+        ],
+        "center": [
+            31.926346,
+            34.869786
+        ],
+        "display": "\u05e8\u05de\u05dc\u05d4"
+    },
     "rishon": {
         "bounds": [
             [

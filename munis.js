@@ -293,6 +293,23 @@ var municipalities = {
         ],
         "display": "\u05e9\u05d3\u05e8\u05d5\u05ea"
     },
+    "shfaram": {
+        "bounds": [
+            [
+                32.763121,
+                35.130904
+            ],
+            [
+                32.843768,
+                35.215594
+            ]
+        ],
+        "center": [
+            32.802362,
+            35.17295
+        ],
+        "display": "\u05e9\u05e4\u05e8\u05e2\u05dd"
+    },
     "tveria": {
         "bounds": [
             [

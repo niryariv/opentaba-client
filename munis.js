@@ -172,6 +172,23 @@ var municipalities = {
         ],
         "display": "\u05dc\u05d5\u05d3"
     },
+    "mitsperamon": {
+        "bounds": [
+            [
+                30.495839,
+                34.629195
+            ],
+            [
+                30.780665,
+                34.941045
+            ]
+        ],
+        "center": [
+            30.646655,
+            34.813045
+        ],
+        "display": "\u05de\u05e6\u05e4\u05d4 \u05e8\u05de\u05d5\u05df"
+    },
     "orakiva": {
         "bounds": [
             [

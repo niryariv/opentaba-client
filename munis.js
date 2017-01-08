@@ -189,6 +189,23 @@ var municipalities = {
         ],
         "display": "\u05de\u05e6\u05e4\u05d4 \u05e8\u05de\u05d5\u05df"
     },
+    "nahef": {
+        "bounds": [
+            [
+                32.916302,
+                35.282842
+            ],
+            [
+                32.950682,
+                35.342278
+            ]
+        ],
+        "center": [
+            32.928618,
+            35.307869
+        ],
+        "display": "\u05e0\u05d7\u05e3"
+    },
     "orakiva": {
         "bounds": [
             [

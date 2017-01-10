@@ -172,6 +172,23 @@ var municipalities = {
         ],
         "display": "\u05e7\u05e8\u05d9\u05ea \u05d2\u05ea"
     },
+    "kiryatmalahi": {
+        "bounds": [
+            [
+                31.710979,
+                34.724304
+            ],
+            [
+                31.746692,
+                34.775897
+            ]
+        ],
+        "center": [
+            31.728809,
+            34.742766
+        ],
+        "display": "\u05e7\u05e8\u05d9\u05ea \u05de\u05dc\u05d0\u05db\u05d9"
+    },
     "lod": {
         "bounds": [
             [

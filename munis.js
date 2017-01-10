@@ -51,6 +51,23 @@ var municipalities = {
         ],
         "display": "\u05d1\u05ea \u05d9\u05dd"
     },
+    "beertuvya": {
+        "bounds": [
+            [
+                31.650351,
+                34.600969
+            ],
+            [
+                31.818411,
+                34.818416
+            ]
+        ],
+        "center": [
+            31.742691,
+            34.72446
+        ],
+        "display": "\u05d1\u05d0\u05e8 \u05d8\u05d5\u05d1\u05d9\u05d4"
+    },
     "eilat": {
         "bounds": [
             [

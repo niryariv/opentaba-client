@@ -68,6 +68,23 @@ var municipalities = {
         ],
         "display": "\u05d1\u05d0\u05e8 \u05d8\u05d5\u05d1\u05d9\u05d4"
     },
+    "diralasad": {
+        "bounds": [
+            [
+                32.923634,
+                35.236537
+            ],
+            [
+                32.961318,
+                35.30689
+            ]
+        ],
+        "center": [
+            32.93753,
+            35.270334
+        ],
+        "display": "\u05d3\u05d9\u05e8 \u05d0\u05dc-\u05d0\u05e1\u05d3"
+    },
     "eilat": {
         "bounds": [
             [

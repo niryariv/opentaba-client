@@ -1,4 +1,3 @@
-
 var RUNNING_LOCAL = (document.location.host.indexOf('localhost') > -1 || document.location.host.indexOf('0.0.0.0') > -1 || document.location.protocol == 'file:');
 var DOMAIN = 'opentaba.info';
 var NOTIFIER_URL = "notifier.hasadna.org.il";
@@ -419,7 +418,7 @@ tile_url = "http://niryariv.github.io/israel_tiles/{z}/{x}/{y}.png";
 
 L.tileLayer(tile_url, {
 	maxZoom: 16,
-	minZoom: 13
+	minZoom: 9
 }).addTo(map);
 
 
@@ -454,10 +453,22 @@ legend.onAdd = function (map) {
 
 	mlist = '';
 	for (var i=0 ; i < ms.length ; i++) {
-		m = ms[i];
-		if (!municipalities[m].hide) {
-	    	mlist += '<a href="http://' + m + '.' + DOMAIN + '/">' + municipalities[m].display + '</a><br />';
-	    }
+		var m = ms[i];
+    var mun = municipalities[m];
+
+    // skip municipalities that shouldn't be displayed
+    if (mun.hide || mun == muni) continue;
+
+    // add entry to pull down list
+  	mlist += '<a href="//' + m + '.' + DOMAIN + '/">' + mun.display + '</a><br />';
+
+    // add muni marker to map
+    var muni_icon = L.divIcon({
+    	className: 'muni-marker'
+    	,html: '<a href="//' + m + '.' + DOMAIN + '/">תב״ע פתוחה: ' + mun.display + '</a>'
+    	,iconSize: null
+    });
+    L.marker(mun.center, {icon: muni_icon}).addTo(map);
 	}
 
 	div.innerHTML += '<div id="muni-list" style="display: none;">' + mlist + '</div>'
@@ -470,15 +481,6 @@ legend.addTo(map);
 $('#more-munis-button').on(('ontouchstart' in document.documentElement) ? 'touchstart' : 'click', function(){
     $('#muni-list').slideToggle(300);
 });
-
-
-// // add muni markers to map
-// var muni_icon = L.divIcon({
-// 	className: 'muni-marker'
-// 	,html: '<a href="//' + k + '.' + DOMAIN + '/">תב״ע פתוחה: ' + m.display + '</a>'
-// 	,iconSize: null
-// });
-// L.marker(m.center, {icon: muni_icon}).addTo(map);
 
 
 // since github's api requires https and we don't run https, internet explorer up to and including version 9

@@ -90,7 +90,7 @@ h1 {
 }
 
 #twitter-link, #fb-link, #rss-link, #notifier-link, #forum-link{
-    visibility: hidden;
+    display: none;
 }
 
 #jump-to {

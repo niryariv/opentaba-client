@@ -380,21 +380,27 @@ $(document).ready(function(){
     // set links according to municipality
 	if (muni.fb_link) {
 		$('#fb-link').attr('href', muni.fb_link);
-		$('#fb-link').css('visibility', 'visible');
+    $('#fb-link').css('display', 'inline');
 	}
+  else {
+    $('#fb-link').attr('href', "#");
+  }
 
 	if (muni.twitter_link) {
-		$('#twitter-link').attr('href', muni.twitter_link);
-		$('#twitter-link').css('visibility', 'visible');
+		$('#twittern-link').attr('href', muni.twitter_link);
+    $('#twitter-link').css('display', 'inline');
 	}
+  else {
+    $('#twittern-link').attr('href', "#");
+  }
 
 	$('#rss-link').attr('href', API_URL + 'plans.atom');
-	$('#rss-link').css('visibility', 'visible');
+	$('#rss-link').css('display', 'inline');
 
   // set notifier-general-link
   $('#notifier-general-link').attr('href', 'http://'+NOTIFIER_URL+ '/add/opentaba?city='+muni.display +'&link='+API_URL + 'plans.atom');
-  $('#notifier-general-link').css('visibility', 'visible');
-	$('#forum-link').css('visibility', 'visible');
+  $('#notifier-general-link').css('display', 'inline');
+	$('#forum-link').css('display', 'inline');
 
 
 

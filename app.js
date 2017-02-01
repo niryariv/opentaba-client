@@ -471,7 +471,7 @@ legend.onAdd = function (map) {
     // add muni marker to map
     var muni_icon = L.divIcon({
     	className: 'muni-marker'
-    	,html: '<a href="//' + m + '.' + DOMAIN + '/">תב״ע פתוחה: ' + mun.display + '</a>'
+    	,html: '<a href="//' + m + '.' + DOMAIN + '/"><i class="icon-home"></i><br>' + mun.display + '</a>'
     	,iconSize: null
     });
     L.marker(mun.center, {icon: muni_icon}).addTo(map);

@@ -471,10 +471,10 @@ legend.onAdd = function (map) {
     // add muni marker to map
     var muni_icon = L.divIcon({
     	className: 'muni-marker'
-    	,html: '<a href="//' + m + '.' + DOMAIN + '/"><i class="icon-home"></i><br>' + mun.display + '</a>'
+    	,html: '<a href="//' + m + '.' + DOMAIN + '/"><i class="icon-home"></i><br><span class=marker_text>' + mun.display + '</span></a>'
     	,iconSize: null
     });
-    L.marker(mun.center, {icon: muni_icon}).addTo(map);
+    L.marker(mun.center, {icon: muni_icon, riseOnHover: true}).addTo(map);
 	}
 
 	div.innerHTML += '<div id="muni-list" style="display: none;">' + mlist + '</div>'

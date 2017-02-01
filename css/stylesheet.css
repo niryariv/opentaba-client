@@ -130,6 +130,16 @@ h1 {
     text-align: center;
 }
 
+
+.muni-marker .marker_text {
+  display: none;
+}
+
+.muni-marker:hover .marker_text {
+  display: inline-block;
+}
+
+
 .row {
     margin-left: 0;
 }

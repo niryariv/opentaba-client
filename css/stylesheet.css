@@ -61,8 +61,8 @@ body{
 #right-bar {
     font-family: Alef;
     direction: rtl;
-}
 
+  }
 .align-right {
     text-align: right;
 }
@@ -167,7 +167,7 @@ p.status {
     width: 84%;
 }
 
-.more-munis {
+.container-fluid .ot-main {
     font-family: 'Alef';
     font-size: 14px;
     padding: 8px 8px;
@@ -175,17 +175,19 @@ p.status {
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
-    text-align: right;
+    text-align: center;
     direction: rtl;
     line-height: 1.5em;
 
 }
 
-.more-munis h4 {
-    margin: 0;
-    color: #777;
-    cursor: pointer;
+.select2-dropdown {
+  color: #0078A8;
+  background: rgba(255,255,255,0.8);
+  line-height: 1.5em;
+  font-size: 14px;
 }
+
 
 #selected-plan {
     background-color: #ffb;

@@ -490,7 +490,7 @@ legend.addTo(map);
 $('#munis-list-select').select2({
                                 language: "he",
                                 placeholder: "עוד רשויות",
-                                allowClear: true,
+                                allowClear: false,
                                 dir: "rtl"
                               }).on('select2:select', function(e) {
                                                           window.open(e.params.data.id,"_self");

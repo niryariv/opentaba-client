@@ -447,14 +447,9 @@ L.control.locate({position: 'topleft', keepCurrentZoomLevel: true, circleStyle: 
 var legend = L.control({position: ($('html').is('.ie-8') || !$('#toggle-button').is(':visible')) ? 'topright' : 'bottomright'});
 legend.onAdd = function (map) {
 
-	var div = L.DomUtil.create('div', 'more-munis legend');
-	div.id = 'more-munis-button';
+// sort munis by name
 
-	// ie compatability (< 9) doesn't support svg
-	var legendImage = $('html').is('.ie-8') ? '/img/israel.jpg' : '/img/israel.svg';
-	div.innerHTML = '<h4><img src="' + legendImage + '" height="30px" />&nbsp;עוד רשויות</h4>';
 
-	// sort munis by name
 	ms = Object.keys(municipalities).sort(function(a,b){ return (municipalities[a].display > municipalities[b].display) ? 1 : -1 })
 
 	mlist = '';
@@ -466,28 +461,40 @@ legend.onAdd = function (map) {
     if (mun.hide || mun == muni) continue;
 
     // add entry to pull down list
-  	mlist += '<a href="//' + m + '.' + DOMAIN + '/">' + mun.display + '</a><br />';
+        mlist += '<option value="//' + m + '.' + DOMAIN + '/">' + mun.display + '</option>';
+
+
+    	var div = L.DomUtil.create('div', 'more-munis legend');
+    	div.id = 'more-munis-select';
+
+    	// ie compatability (< 9) doesn't support svg
+    	var legendImage = $('html').is('.ie-8') ? '/img/israel.jpg' : '/img/israel.svg';
+    	div.innerHTML = '<h4><img src="' + legendImage + '" height="30px" />&ensp;<select id="munis-list-select"> <option disabled selected value></option>' + mlist + '</select>'
 
     // add muni marker to map
     var muni_icon = L.divIcon({
     	className: 'muni-marker'
-    	,html: '<a href="//' + m + '.' + DOMAIN + '/">תב״ע פתוחה: ' + mun.display + '</a>'
+    	,html: '<a href="//' + m + '.' + DOMAIN + '/"><i class="icon-home"></i><br>' + mun.display + '</a>'
     	,iconSize: null
     });
     L.marker(mun.center, {icon: muni_icon}).addTo(map);
 	}
 
-	div.innerHTML += '<div id="muni-list" style="display: none;">' + mlist + '</div>'
+
 	return div;
 };
 
 legend.addTo(map);
 
-// catch touchstart if possible, because click behaves weird on touch screens
-$('#more-munis-button').on(('ontouchstart' in document.documentElement) ? 'touchstart' : 'click', function(){
-    $('#muni-list').slideToggle(300);
-});
-
+// add smart selector to other munis field
+$('#munis-list-select').select2({
+                                language: "he",
+                                placeholder: "עוד רשויות",
+                                allowClear: true,
+                                dir: "rtl"
+                              }).on('select2:select', function(e) {
+                                                          window.open(e.params.data.id,"_self");
+                              });
 
 // since github's api requires https and we don't run https, internet explorer up to and including version 9
 // won't be able to make this request (because of restrictions set in the XDomainRequest object, more details at:

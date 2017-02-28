@@ -119,6 +119,23 @@ var municipalities = {
         ],
         "display": "\u05d2\u05d1\u05e2\u05ea\u05d9\u05d9\u05dd"
     },
+    "hadera": {
+        "bounds": [
+            [
+                32.39438,
+                34.866345
+            ],
+            [
+                32.481961,
+                34.98051
+            ]
+        ],
+        "center": [
+            32.431892,
+            34.927821
+        ],
+        "display": "\u05d7\u05d3\u05e8\u05d4"
+    },
     "herzliya": {
         "bounds": [
             [

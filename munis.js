@@ -240,6 +240,23 @@ var municipalities = {
         ],
         "display": "\u05dc\u05d5\u05d3"
     },
+    "menashe": {
+        "bounds": [
+            [
+                32.362902,
+                34.903522
+            ],
+            [
+                32.568972,
+                35.163969
+            ]
+        ],
+        "center": [
+            32.451456,
+            35.03896
+        ],
+        "display": "\u05de\u05e0\u05e9\u05d4"
+    },
     "mitsperamon": {
         "bounds": [
             [

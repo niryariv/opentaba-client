@@ -257,6 +257,23 @@ var municipalities = {
         ],
         "display": "\u05de\u05e0\u05e9\u05d4"
     },
+    "migdalhaemek": {
+        "bounds": [
+            [
+                32.660058,
+                35.204031
+            ],
+            [
+                32.711483,
+                35.276583
+            ]
+        ],
+        "center": [
+            32.682176,
+            35.240659
+        ],
+        "display": "\u05de\u05d2\u05d3\u05dc \u05d4\u05e2\u05de\u05e7"
+    },
     "mitsperamon": {
         "bounds": [
             [

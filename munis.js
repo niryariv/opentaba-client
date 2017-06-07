@@ -119,6 +119,23 @@ var municipalities = {
         ],
         "display": "\u05d2\u05d1\u05e2\u05ea\u05d9\u05d9\u05dd"
     },
+    "hadera": {
+        "bounds": [
+            [
+                32.39438,
+                34.866345
+            ],
+            [
+                32.481961,
+                34.98051
+            ]
+        ],
+        "center": [
+            32.431892,
+            34.927821
+        ],
+        "display": "\u05d7\u05d3\u05e8\u05d4"
+    },
     "herzliya": {
         "bounds": [
             [
@@ -222,6 +239,40 @@ var municipalities = {
             34.890289
         ],
         "display": "\u05dc\u05d5\u05d3"
+    },
+    "menashe": {
+        "bounds": [
+            [
+                32.362902,
+                34.903522
+            ],
+            [
+                32.568972,
+                35.163969
+            ]
+        ],
+        "center": [
+            32.451456,
+            35.03896
+        ],
+        "display": "\u05de\u05e0\u05e9\u05d4"
+    },
+    "migdalhaemek": {
+        "bounds": [
+            [
+                32.660058,
+                35.204031
+            ],
+            [
+                32.711483,
+                35.276583
+            ]
+        ],
+        "center": [
+            32.682176,
+            35.240659
+        ],
+        "display": "\u05de\u05d2\u05d3\u05dc \u05d4\u05e2\u05de\u05e7"
     },
     "mitsperamon": {
         "bounds": [

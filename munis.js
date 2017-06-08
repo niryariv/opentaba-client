@@ -291,23 +291,6 @@ var municipalities = {
         ],
         "display": "\u05de\u05e6\u05e4\u05d4 \u05e8\u05de\u05d5\u05df"
     },
-    "modiin": {
-        "bounds": [
-            [
-                31.852283,
-                34.92654
-            ],
-            [
-                31.939706,
-                35.039265
-            ]
-        ],
-        "center": [
-            31.901037,
-            35.001415
-        ],
-        "display": "\u05de\u05d5\u05d3\u05d9\u05e2\u05d9\u05df"
-    },
     "nahef": {
         "bounds": [
             [

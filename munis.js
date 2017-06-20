@@ -1,4 +1,21 @@
 var municipalities = {
+    "alkasum": {
+        "bounds": [
+            [
+                31.211414,
+                34.699724
+            ],
+            [
+                31.384952,
+                35.117809
+            ]
+        ],
+        "center": [
+            31.327172,
+            34.811161
+        ],
+        "display": "\u05d0\u05dc \u05e7\u05e1\u05d5\u05dd"
+    },
     "arabe": {
         "bounds": [
             [

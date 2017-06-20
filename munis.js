@@ -204,6 +204,23 @@ var municipalities = {
         ],
         "display": "\u05d7\u05d5\u05dc\u05d5\u05df"
     },
+    "hura": {
+        "bounds": [
+            [
+                31.256119,
+                34.887387
+            ],
+            [
+                31.32782,
+                34.971222
+            ]
+        ],
+        "center": [
+            31.302184,
+            34.930813
+        ],
+        "display": "\u05d7\u05d5\u05e8\u05d4"
+    },
     "jerusalem": {
         "bounds": [
             [

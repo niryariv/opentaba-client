@@ -68,6 +68,23 @@ var municipalities = {
         ],
         "display": "\u05d1\u05d0\u05e8 \u05d8\u05d5\u05d1\u05d9\u05d4"
     },
+    "dimona": {
+        "bounds": [
+            [
+                30.874543,
+                34.938934
+            ],
+            [
+                31.145298,
+                35.345457
+            ]
+        ],
+        "center": [
+            31.032161,
+            35.116945
+        ],
+        "display": "\u05d3\u05d9\u05de\u05d5\u05e0\u05d4"
+    },
     "diralasad": {
         "bounds": [
             [

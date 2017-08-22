@@ -58,16 +58,16 @@
             {{! <td > }}
                 {{! the font-size thing is a hack to get the links to stick close together while maintaining proper formatting here }}
                 {{#each tasrit_link}}
-                    <a href="{{this}}" target="_blank" rel="tooltip" title="תשריט" style="font-size:14px;"><i class="icon-globe"></i></a>
+                    <a href="http://mmi.gov.il{{this}}" target="_blank" rel="tooltip" title="תשריט" style="font-size:14px;"><i class="icon-globe"></i></a>
                 {{/each}}
                 {{#each takanon_link}}
-                    <a href="{{this}}" target="_blank" rel="tooltip" title="תקנון" style="font-size:14px;"><i class="icon-file"></i></a>
+                    <a href="http://mmi.gov.il{{this}}" target="_blank" rel="tooltip" title="תקנון" style="font-size:14px;"><i class="icon-file"></i></a>
                 {{/each}}
                 {{#each nispahim_link}}
-                    <a href="{{this}}" target="_blank" rel="tooltip" title="נספחים" style="font-size:14px;"><i class="icon-folder-open"></i></a>
+                    <a href="http://mmi.gov.il{{this}}" target="_blank" rel="tooltip" title="נספחים" style="font-size:14px;"><i class="icon-folder-open"></i></a>
                 {{/each}}
                 {{#each files_link}}
-                    <a href="{{this}}" rel="tooltip" title="קבצי ממג" style="font-size:14px;"><i class="icon-download-alt"></i></a>
+                    <a href="http://mmi.gov.il{{this}}" rel="tooltip" title="קבצי ממג" style="font-size:14px;"><i class="icon-download-alt"></i></a>
                 {{/each}}
                 {{#if mavat_code}}
                     <a href="{{../../base_api_url}}plan/{{plan_id}}/mavat" target="_blank" rel="tooltip" title="מבא&quot;ת" style="font-size:14px;"><i class="icon-link"></i></a>

@@ -274,6 +274,23 @@ var municipalities = {
         ],
         "display": "\u05e7\u05e8\u05d9\u05ea \u05de\u05dc\u05d0\u05db\u05d9"
     },
+    "kiryatshmona": {
+        "bounds": [
+            [
+                33.179395,
+                35.538198
+            ],
+            [
+                33.25068,
+                35.607189
+            ]
+        ],
+        "center": [
+            33.214992,
+            35.57429
+        ],
+        "display": "\u05e7\u05e8\u05d9\u05ea \u05e9\u05de\u05d5\u05e0\u05d4"
+    },
     "lod": {
         "bounds": [
             [

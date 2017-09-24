@@ -136,6 +136,23 @@ var municipalities = {
         ],
         "display": "\u05d0\u05d9\u05dc\u05ea"
     },
+    "galiltahton": {
+        "bounds": [
+            [
+                32.619155,
+                35.301873
+            ],
+            [
+                32.857636,
+                35.546645
+            ]
+        ],
+        "center": [
+            32.754761,
+            35.438893
+        ],
+        "display": "\u05d2\u05dc\u05d9\u05dc \u05ea\u05d7\u05ea\u05d5\u05df"
+    },
     "givataiim": {
         "bounds": [
             [

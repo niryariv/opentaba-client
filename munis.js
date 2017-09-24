@@ -342,6 +342,23 @@ var municipalities = {
         ],
         "display": "\u05de\u05d2\u05d3\u05dc \u05d4\u05e2\u05de\u05e7"
     },
+    "misgav": {
+        "bounds": [
+            [
+                32.779661,
+                35.104141
+            ],
+            [
+                32.965957,
+                35.408208
+            ]
+        ],
+        "center": [
+            32.873783,
+            35.268587
+        ],
+        "display": "\u05de\u05e9\u05d2\u05d1"
+    },
     "mitsperamon": {
         "bounds": [
             [

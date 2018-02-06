@@ -325,6 +325,23 @@ var municipalities = {
         ],
         "display": "\u05dc\u05d5\u05d3"
     },
+    "mateyehuda": {
+        "bounds": [
+            [
+                31.589483,
+                34.810878
+            ],
+            [
+                31.863564,
+                35.228191
+            ]
+        ],
+        "center": [
+            31.76006,
+            35.025152
+        ],
+        "display": "\u05de\u05d8\u05d4 \u05d9\u05d4\u05d5\u05d3\u05d4"
+    },
     "menashe": {
         "bounds": [
             [

@@ -24,7 +24,7 @@ if (muni == undefined) {
     }
 }
 
-var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : ('muni.server == undefined') ? 'http://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
+var API_URL = RUNNING_LOCAL ? 'http://0.0.0.0:5000/' : ('muni.server == undefined') ? 'https://opentaba-server-' + muni_name + '.herokuapp.com/' : muni.server;
 var gushim;
 var gushimLayer;
 leafletPip.bassackwards = true;

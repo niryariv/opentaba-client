@@ -114,7 +114,7 @@ function find_gush_by_addr(address) {
 
 	// Use Google api to find a gush by address
 	$.getJSON(
-		'https://maps.googleapis.com/maps/api/geocode/json?address='+search_address+'&sensor=false',
+		'https://maps.googleapis.com/maps/api/geocode/json?address='+search_address+'&sensor=false&key=AIzaSyBlWm2QhaorklqFGoehdqo5Epk4CRPZJoc',
 		function (r) {
 			$('#scrobber').hide();
 

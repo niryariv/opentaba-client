@@ -105,61 +105,45 @@ function find_gush(gush_id){
 
 // find a gush by street address
 function find_gush_by_addr(address) {
-    var search_address = address;
 
-	// add the city name if it is not in the search string
-	if (search_address.indexOf(muni.display) == -1) {
-		search_address = search_address + " " + muni.display;
-	}
+  $.ajax({
+    url: 'https://api.opencagedata.com/geocode/v1/json',
+    method: 'GET',
+    data: {
+      'key': '04c8ade5a723452a83b85775dcc29b34',
+      'q': address,
+      'no_annotations': 1,
+      'bounds': [muni.bounds[0][1],muni.bounds[0][0],muni.bounds[1][1],muni.bounds[1][0]].join(',')
+    },
+    dataType: 'json',
+    statusCode: {
+      402: function(){
+        $('#scrobber').hide();
+        console.log('hit free-trial daily limit');
+      },
+      200: function(response){  // success
+        $('#scrobber').hide();
+        console.log(response);
 
-	// Use Google api to find a gush by address
-	$.getJSON(
-		'https://maps.googleapis.com/maps/api/geocode/json?address='+search_address+'&sensor=false&key=AIzaSyBlWm2QhaorklqFGoehdqo5Epk4CRPZJoc',
-		function (r) {
-			$('#scrobber').hide();
+        if (response.results.length > 0) {
+          lat = response.results[0].geometry.lat;
+          lon = response.results[0].geometry.lng;
+          var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
 
-			if (r['status'] == 'OK' && r['results'].length > 0) {
-				// Here we have a case when Google api returns without an actual place (even a street),
-				// so it only has a city. This happens because it didn't find the address, but we
-				// did append the name of the current city at the end, and Google apparently thinks
-				// 'better something than nothing'. We're trying to ignore this (should test though)
-				if (r['results'][0]['types'].length == 2 &&
-					$.inArray('locality', r['results'][0]['types']) > -1 &&
-					$.inArray('political', r['results'][0]['types']) > -1) {
-					find_plan(address);
-				}
-				else {
-					var lat = r['results'][0]['geometry']['location']['lat'];
-					var lon = r['results'][0]['geometry']['location']['lng'];
-					console.log('got lon: ' + lon + ', lat: ' + lat);
+          if (gid && gid.length > 0) {
+            get_gush(gid[0].gushid);
+            var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + address + '</b>').openOn(map);
 
-					// Using leafletpip we try to find an object in the gushim layer with the coordinate we got
-					var gid = leafletPip.pointInLayer([lat, lon], gushimLayer, true);
-					if (gid && gid.length > 0) {
-						get_gush(gid[0].gushid);
-						var pp = L.popup().setLatLng([lat, lon]).setContent('<b>' + search_address + '</b>').openOn(map);
-
-                        // show search note after a successful search
-                        $('#search-note-p').show();
-					} else {
-						find_plan(address);
-					}
-				}
-			}
-			else if (r['status'] == 'ZERO_RESULTS') {
-				find_plan(address);
-			}
-			else {
-				$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
-			}
-		}
-	)
-   .fail(
-   		function(){
-   			$('#scrobber').hide();
-   			$('#search-error-p').html('חלה שגיאה בחיפוש, אנא נסו שנית מאוחר יותר');
-   		}
-   	);
+            // show search note after a successful search
+            $('#search-note-p').show();
+          }
+        } else {
+          console.log("Geocoding failed, perhaps it's a plan name?");
+          find_plan(address);
+        }
+      }
+    }
+  });
 }
 
 

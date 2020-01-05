@@ -455,15 +455,25 @@ legend.onAdd = function (map) {
     // add muni marker to map
     var muni_icon = L.divIcon({
     	className: 'muni-marker'
-    	,html: '<a href="//' + m + '.' + DOMAIN + '/">תב״ע פתוחה: ' + mun.display + '</a>'
+    	,html: '<a href="//' + m + '.' + DOMAIN + '/"><i class="icon-home"></i><br><span class=marker_text>' + mun.display + '</span></a>'
     	,iconSize: null
     });
-    L.marker(mun.center, {icon: muni_icon}).addTo(map);
+    var muni_marker = L.marker(mun.center, {icon: muni_icon, riseOnHover: true});
+    muni_marker.url = '//' + m + '.' + DOMAIN + '/';
+    muni_marker.addTo(map).on('click', changeMuni);
+
+    function changeMuni(e) {
+        window.open(e.target.url,'_self');
+
+    }
 	}
 
 	div.innerHTML += '<div id="muni-list" style="display: none;">' + mlist + '</div>'
 	return div;
 };
+
+
+
 
 legend.addTo(map);
 
@@ -526,5 +536,6 @@ $.ajax({
 		got_gushim_delegate(got_gushim_delegate_gush_param, got_gushim_delegate_plan_param);
 		map._onResize();
 	}
+
 
 });

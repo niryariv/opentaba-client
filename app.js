@@ -43,6 +43,7 @@ var ACTIVE_GUSH_COLOR = '#d7191c';
 var NEIGHBOUR_GUSH_COLOR = '#83a';
 var SELECTED_GUSH_COLOR = '#0aa';
 
+$("#closed").modal('show');
 
 // Utility endsWith function
 String.prototype.endsWith = function(suffix) {
